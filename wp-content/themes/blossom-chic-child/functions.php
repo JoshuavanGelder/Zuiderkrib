@@ -513,7 +513,7 @@ function blossom_feminine_header(){
 
 function blossom_feminine_banner(){
     
-    $ed_slider = get_theme_mod( 'ed_slider', true );
+    $ed_slider = get_theme_mod( 'ed_slider', false );
     $slider_layout  = get_theme_mod( 'slider_layout', 'two' );
 
     if( ( is_front_page() || is_home() ) && $ed_slider ){ 
