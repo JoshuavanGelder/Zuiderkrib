@@ -1,2 +1,3 @@
-wp-content/themes/blossom-chic-child/node-modules
+.htaccess
+*/**/node_modules/*
 wp-content/uploads/*
