@@ -2,7 +2,6 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-
 /**
  * After setup theme hook
  */
@@ -36,6 +35,18 @@ if ( !function_exists( 'blossom_chic_styles' ) ):
     }
 endif;
 add_action( 'wp_enqueue_scripts', 'blossom_chic_styles', 10 );
+
+// Import styles from the scss
+function enqueue_scss_styles() {
+    wp_register_style( 'style', get_stylesheet_directory_uri().'/css/styles.css' );
+    wp_enqueue_style( 'style' );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_scss_styles' );
+
+function enqueue_scss_editor_styles() {
+    wp_enqueue_style('scss-editor-styles', get_theme_file_uri( '/css/editor.css' ), false, '1.0', 'all' );
+}
+add_action( 'admin_init', 'enqueue_scss_editor_styles' );
 
 //Remove a function from the parent theme
 function remove_parent_filters(){ //Have to do it after theme setup, because child theme functions are loaded first
@@ -502,7 +513,7 @@ function blossom_feminine_header(){
 
 function blossom_feminine_banner(){
     
-    $ed_slider = get_theme_mod( 'ed_slider', true );
+    $ed_slider = get_theme_mod( 'ed_slider', false );
     $slider_layout  = get_theme_mod( 'slider_layout', 'two' );
 
     if( ( is_front_page() || is_home() ) && $ed_slider ){ 
