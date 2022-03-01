@@ -1,1 +1,6 @@
 @import "blocks/card";
+@import "blocks/media-text";
+
+html {
+    scroll-behavior: smooth;
+}
