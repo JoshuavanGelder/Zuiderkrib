@@ -1,3 +1,11 @@
+.editor-styles-wrapper a {
+  color: #333;
+}
+.editor-styles-wrapper a:hover {
+  color: #f69581;
+  text-decoration: underline;
+}
+
 .wp-block-gallery .wp-card {
   overflow: hidden;
   box-shadow: 0.5px 0.5px 10px #333;
