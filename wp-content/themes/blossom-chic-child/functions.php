@@ -511,6 +511,10 @@ function blossom_feminine_header(){
     <?php
 }
 
+function blossom_feminine_breadcrumb() {
+    return;
+}
+
 function blossom_feminine_banner(){
     
     $ed_slider = get_theme_mod( 'ed_slider', false );
