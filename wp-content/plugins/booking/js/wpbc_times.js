@@ -21,6 +21,65 @@ function is_this_time_selections_not_available( resource_id, form_elements ){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+function wpbc_show_date_info_top( param_calendar_id, my_thisDateTime ){
+
+	var resource_id = parseInt( param_calendar_id.replace("calendar_booking","") );
+
+	var date_obj = new Date(my_thisDateTime);
+
+	var td_class = ( date_obj.getMonth() + 1 ) + '-' + date_obj.getDate() + '-' + date_obj.getFullYear();
+
+
+	var times_array = [];
+
+
+
+	// Get Times from Approved dates
+	var times_array_approved = wpbc_get_times_from_dates_arr( date_approved, resource_id, td_class );
+	for ( i = 0; i < times_array_approved.length; i++ ){
+		times_array[ times_array.length ] = times_array_approved[ i ];
+	}
+
+	// Get Times from Pending dates
+	var times_array_pending  = wpbc_get_times_from_dates_arr( date2approve,  resource_id, td_class );
+	for ( i = 0; i < times_array_pending.length; i++ ){
+		times_array[ times_array.length ] = times_array_pending[ i ];
+	}
+
+ 	// Time availability
+	if ( typeof(hover_day_check_global_time_availability) == 'function' ){
+		times_array = hover_day_check_global_time_availability( date_obj, resource_id, times_array );
+	}
+
+
+	//FixIn: 8.2.1.9
+	if ( times_array.length > 0 ){
+		//times_array = wpbc_sort_times_array( times_array );
+		var dot_content = '';
+		for ( var i = 0; i < (times_array.length / 2); i++ ){
+			dot_content += '&centerdot;';
+		}
+		return '<div class="wpbc_time_dots">'+dot_content+'</div>';
+	} else {
+		return '';
+	}
+}
+
+function wpbc_show_date_info_bottom( param_calendar_id, my_thisDateTime ) {
+
+	if ( typeof( wpbc_show_day_cost_in_date_bottom ) == 'function' ) {
+
+		return wpbc_show_day_cost_in_date_bottom( param_calendar_id, my_thisDateTime );
+
+	} else {
+		return '';
+	}
+}
+
+
+
+
+
 /**
  * Prepare for showing popovers in calendar at front-end side
  *
@@ -822,7 +881,6 @@ function wpbc_is_time_field_in_booking_form( resource_id, form_elements ){						
 		return true;
 	}
 
-
 	//FixIn: 8.4.7.6
 	// Disable Booked Time Slots in selectbox
 	function bkDisableBookedTimeSlots( all_dates, bk_type ){
@@ -843,8 +901,16 @@ function wpbc_is_time_field_in_booking_form( resource_id, form_elements ){						
 		// HERE WE WILL DISABLE ALL OPTIONS IN RANGE TIME INTERVALS FOR SINGLE DAYS SELECTIONS FOR THAT DAYS WHERE HOURS ALREADY BOOKED
 		//here is not range selections
 		all_dates = get_first_day_of_selection( all_dates );
-		if ( (bk_days_selection_mode == 'single')  ){   // Only single day selections here		//FixIn: 8.7.11.6
-		//if ( ( bk_days_selection_mode == 'single' ) || ( bk_days_selection_mode == 'multiple' ) ) {
+
+		//FixIn: 8.9.3.4
+		if (     ( (bk_days_selection_mode == 'single')   /*&& (wpbcg.time_disable_modes.indexOf( 'single' ) >= 0)*/ )
+			  || ( (bk_days_selection_mode == 'multiple') && (wpbcg.time_disable_modes.indexOf( 'multiple' ) >= 0) )
+			  || ( (bk_days_selection_mode == 'dynamic')  && (wpbcg.time_disable_modes.indexOf( 'dynamic' ) >= 0) )
+			  || ( (bk_days_selection_mode == 'fixed')    && (wpbcg.time_disable_modes.indexOf( 'fixed' ) >= 0) )
+		   ){
+
+			// if ( ( bk_days_selection_mode == 'single')  ){   // Only single day selections here		//FixIn: 8.7.11.6
+			// if ( ( bk_days_selection_mode == 'single' ) || ( bk_days_selection_mode == 'multiple' ) ) {
 			var current_single_day_selections = all_dates.split( '.' );
 			td_class = (current_single_day_selections[ 1 ] * 1) + '-' + (current_single_day_selections[ 0 ] * 1) + '-' + (current_single_day_selections[ 2 ] * 1);
 			var times_array = [];

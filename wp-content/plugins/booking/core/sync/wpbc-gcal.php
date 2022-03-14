@@ -316,9 +316,10 @@ add_bk_action('wpbc_silent_import_all_events' , 'wpbc_silent_import_all_events' 
                     foreach ($wpbc_options as $key => $value) {
                         ?><option <?php if( $booking_gcal_timezone == $key ) echo "selected"; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option><?php
                     }
-                    
-                    
-                    global $wpbc_booking_region_cities_list;                    // structure: $wpbc_booking_region_cities_list["Pacific"]["Fiji"] = "Fiji";
+
+
+                    // structure: $wpbc_booking_region_cities_list["Pacific"]["Fiji"] = "Fiji";
+                    $wpbc_booking_region_cities_list = wpbc_get_booking_region_cities_list();							//FixIn: 8.9.4.9
                     
                     foreach ($wpbc_booking_region_cities_list as $region => $region_cities) {
                         

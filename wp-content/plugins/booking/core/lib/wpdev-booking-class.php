@@ -12,6 +12,8 @@ class wpdev_booking {
 
     function __construct() {
 
+		// In AJAX request it DO NOT RUNNING.   Important note
+
 	    $this->popover_front_end_js_is_writed = false;
 
 	    $this->captcha_instance = new wpdevReallySimpleCaptcha();
@@ -23,11 +25,6 @@ class wpdev_booking {
 		    $this->wpdev_bk_personal = false;
 	    }
 
-	    // Set loading translation
-	    add_action( 'plugins_loaded', 'wpbc_load_translation', 1000 );
-
-	    // Check content according language shortcodes
-	    add_bk_filter( 'wpdev_check_for_active_language', 'wpdev_check_for_active_language' );
 
 	    // User defined - hooks
 	    add_action( 'wpdev_bk_add_calendar', array( &$this, 'add_calendar_action' ), 10, 2 );
@@ -450,22 +447,59 @@ class wpdev_booking {
                 $booking_legend_is_show_item_partially    = get_bk_option( 'booking_legend_is_show_item_partially');
                 $booking_legend_text_for_item_partially   = get_bk_option( 'booking_legend_text_for_item_partially');
                 $booking_legend_text_for_item_partially  =  apply_bk_filter('wpdev_check_for_active_language', $booking_legend_text_for_item_partially );
-                
-                if ($booking_legend_is_show_item_partially  == 'On') { // __('Partially booked' ,'booking')                    
-                    if ( get_bk_option( 'booking_range_selection_time_is_active' ) === 'On') {                        
-                        $my_result .=  '<div class="wpdev_hint_with_text">' . 
-                                                '<div class="block_check_in_out date_available date_approved check_in_time"  >
+
+				if (0) {
+					if ( $booking_legend_is_show_item_partially == 'On' ) { // __('Partially booked' ,'booking')
+						if ( wpbc_is_booking_used_check_in_out_time() ) {                                                   //FixIn: 8.9.4.10
+							$my_result .= '<div class="wpdev_hint_with_text">' .
+							              '<div class="block_check_in_out date_available date_approved check_in_time"  >
                                                     <div class="check-in-div"><div></div></div>
                                                     <div class="check-out-div"><div></div></div>
-                                                    <em>'.$text_for_day_cell.'</em>
-                                                </div>'.
-                                                '<div class="block_text">- '. $booking_legend_text_for_item_partially .'</div>'.
-                                        '</div>';                        
-                    } else {
-                        $my_result .= '<div class="wpdev_hint_with_text"><div class="block_time timespartly">'.$text_for_day_cell.'</div><div class="block_text">- '. $booking_legend_text_for_item_partially .'</div></div>';
-                    }                        
-                }
-                
+                                                    <em>' . $text_for_day_cell . '</em>
+                                                </div>' .
+							              '<div class="block_text">- ' . $booking_legend_text_for_item_partially . '</div>' .
+							              '</div>';
+						} else {
+							$my_result .= '<div class="wpdev_hint_with_text"><div class="block_time timespartly">' . $text_for_day_cell . '<div class="date-content-bottom"></div></div><div class="block_text">- ' . $booking_legend_text_for_item_partially . '</div></div>';
+						}
+					}
+				}
+
+				//FixIn: 8.9.4.13
+	            if ( $booking_legend_is_show_item_partially == 'On' ) {
+
+			        $booking_timeslot_day_bg_as_available = get_bk_option( 'booking_timeslot_day_bg_as_available' );
+			        $booking_timeslot_day_bg_as_available = ( $booking_timeslot_day_bg_as_available === 'On' ) ? ' wpbc_timeslot_day_bg_as_available' : '';
+
+
+					$my_partially = '<div class="wpdev_hint_with_text '.$booking_timeslot_day_bg_as_available.'">';
+
+					$my_partially .=  '<div class="datepick-inline" style="width:30px !important;border: 0;box-shadow: none;float: left;">';
+					$my_partially .=  '<table class="datepick" style=""><tbody><tr>';
+					if ( wpbc_is_booking_used_check_in_out_time() ) {                                                   //FixIn: 8.9.4.10
+						$my_partially .= '<td class="datepick-days-cell date_available date2approve timespartly check_in_time check_in_time_date2approve" style="height: 30px !important;">';
+					} else {
+						$my_partially .=  '<td class="datepick-days-cell date_available date2approve timespartly times_clock" style="height: 30px !important;">';
+					}
+					$my_partially .=  '<div class="wpbc-cell-box">';
+					$my_partially .=  '	<div class="wpbc-diagonal-el">';
+					$my_partially .=  '		<div class="wpbc-co-out"><svg height="100%" width="100%" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 0,99 99,0"></polygon><polygon points="0,0 0,100 49,100 49,0"></polygon></svg></div>';
+					$my_partially .=  '		<div class="wpbc-co-in"><svg height="100%" width="100%" viewBox="0 0 98 98" preserveAspectRatio="none"><polygon points="0,99 99,99 99,0"></polygon><polygon points="50,98 98,98 98,0 50,0"></polygon></svg></div>';
+					$my_partially .=  '	</div>';
+					$my_partially .=  '	<div class="date-cell-content">';
+					$my_partially .=  '		<div class="date-content-top"><div class="wpbc_time_dots">·</div></div>';
+					$my_partially .=  '		<a>'.$text_for_day_cell.'</a>';
+					$my_partially .=  '		<div class="date-content-bottom"></div>';
+					$my_partially .=  '	</div>';
+					$my_partially .=  '</div>';
+		            $my_partially .=  '</td></tr></tbody></table>';
+					$my_partially .=  '</div>';
+
+					$my_partially .= '<div class="block_text">- '. $booking_legend_text_for_item_partially .'</div>';
+                    $my_partially .= '</div>';
+
+					$my_result .= $my_partially;
+				}
             }
             $my_result .= '</div><div class="wpdev_clear_hint"></div>';
         }
@@ -541,7 +575,7 @@ class wpdev_booking {
         
         //FixIn: 7.0.1.24
         $is_booking_change_over_days_triangles = get_bk_option( 'booking_change_over_days_triangles' );
-        if ( $is_booking_change_over_days_triangles == 'On' ) {
+        if ( $is_booking_change_over_days_triangles !== 'Off' ) {
             $calendar = '<div class="wpbc_change_over_triangle">' . $calendar . '</div>';
         }
         
@@ -665,7 +699,7 @@ class wpdev_booking {
         
         $my_form.='  <div class="form-group">[captcha]</div>';
                     
-        $my_form.='  <button class="btn btn-default" type="button" onclick="mybooking_submit(this.form,'.$my_boook_type.',\''.wpbc_get_booking_locale().'\');" >'.__('Send' ,'booking').'</button> ';
+        $my_form.='  <button class="btn btn-default" type="button" onclick="mybooking_submit(this.form,'.$my_boook_type.',\''.wpbc_get_maybe_reloaded_booking_locale().'\');" >'.__('Send' ,'booking').'</button> ';
                   
                 //.'<p>'.__('Last Name (required)' ,'booking').':<br />  <span class="wpdev-form-control-wrap secondname'.$my_boook_type.'"><input type="text" name="secondname'.$my_boook_type.'" value="" class="wpdev-validates-as-required" size="40" /></span> </p>'.
                 //'<p>'.__('Email (required)' ,'booking').':<br /> <span class="wpdev-form-control-wrap email'.$my_boook_type.'"><input type="text" name="email'.$my_boook_type.'" value="" class="wpdev-validates-as-email wpdev-validates-as-required" size="40" /></span> </p>'.
@@ -673,7 +707,7 @@ class wpdev_booking {
                 //'<p>'.__('Details' ,'booking').':<br />          <span class="wpdev-form-control-wrap details'.$my_boook_type.'"><textarea name="details'.$my_boook_type.'" cols="40" rows="10"></textarea></span> </p>';
                 
                 //$my_form .=  '<p>[captcha]</p>';
-                //$my_form .=  '<p><input type="button" value="'.__('Send' ,'booking').'" onclick="mybooking_submit(this.form,'.$my_boook_type.',\''.wpbc_get_booking_locale().'\');" /></p>
+                //$my_form .=  '<p><input type="button" value="'.__('Send' ,'booking').'" onclick="mybooking_submit(this.form,'.$my_boook_type.',\''.wpbc_get_maybe_reloaded_booking_locale().'\');" /></p>
                 //        </div>';
 
         return $my_form;

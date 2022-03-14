@@ -48,8 +48,74 @@ class WPBC_JS extends WPBC_JS_CSS {
             $where_to_load = 'both';
         
         // Load JavaScript files in all other versions
-        do_action( 'wpbc_enqueue_js_files', $where_to_load );                     
+        do_action( 'wpbc_enqueue_js_files', $where_to_load );
+
+		/*
+		 * Remove `async` and `defer`  ( check more here https://javascript.info/script-async-defer )
+		 * for scripts registered or enqueued, that required for correct  working of plugin,  like
+		 * jquery and all Booking Calendar scripts
+		 * because inside content of the page can  be something like  jQuery(document).ready( function(){ ...} which  will
+		 * generate         Uncaught ReferenceError: jQuery is not defined
+		 */
+		add_filter( 'script_loader_tag', array( $this, 'filter_script_loader_tag' ), 9000000000 , 3 );
     }
+
+
+	/**
+	 * Remove `async` and `defer`  ( check more here https://javascript.info/script-async-defer )
+	 * for scripts registered or enqueued, that required for correct  working of plugin,  like
+	 * jquery and all Booking Calendar scripts
+	 *
+	 * @param string $tag    The script tag.
+	 * @param string $handle The script handle.
+	 *
+	 * @return string Script HTML string.
+	 *
+	 */
+	public function filter_script_loader_tag( $tag, $handle, $src ) {
+
+		$script_handles_prevent_defer = array(
+			  'jquery-core'         // exact value
+			, 'jquery-migrate'
+			//, 'wpbc-'             //starting from  'wpbc-'  it's not the exact value
+			//, 'wpdevelop-'
+		);
+
+
+		// Remove defer and async attribute from  the src.
+		if (
+			   ( 'jquery-core' === $handle )
+			|| ( 'jquery-migrate' === $handle )
+			|| ( false !== strpos( $handle, 'wpbc-' ) )                 // Booking Calendar scripts
+			|| ( false !== strpos( $handle, 'wpdevelop-' ) )
+			|| ( false !== strpos( $handle, 'wpbm-' ) )
+		) {
+
+			foreach ( array( 'async', 'defer' ) as $attr ) {
+
+				if ( preg_match( ":\s$attr(=|>|\s):", $tag ) ) {
+					$tag = str_replace($attr, '', $tag);
+					$tag = str_replace('=""', '', $tag);
+					$tag = str_replace("=''", '', $tag);
+
+					/*
+					 * Test  here https://regex101.com/
+					 *
+					 * Expression:   \s+defer(\s*=\s*["']defer["'])?\s?
+					 * Test  string: <script type='text/javascript' defer = 'defer'  defer="defer" src='http://beta/wp-content/plugins/booking-manager/js/wpbm_vars.js?ver=1.1' id='wpbm-global-vars-js'></script>
+					 *
+					 */
+					$pattern = ":\s+{$attr}(\s*=\s*[\"']{$attr}[\"'])?\s?:mi";
+					$replacement = ' ';
+					$tag = preg_replace($pattern, $replacement, $tag);
+				}
+
+			}
+		}
+
+		return $tag;
+	}
+
 
     /**
 	 * Deregister  some conflict  scripts from  other plugins.
@@ -83,6 +149,25 @@ function wpbc_js_load_vars( $where_to_load ) {
     ////////////////////////////////////////////////////////////////////////////
 
     wp_enqueue_script( 'wpbc-global-vars', wpbc_plugin_url( '/js/wpbc_vars.js' ), array( 'jquery' ), WP_BK_VERSION_NUM );        // Blank JS File
+
+	// New usage of wpbc JS variables in all system:
+	//
+	//      wpbcg.time_disable_modes = ['single'];
+	//
+	// this function use wp_json_encode for encoding, example array( 'single' ) => ["single"]
+	//
+	// debuge( json_decode( trim( wp_json_encode( array( 'data' => 9 ) ) ), $is_array_conv = true ) );   die;  // {"data":9}  ==> Array( ['data'] => 9 )
+    wp_localize_script( 'wpbc-global-vars'
+                      , 'wpbcg', array(
+		    'time_disable_modes' => (
+										( get_bk_option( 'booking_is_time_disable_in_multidays' ) == 'On' )
+										? array( 'single', 'multiple', 'dynamic', 'fixed' )
+										: array( 'single' )
+		                            )
+			//, 'bk_highlight_timeslot_word'  => esc_js( __( 'Times:', 'booking' ) )
+    ));
+
+
 
     wp_localize_script( 'wpbc-global-vars'
                       , 'wpbc_global1', array(
@@ -127,7 +212,7 @@ function wpbc_js_load_vars( $where_to_load ) {
 	                                                      )
                                                     ) ?  'true': 'false' )                                              //FixIn:  TimeFree 2    -  in Booking Calendar Free version  show by  default times hints in AM/PM format
         , 'is_booking_used_check_in_out_time'   => 'false'
-        , 'wpbc_active_locale'                  => wpbc_get_booking_locale()  
+        , 'wpbc_active_locale'                  => wpbc_get_maybe_reloaded_booking_locale()
         , 'wpbc_message_processing'             => esc_js( __('Processing' ,'booking') )
         , 'wpbc_message_deleting'               => esc_js( __('Deleting' ,'booking') )
         , 'wpbc_message_updating'               => esc_js( __('Updating' ,'booking') )
@@ -182,7 +267,7 @@ function wpbc_js_load_files( $where_to_load ) {
 	//FixIn: 8.7.9.12
 
     // Datepicker    
-    wp_enqueue_script( 'wpbc-datepick', wpbc_plugin_url( '/js/datepick/jquery.datepick.wpbc.5.6.js'), array( 'wpbc-global-vars' ), '5.6');
+    wp_enqueue_script( 'wpbc-datepick', wpbc_plugin_url( '/js/datepick/jquery.datepick.wpbc.9.0.js'), array( 'wpbc-global-vars' ), '9.0');
 
 	//wp_enqueue_script( 'wpbc-datepick-plugin', wpbc_plugin_url( '/js/datepick.5.1/jquery.plugin.js'), array( 'wpbc-global-vars' ), '5.1');
     //wp_enqueue_script( 'wpbc-datepick', wpbc_plugin_url( '/js/datepick.5.1/jquery.datepick.js'), array( 'wpbc-global-vars' ), '5.1');
@@ -200,7 +285,7 @@ function wpbc_js_load_files( $where_to_load ) {
 
 
 //	    wp_enqueue_script( 'wpbc-form-summary', wpbc_plugin_url( '/js/wpbc_form_summary.js' ), array(), WP_BK_VERSION_NUM );           //FixIn: 8.8.3.13
-//	    wp_enqueue_script( 'wpbc-form-summary', wpbc_plugin_url( '/js/_out/wpbc_form_summary.js' ), array(), WP_BK_VERSION_NUM );           //FixIn: 8.8.3.13
+//	    wp_enqueue_script( 'wpbc-form-summary', wpbc_plugin_url( '/js/_out/wpbc_form_summary.js' ), array(), WP_BK_VERSION_NUM );      //FixIn: 8.8.3.13
 //	    wp_enqueue_script( 'wpbc-form', wpbc_plugin_url( '/js/_out/wpbc_form.js' ), array( 'wpbc-main-client', 'react', 'react-dom' ), WP_BK_VERSION_NUM );           //FixIn: 8.8.3.7
 
 
@@ -235,7 +320,7 @@ function wpbc_js_load_files( $where_to_load ) {
 function wpbc_load_calendar_localization_file() {
     
     // Datepicker Localization - translation for calendar.                      Example:    $locale = 'fr_FR';   
-    $locale = wpbc_get_booking_locale();                                              
+    $locale = wpbc_get_maybe_reloaded_booking_locale();
     if ( ! empty( $locale ) ) {
 
         $locale_lang    = substr( $locale, 0, 2 ); 
@@ -262,7 +347,7 @@ function wpbc_load_calendar_localization_file() {
  */
 function wpbc_get_calendar_localization_url() {
     // Datepicker Localization - translation for calendar.                      Example:    $locale = 'fr_FR';   
-    $locale = wpbc_get_booking_locale();                                              
+    $locale = wpbc_get_maybe_reloaded_booking_locale();
     
     $calendar_localization_url = false;
     

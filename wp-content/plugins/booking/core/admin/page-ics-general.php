@@ -131,7 +131,8 @@ class WPBC_API_SettingsGeneralSync extends WPBC_Settings_API  {
         $options = array();
         $options[''] = __('Default' ,'booking');
 
-        global $wpbc_booking_region_cities_list;                    // structure: $wpbc_booking_region_cities_list["Pacific"]["Fiji"] = "Fiji";
+		// structure: $wpbc_booking_region_cities_list["Pacific"]["Fiji"] = "Fiji";
+        $wpbc_booking_region_cities_list = wpbc_get_booking_region_cities_list();										//FixIn: 8.9.4.9
 
         foreach ( $wpbc_booking_region_cities_list as $region => $region_cities) {
 

@@ -189,7 +189,8 @@ form.booking_form {
     border-color: #ccc;
     box-shadow: 0 1px 0 #eee;
     color: #555;
-    vertical-align: top;    
+    vertical-align: top;
+    white-space: normal;
 }
 .booking_form_div .submit,
 .booking_form_div .button,

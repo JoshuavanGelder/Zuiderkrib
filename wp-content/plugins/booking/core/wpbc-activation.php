@@ -860,7 +860,12 @@ function wpbc_get_default_options( $option_name = '', $is_get_multiuser_general_
     $default_options['booking_listing_default_view_mode'] = 'vm_calendar';
  $mu_option4delete[]='booking_listing_default_view_mode'; 
     $default_options['booking_view_days_num'] = (  ( ! class_exists( 'wpdev_bk_personal' ) ) ? '90' : '30' );
- $mu_option4delete[]='booking_view_days_num';     
+ $mu_option4delete[]='booking_view_days_num';
+ //FixIn: 8.9.4.3
+    $default_options['booking_calendar_overview__day_mode__days_number_show'] = (  ( ! class_exists( 'wpdev_bk_personal' ) ) ? '7' : '7' );
+ $mu_option4delete[]='booking_calendar_overview__day_mode__days_number_show';
+    $default_options['booking_timeline__month_mode__days_number_show'] = (  ( ! class_exists( 'wpdev_bk_personal' ) ) ? '7' : '7' );
+ $mu_option4delete[]='booking_timeline__month_mode__days_number_show';
  //FixIn: 8.6.1.13
     $default_options['booking_max_monthes_in_calendar'] = '1y';
  $mu_option4delete[]='booking_max_monthes_in_calendar';
@@ -898,7 +903,11 @@ function wpbc_get_default_options( $option_name = '', $is_get_multiuser_general_
 //FixIn: 7.2.1.15	
  $mu_option4delete[]='booking_is_show_system_debug_log';
     $default_options['booking_is_show_system_debug_log'] = 'Off';
-	
+
+//FixIn:8.9.3.4
+ $mu_option4delete[]='booking_is_time_disable_in_multidays';
+    $default_options['booking_is_time_disable_in_multidays'] = 'Off';
+
  $mu_option4delete[]='booking_is_load_js_css_on_specific_pages';
     $default_options['booking_pages_for_load_js_css'] = '';
  $mu_option4delete[]='booking_pages_for_load_js_css';
@@ -971,6 +980,8 @@ $mu_option4delete[]= 'booking_timeslot_picker_skin';
  $mu_option4delete[]='booking_unavailable_day6';  
     $default_options['booking_menu_position'] = ( $is_demo ) ? 'top' : 'top';
  $mu_option4delete[]='booking_menu_position';  
+    $default_options['booking_translation_load_from'] = 'wp.org';
+ $mu_option4delete[]='booking_translation_load_from';
     $default_options['booking_user_role_booking'] = ( $is_demo ) ? 'subscriber' : 'editor';
  $mu_option4delete[]='booking_user_role_booking';  
     $default_options['booking_user_role_addbooking'] = ( $is_demo ) ? 'subscriber' : 'editor';
@@ -1223,7 +1234,7 @@ $mu_option4delete[]= 'booking_timeslot_picker_skin';
      $mu_option4delete[]='booking_range_selection_start_time';
         $default_options['booking_range_selection_end_time'] = '10:00';
      $mu_option4delete[]='booking_range_selection_end_time';
-        $default_options['booking_change_over_days_triangles'] = ($is_demo) ? 'On' : 'Off';         					//FixIn: 7.0.1.24
+        $default_options['booking_change_over_days_triangles'] =  'On';         					//FixIn: 7.0.1.24
 
      $mu_option4delete[]='booking_last_checkout_day_available';
         $default_options['booking_last_checkout_day_available'] = 'Off';         										//FixIn: 8.1.3.28
@@ -1231,6 +1242,12 @@ $mu_option4delete[]= 'booking_timeslot_picker_skin';
      $mu_option4delete[]='booking_change_over_days_triangles';     
         $default_options['booking_time_format'] = 'H:i';
      $mu_option4delete[]='booking_time_format';
+
+     $mu_option4delete[]='booking_change_over__is_excerpt_on_pages';
+        $default_options['booking_change_over__is_excerpt_on_pages'] = 'Off';         									//FixIn: 8.9.4.10
+     $mu_option4delete[]='booking_change_over__excerpt_on_pages';
+        $default_options['booking_change_over__excerpt_on_pages'] = '';         										//FixIn: 8.9.4.10
+
 
         $default_options['booking_email_payment_request_adress'] = htmlspecialchars( '"Booking system" <' . get_option( 'admin_email' ) . '>' );
         $default_options['booking_email_payment_request_subject'] = __( 'You need to make payment for this reservation', 'booking' );
@@ -1304,7 +1321,7 @@ $mu_option4delete[]= 'booking_timeslot_picker_skin';
      $mu_option4delete[]='booking_is_show_availability_in_tooltips';                 
         $default_options['booking_highlight_availability_word'] = __( 'Available: ', 'booking' );
      $mu_option4delete[]='booking_highlight_availability_word';                 
-        $default_options['booking_availability_based_on'] = 'items';
+        $default_options['booking_availability_based_on'] = 'visitors';                                                 //FixIn: 8.9.3.5
      $mu_option4delete[]='booking_availability_based_on';                 
         $default_options['booking_is_dissbale_booking_for_different_sub_resources'] = 'Off';
      $mu_option4delete[]='booking_is_dissbale_booking_for_different_sub_resources';                 

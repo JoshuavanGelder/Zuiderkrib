@@ -204,6 +204,8 @@ class WPBC_Page_SettingsGeneral extends WPBC_Page_Structure {
                    wp_nonce_field( 'wpbc_settings_page_' . $submit_form_name );
                 ?><input type="hidden" name="is_form_sbmitted_<?php echo $submit_form_name; ?>" id="is_form_sbmitted_<?php echo $submit_form_name; ?>" value="1" />
 
+			<?php if ( wpbc_is_show_general_setting_options() )  { //FixIn: 8.9.4.11	?>
+
                 <div class="wpbc_settings_row wpbc_settings_row_left" >
 
                     <?php wpbc_open_meta_box_section( 'wpbc_general_settings_calendar', __('Calendar', 'booking') );  ?>
@@ -239,9 +241,18 @@ class WPBC_Page_SettingsGeneral extends WPBC_Page_Structure {
                     <?php wpbc_close_meta_box_section(); ?>
 
 
-                    <?php wpbc_open_meta_box_section( 'wpbc_general_settings_booking_timeline', __('Calendar Overview', 'booking') . ' | ' . __('Timeline', 'booking') );  ?>
+                    <?php wpbc_open_meta_box_section( 'wpbc_general_settings_booking_calendar_overview', __('Calendar Overview (admin panel)', 'booking') );  ?>
 
                     <?php //FixIn: 8.5.2.20
+						$this->settings_api()->show( 'booking_calendar_overview' );
+					?>
+
+                    <?php wpbc_close_meta_box_section(); ?>
+
+
+                    <?php wpbc_open_meta_box_section( 'wpbc_general_settings_booking_timeline', __('Timeline (front-end)', 'booking') );  //FixIn: 8.9.4.4 ?>
+
+                    <?php
 						$this->settings_api()->show( 'booking_timeline' );
 					?>
 
@@ -295,105 +306,90 @@ class WPBC_Page_SettingsGeneral extends WPBC_Page_Structure {
                     <?php $this->settings_api()->show( 'help' ); ?>                                      
                  
                     <?php wpbc_close_meta_box_section(); ?>                    
-                    
-                </div>                
+
+
+                    <?php wpbc_open_meta_box_section( 'wpbc_general_settings_translations', __('Translations', 'booking') );  ?>
+
+					<?php $this->settings_api()->show( 'translations' ); ?>
+
+                    <?php wpbc_translation_buttons_settings_section(); ?>
+
+                    <?php wpbc_close_meta_box_section(); ?>
+
+                </div>
                 <div class="clear"></div>
                 <input type="submit" value="<?php _e('Save Changes','booking'); ?>" class="button button-primary wpbc_submit_button" />
 				<?php
+						if ( 'translations_updated_from_wpbc_and_wp' !== get_bk_option( 'booking_translation_update_status' ) ) {
+
+							$current_locale = wpbc_get_maybe_reloaded_booking_locale();
+
+							if	( ! in_array( $current_locale, array( 'en_US', 'en_CA', 'en_GB', 'en_AU' ) ) ) {
+
+								echo
+									'<a class="button button" href="'
+									. wpbc_get_settings_url()
+									. '&system_info=show&update_translations=1#wpbc_general_settings_system_info_metabox">'
+									. __( 'Update Translations' )
+									. '</a>';
+							}
+						}
+
 						if ( ! wpbc_is_this_demo() ) {
 
 							echo  '<a style="margin:0 2em;" class="button button" href="' . wpbc_get_settings_url()
-								  									     . '&restore_dismissed=On#wpbc_general_settings_restore_dismissed_metabox">'
+								  									     . '&system_info=show&restore_dismissed=On#wpbc_general_settings_restore_dismissed_metabox">'
 								  										 . __('Restore all dismissed windows' ,'booking')
 								. '</a>';
 						}
 				?>
+
+			<?php } ?>
             </form>
-            <?php if ( ( isset( $_GET['system_info'] ) ) && ( $_GET['system_info'] == 'show' ) ) { ?>
-                
-                <div class="clear" style="height:30px;"></div>
-                
-                <?php wpbc_open_meta_box_section( 'wpbc_general_settings_system_info', 'System Info' );  ?>
-
-                <?php wpbc_system_info(); ?>
-
-                <?php wpbc_close_meta_box_section(); ?>                    
-
-            <?php } ?>
-
-            <?php if ( ( isset( $_GET['restore_dismissed'] ) ) && ( $_GET['restore_dismissed'] == 'On' ) ) {            //FixIn: 8.1.3.10
-
-
-				update_bk_option( 'booking_is_show_powered_by_notice' , 'On' );
-
-				update_bk_option( 'booking_wpdev_copyright_adminpanel' , 'On'  );
-
-            	global $wpdb;
-				// Delete all users booking windows states
-				if ( false === $wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE '%booking_win_%'" ) ){    // All users data
-					debuge_error('Error during deleting user meta at DB',__FILE__,__LINE__);
-					die();
-				} else {
-					?><div class="clear" style="height:30px;"></div><?php
-					wpbc_open_meta_box_section( 'wpbc_general_settings_restore_dismissed', 'Info' );
-
-						?><h2>All dismissed windows have been resored.</h2><?php
-
-						echo '<div class="clear"></div><hr/><center><a class="button button" href="' . wpbc_get_settings_url() . '">'
-                                                                                . 'Reload Page'
-                                                        . '</a></center>';
-
-					wpbc_close_meta_box_section();
-				}
-            }
-			?>
 
         </span>
-    <?php 
+    	<?php
+		do_action( 'wpbc_hook_settings_page_footer', 'general_settings' );
 
-    
-    
-        do_action( 'wpbc_hook_settings_page_footer', 'general_settings' );
-    
+
 //debuge( 'Content <strong>' . basename(__FILE__ ) . '</strong> <span style="font-size:9px;">' . __FILE__  . '</span>');                  
     }
 
 
     public function update() {
-//debuge($_POST);
+
         $validated_fields = $this->settings_api()->validate_post();             // Get Validated Settings fields in $_POST request.
         
         $validated_fields = apply_filters( 'wpbc_settings_validate_fields_before_saving', $validated_fields );   //Hook for validated fields.
-//debuge($validated_fields);
-        // Skip saving specific option, for example in Demo mode.
-        // unset($validated_fields['booking_start_day_weeek']);
-//debuge('$_POST',$_POST)        ;
-//debuge('$validated_fields',$validated_fields);
+
+        // unset($validated_fields['booking_start_day_weeek']);					// Skip saving specific option, for example in Demo mode.
+
         $this->settings_api()->save_to_db( $validated_fields );                 // Save fields to DB
-        wpbc_show_changes_saved_message();
-        
-//debuge( basename(__FILE__), 'UPDATE',  $_POST, $validated_fields);          
-                
+
+		wpbc_show_changes_saved_message();
+
+        /**
         // O L D   W A Y:   Saving Fields Data
         //      update_bk_option( 'booking_is_delete_if_deactive'
         //                       , WPBC_Settings_API::validate_checkbox_post('booking_is_delete_if_deactive') );  
         //      ( (isset( $_POST['booking_is_delete_if_deactive'] ))?'On':'Off') );
-
+		*/
     }
 }
 
 
+/**
+ *
 
-//if ( ! wpbc_is_mu_user_can_be_here( 'only_super_admin' ) ) {                    // If this User not "super admin",  then  do  not load this page at all
-//    
-//    if (  ( ! isset( $_GET['tab'] ) ) || ( $_GET['tab'] == 'general' )  ) {     // If tab  was not selected or selected default,  then  redirect  it to the "form" tab.            
-//        $_GET['tab'] = 'form';
-//    }
-//} else {
-//    add_action('wpbc_menu_created', array( new WPBC_Page_SettingsGeneral() , '__construct') );    // Executed after creation of Menu
-//}
-//
-//
-//
+if ( ! wpbc_is_mu_user_can_be_here( 'only_super_admin' ) ) {                    // If this User not "super admin",  then  do  not load this page at all
+
+    if (  ( ! isset( $_GET['tab'] ) ) || ( $_GET['tab'] == 'general' )  ) {     // If tab  was not selected or selected default,  then  redirect  it to the "form" tab.
+        $_GET['tab'] = 'form';
+    }
+} else {
+    add_action('wpbc_menu_created', array( new WPBC_Page_SettingsGeneral() , '__construct') );    // Executed after creation of Menu
+}
+*/
+
  add_action('wpbc_menu_created', array( new WPBC_Page_SettingsGeneral() , '__construct') );    // Executed after creation of Menu
  

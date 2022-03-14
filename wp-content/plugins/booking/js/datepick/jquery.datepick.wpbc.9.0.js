@@ -1861,18 +1861,39 @@ $.extend(Datepick.prototype, {
 							inst.id + '\',' + printDate.getTime() + ')"' +
 							' onmouseout="jQuery.datepick._doMouseOut(this,\'' + inst.id + '\')"' +
 							' onclick="jQuery.datepick._selectDay(this,\'#' + // Select
-							inst.id + '\',' + printDate.getTime() + ')"') + '>'+
-                                                        '<div class="check-in-div"><div></div></div>' +
-                                                        '<div class="check-out-div"><div></div></div>' +
-                                                        '<div class="date-content-top">' +
-                                                            ( unselectable ? '': ( ( typeof( wpbc_show_date_info_top ) == 'function' ) ? wpbc_show_date_info_top( inst.id, printDate.getTime() ) : '' ) )  +
-                                                        '</div>' +
-							(empty ? '&#xa0;' : // Not showing other months //FixIn:6.0.1.2
-							(unselectable ? '<span>' + printDate.getDate()+ '</span>' : '<a>' + printDate.getDate() + '</a>')) +                                                                
-                                                        '<div class="date-content-bottom">'+
-                                                           ( unselectable ? '': ( ( typeof( wpbc_show_date_info_bottom ) == 'function' ) ? wpbc_show_date_info_bottom( inst.id, printDate.getTime() ) : '' ) )  +
-                                                        '</div>' +                                                        
-                                                        '</td>';
+							inst.id + '\',' + printDate.getTime() + ')"') + '>';
+
+							/** Start content of Day cell *************************************************************/
+							html += '<div class="wpbc-cell-box">' +														//FixIn: 8.9.4.13
+										'<div class="wpbc-diagonal-el">' +
+											'<div class="wpbc-co-out">' +
+												'<svg height="100%" width="100%" viewBox="0 0 100 100" preserveAspectRatio="none">' +
+													'<polygon points="0,0 0,99 99,0"></polygon>' +
+													'<polygon points="0,0 0,100 49,100 49,0"></polygon>' +
+												'</svg>' +
+											'</div>' +
+											'<div class="wpbc-co-in">' +
+												'<svg height="100%" width="100%" viewBox="0 0 98 98" preserveAspectRatio="none">' +
+													'<polygon points="0,99 99,99 99,0"></polygon>' +
+													'<polygon points="50,98 98,98 98,0 50,0"></polygon>' +
+												'</svg>' +
+											'</div>' +
+										'</div>' +
+										    //'<div class="check-in-div"><div></div></div>' +		// Deprecated! remove this line
+										    //'<div class="check-out-div"><div></div></div>' +		// Deprecated! remove this line
+										'<div class="date-cell-content">' +												//FixIn: 8.9.4.13
+											'<div class="date-content-top">' +
+												(unselectable ? '' : ((typeof (wpbc_show_date_info_top) == 'function') ? wpbc_show_date_info_top( inst.id, printDate.getTime() ) : '')) +
+											'</div>' +
+											(empty ? '&#xa0;' : // Not showing other months //FixIn:6.0.1.2
+											(unselectable ? '<span>' + printDate.getDate()+ '</span>' : '<a>' + printDate.getDate() + '</a>')) +
+											'<div class="date-content-bottom">'+
+												(unselectable ? '' : ((typeof (wpbc_show_date_info_bottom) == 'function') ? wpbc_show_date_info_bottom( inst.id, printDate.getTime() ) : '')) +
+											'</div>' +
+										'</div>' +
+									'</div>';
+						/** End content of Day cell *******************************************************************/
+                        html += '</td>';
 						printDate.setDate(printDate.getDate() + 1);
 						printDate = this._daylightSavingAdjust(printDate);
 					}

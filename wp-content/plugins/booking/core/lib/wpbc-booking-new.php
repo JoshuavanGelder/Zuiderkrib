@@ -292,6 +292,7 @@ function wpbc_add_new_booking( $params , $is_edit_booking = false ){
 
     $dates_in_diff_formats = wpbc_get_dates_in_diff_formats( $params[ "dates" ], $bktype, $formdata  );
 
+
     // SET LAST CHECK OUT DAY AS AVAILABLE  - REMOVE IT
 	if ( get_bk_option( 'booking_last_checkout_day_available' ) === 'On' ){                                             //FixIn: 8.2.1.15
 		 if ( ! empty( $dates_in_diff_formats['array'] ) ) {
@@ -311,6 +312,9 @@ function wpbc_add_new_booking( $params , $is_edit_booking = false ){
 		$only_days = implode(',', $only_days );
 		$dates_in_diff_formats = wpbc_get_dates_in_diff_formats( $only_days, $bktype, $formdata  );
     }
+
+
+
 //debuge($dates_in_diff_formats);
 
     $str_dates__dd_mm_yyyy = $dates_in_diff_formats['string'];

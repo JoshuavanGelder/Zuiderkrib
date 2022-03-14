@@ -307,3 +307,14 @@ select option.wpbc_child_resource{
        padding: 1px 14px;
     }
 }
+
+.wpbc_booking_system_info_buttons_align {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 0em;
+}
+.wpbc_booking_system_info_buttons_align a.button {
+    flex: 0 0 auto;
+    margin: 1em 1em 0;
+}

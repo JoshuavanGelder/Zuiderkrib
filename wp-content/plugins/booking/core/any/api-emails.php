@@ -171,11 +171,17 @@ abstract class WPBC_Emails_API extends WPBC_Settings_API  {
         $replace = wp_parse_args( $this->replace, $defaults );
         
         foreach ( $replace as $replace_shortcode => $replace_value ) {
-            
+
+	        //FixIn: 8.9.3.2
+			if ( is_null( $replace_value ) ) {
+				$replace_value = '';
+			};
+
             $subject = str_replace( array(   '[' . $replace_shortcode . ']'
                                            , '{' . $replace_shortcode . '}' )
                                     , $replace_value
                                     , $subject );
+
         }
         
         return $subject;        

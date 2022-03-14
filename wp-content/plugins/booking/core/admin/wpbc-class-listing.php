@@ -297,7 +297,7 @@ class WPBC_Booking_Listing_Table {
       ?><div id="booking_mark_<?php echo $row_data[ 'id' ]; ?>"  
             class="<?php if ( $row_data[ 'is_new'] != '1') echo ' hidden_items '; ?> wpbc-listing-collumn new-label clearfix-height">
              <a href="javascript:void(0)"  
-                onclick="javascript:mark_read_booking( '<?php echo $row_data[ 'id' ]; ?>', 0, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_booking_locale(); ?>' );"
+                onclick="javascript:mark_read_booking( '<?php echo $row_data[ 'id' ]; ?>', 0, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>' );"
                 class="tooltip_right approve_bk_link"                
                 title="<?php _e('New booking' ,'booking'); ?>" 
                 ><i class="glyphicon glyphicon-flash"></i></a>
@@ -393,19 +393,19 @@ class WPBC_Booking_Listing_Table {
                                                                                 //FixIn: 6.1.1.10
                     // Trash
                    ?><a href="javascript:void(0)"
-                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to do this ?' ,'booking')); ?>') ) trash__restore_booking( 1, <?php echo $row_data[ 'id' ]; ?>, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_booking_locale(); ?>' , 1   );"
+                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to do this ?' ,'booking')); ?>') ) trash__restore_booking( 1, <?php echo $row_data[ 'id' ]; ?>, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>' , 1   );"
                         class="tooltip_top button-secondary button trash_bk_link <?php if ( $row_data['is_trash'] ) echo ' hidden_items '; ?>"
                         title="<?php _e('Reject - move to trash' ,'booking'); ?>"
                     ><i class="glyphicon glyphicon-trash"></i></a><?php
                     // Restore
                    ?><a href="javascript:void(0)"
-                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to do this ?' ,'booking')); ?>') ) trash__restore_booking( 0, <?php echo $row_data[ 'id' ]; ?>, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_booking_locale(); ?>' , 1   );"
+                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to do this ?' ,'booking')); ?>') ) trash__restore_booking( 0, <?php echo $row_data[ 'id' ]; ?>, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>' , 1   );"
                         class="tooltip_top button-secondary button restore_bk_link <?php if ( ! $row_data['is_trash'] ) echo ' hidden_items '; ?>"
                         title="<?php _e('Restore' ,'booking'); ?>"
                     ><i class="glyphicon glyphicon-repeat"></i></a><?php
                     // Delete
                    ?><a href="javascript:void(0)"
-                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to delete this booking ?' ,'booking')); ?>') ) delete_booking(<?php echo $row_data[ 'id' ]; ?>, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_booking_locale(); ?>' , 1   );"
+                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to delete this booking ?' ,'booking')); ?>') ) delete_booking(<?php echo $row_data[ 'id' ]; ?>, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>' , 1   );"
                         class="tooltip_top button-secondary button delete_bk_link <?php if ( ! $row_data['is_trash'] ) echo ' hidden_items '; ?>"
                         title="<?php _e('Completely Delete' ,'booking'); ?>"
                     ><i class="glyphicon glyphicon-remove"></i></a><?php
@@ -414,14 +414,14 @@ class WPBC_Booking_Listing_Table {
 
                     // Approve
                    ?><a href="javascript:void(0)" 
-                        onclick="javascript:approve_unapprove_booking(<?php echo $row_data[ 'id' ]; ?>,1,<?php echo $this->user_id; ?>,'<?php echo wpbc_get_booking_locale(); ?>',1);" 
+                        onclick="javascript:approve_unapprove_booking(<?php echo $row_data[ 'id' ]; ?>,1,<?php echo $this->user_id; ?>,'<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>',1);"
                         class="tooltip_top approve_bk_link button-secondary button <?php if ($row_data['is_approved']) echo ' hidden_items '; ?> " 
                         title="<?php _e('Approve' ,'booking'); ?>"
                     ><i class="glyphicon glyphicon-ok-circle"></i></a><?php  
 
                     // Reject
                    ?><a href="javascript:void(0)"
-                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to set booking as pending ?' ,'booking')); ?>') ) approve_unapprove_booking(<?php echo $row_data[ 'id' ]; ?>,0, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_booking_locale(); ?>' , 1  );"
+                        onclick="javascript:if ( wpbc_are_you_sure('<?php echo esc_js(__('Do you really want to set booking as pending ?' ,'booking')); ?>') ) approve_unapprove_booking(<?php echo $row_data[ 'id' ]; ?>,0, <?php echo $this->user_id; ?>, '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>' , 1  );"
                         class="tooltip_top pending_bk_link button-secondary button <?php if (! $row_data['is_approved']) echo ' hidden_items '; ?> "
                         title="<?php _e('Pending' ,'booking'); ?>"
                     ><i class="glyphicon glyphicon-ban-circle"></i></a><?php 

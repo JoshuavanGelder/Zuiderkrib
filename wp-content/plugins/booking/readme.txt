@@ -3,9 +3,9 @@ Contributors: wpdevelop, oplugins
 Donate link: https://wpbookingcalendar.com/buy/
 Tags: booking calendar, booking system, availability calendar, events calendar, appointments , booking form, reservation, availability, oplugins, calendar, Booking Calendar, ical
 Requires at least: 4.0
-Requires PHP: 5.2.4
-Tested up to: 5.8
-Stable tag: 8.9
+Requires PHP: 5.6
+Tested up to: 5.9
+Stable tag: 9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,41 +166,41 @@ Please see [FAQ](https://wpbookingcalendar.com/faq/).
 * Please note, Booking Calendar plugin saving all booking details at your WordPress database at your server. Its does not transfer your booking details to our servers and does not store such info about booking details at our server(s). Please check more detail about this [here](https://wpbookingcalendar.com/faq/where-is-saving-booking-data-gdpr/)
 * Additionally please note, you can add the "required checkbox" to your booking form at the Booking > Settings > Form page, to accept your terms and conditions.
 
-= Support Languages =
+= Support Languages (local) =
 
 - English
-- Dutch [99% Completed]
-- French [99% Completed]
-- Finnish [99% Completed]
-- Greek [99% Completed]
-- Arabic [99% Completed]
-- Brazilian Portuguese [99% Completed]
-- Spanish (Mexico) [99% Completed]
-- Norwegian [98% Completed]
-- Swedish [98% Completed]
-- Spanish [98% Completed]
-- German [98% Completed]
-- Polish [97% Completed]
-- Slovenian [96% Completed]
-- Hungarian [96% Completed]
-- Romanian [95% Completed]
-- Italian [94% Completed]
-- Danish [91% Completed]
-- Bulgarian [91% Completed]
-- Turkish [91% Completed]
-- Chinese (Taiwan) [89% Completed]
-- Russian [88% Completed]
-- Portugal [87% Completed]
-- Galician (Spanish) [87% Completed]
-- Thai [87% Completed]
-- Hebrew [84% Completed]
-- Chinese [83% Completed]
-- Ukrainian [83% Completed]
-- Croatian [71% Completed]
-- Slovak [71% Completed]
-- Czech [71% Completed]
-- Catalan [71% Completed]
-- Belorussian [9% Completed]
+- German 99.79% [ 1906 / 1910 ], fuzzy 3, not translated 1
+- Romanian 98.11% [ 1870 / 1906 ], fuzzy 20, not translated 16
+- Arabic 97.74% [ 1863 / 1906 ], fuzzy 26, not translated 17
+- French (France) 97.74% [ 1863 / 1906 ], fuzzy 27, not translated 16
+- Greek 97.59% [ 1860 / 1906 ], fuzzy 29, not translated 17
+- Finnish 97.53% [ 1859 / 1906 ], fuzzy 30, not translated 17
+- Portuguese (Brazil) 97.48% [ 1858 / 1906 ], fuzzy 31, not translated 17
+- Spanish (Mexico) 97.43% [ 1857 / 1906 ], fuzzy 32, not translated 17
+- Dutch 97.38% [ 1856 / 1906 ], fuzzy 35, not translated 15
+- Swedish 96.85% [ 1846 / 1906 ], fuzzy 35, not translated 25
+- Spanish (Spain) 96.43% [ 1838 / 1906 ], fuzzy 41, not translated 27
+- Norwegian (Bokmål) 96.38% [ 1837 / 1906 ], fuzzy 42, not translated 27
+- Polish 96.12% [ 1832 / 1906 ], fuzzy 44, not translated 30
+- Slovenian 95.07% [ 1812 / 1906 ], fuzzy 55, not translated 39
+- Hungarian 95.02% [ 1811 / 1906 ], fuzzy 55, not translated 40
+- Italian 92.34% [ 1760 / 1906 ], fuzzy 90, not translated 56
+- Bulgarian 90.14% [ 1718 / 1906 ], fuzzy 116, not translated 72
+- Danish 90.14% [ 1718 / 1906 ], fuzzy 118, not translated 70
+- Turkish 90.14% [ 1718 / 1906 ], fuzzy 116, not translated 72
+- Chinese (Taiwan) 88.14% [ 1680 / 1906 ], fuzzy 176, not translated 50
+- Russian 86.41% [ 1647 / 1906 ], fuzzy 163, not translated 96
+- Portuguese (Portugal) 85.62% [ 1632 / 1906 ], fuzzy 176, not translated 98
+- Galician 85.52% [ 1630 / 1906 ], fuzzy 181, not translated 95
+- Thai 85.47% [ 1629 / 1906 ], fuzzy 175, not translated 102
+- Hebrew 82.79% [ 1578 / 1906 ], fuzzy 187, not translated 141
+- Ukrainian 82.11% [ 1565 / 1906 ], fuzzy 195, not translated 146
+- Chinese (China) 82.06% [ 1564 / 1906 ], fuzzy 192, not translated 150
+- Croatian 70.3% [ 1340 / 1906 ], fuzzy 185, not translated 381
+- Czech 70.2% [ 1338 / 1906 ], fuzzy 186, not translated 382
+- Slovak 70.2% [ 1338 / 1906 ], fuzzy 188, not translated 380
+- Catalan 69.83% [ 1331 / 1906 ], fuzzy 188, not translated 387
+- Belarusian 8.92% [ 170 / 1906 ], fuzzy 805, not translated 931
 
 Please recheck the status of each translation, before using plugin.
 We open for your help in new translations or correcting existing ones. You can translate to new language or update exist one, using this [tutorial of translation](https://wpbookingcalendar.com/faq/make-translation-of-wp-plugin/)
@@ -230,6 +230,64 @@ Please see [Video Guides](https://wpbookingcalendar.com/help/).
 13. **Time Slots**. Simple configuration of **time slots** selection in booking form.
 
 == Changelog ==
+= 9.0 =
+- Changes in **all** versions:
+	* **New**. Showing **time slots as dots** in calendar day cells. Modern and nice view of time slots inside of calendar days.
+	* **New**. Showing exact number of booked **time slots** in calendar day cells. System show as many dots (time slots) as many time slot was booked for specific day. Your customers can see occupancy by time interval from the beginning of the calendar view.
+	* **New**. Timeline. Ability to define how many days to show in Timeline at front-end side, while showing Timeline for one booking resource, and selected "Month view mode" in shortcode (parameter "view_days_num=30" or this parameter skipped). You can define it at the Booking > Settings General page in "Calendar Overview | Timeline" section. (8.9.4.3)
+	* **New**. Calendar Overview page. Ability to define how many days to show in Calendar Overview page in admin panel, while showing Calendar Overview page for one booking resource, and selected "Day" view mode. You can define it at the Booking > Settings General page in "Calendar Overview | Timeline" section. (8.9.4.3)
+	* **New**. Timeline. Scroll exactly number of days (for one booking resource, and selected "Month view mode" in shortcode), that was defined at option "Days number to show in Month mode in Timeline". (8.9.4.3)
+	* **New**. Calendar Overview page. Scroll exactly number of days (for one booking resource, and selected "Day" view mode), that was defined at option "Days number to show in Day view mode in Calendar Overview page". (8.9.4.3)
+	* **New**. Separate sections for "Calendar Overview" and "Timeline" options at the Booking > Settings General page. (8.9.4.4)
+	* **New**. Ability to define where firstly plugin tries to use translations from "../wp-content/languages/plugins/", or from "../wp-content/plugins/{Booking Calendar Folder}/languages/" folder. You can change this behavior at the Booking > Settings General page.
+	* **New**. Force plugin translation update. Download and update plugin translations from WordPress translation repository and from wpbookingcalendar.com You can make update at Booking > Settings General page in Translation section.
+	* **New**. Check translation status at WordPress translation repository and local translation from wpbookingcalendar.com to understand, what translation to load. You can check it at Booking > Settings General page in Translation section.
+	* **Improvement**. Booking Calendar by default does not contain MO and PO translation files. You can  force to download them at Booking > Settings General page in Translation section.
+	* **Improvement**. Switching language/locale by using "Globe icon" in the Booking Listing page have higher priority than switching languages by translation plugins (8.9.4.7)
+	* **Improvement**. Optimization structure of country list file for future translations (8.9.4.9)
+	* **Improvement**. CSS styling in all calendar skins. If you previously was made calendar skin customization,  please check changes in new calendar skins marked with this number: 8.9.4.13
+	* **Compatibility**. Support WPML 4.5.4
+	* **Compatibility**. Support Polylang 3.1.4
+	* **Compatibility**. Support qTranslate-X 3.4.6.8 (Currently closed "qTranslate-X", was tested with Booking Calendar in php 5.6)
+	* **Fix**. Translation issues. Tested in Polylang and qTranslate-X plugins(8.9.4.5)
+	* **Fix**. Fix translation folder '/languages/plugin/' to '/languages/plugins/ (8.9.4.6)
+	* **Fix**. Do not showing calendar because of JavaScript errors "Uncaught ReferenceError: jQuery is not defined" at some websites, that use some plugins or themes that add **async** and **defer** attribute to all JavaScript files. (8.9.4.1)
+	* **Fix**. issue of incorrectly import events that starting or ended with 00:00:00 time,  during "Import Google Calendar Events". Previously if you import event from 2022-01-28 23:00 to 00:00 system was marked as unavailable 2022-01-28 23:00 to 2022-01-29 (all day). Currenlty system will import from 2022-01-28 23:00 to 2022-01-28 23:59 (8.9.4.2)
+	* **Fix**. Warning: is_dir(): open_basedir restriction in effect. File(/css/skins/) is not within the allowed path(s)... (8.9.4.8)
+	* **Under hood** Define wpbc_get_booking_locale() function  as Deprecated,  instead use: wpbc_get_maybe_reloaded_booking_locale().
+	* **Under hood** Relocate country list file from ../{Booking Calendar Folder}/languages/ to ../{Booking Calendar Folder}/core/lang/ folder (8.9.4.12)
+- Changes in **Personal / Business Small / Business Medium / Business Large / MultiUser** versions:
+	* **New**. Ability to use change over days only at specific pages. Useful for situation when you need to make bookings with change over days at on specific page(s) ( check in/ou dates with diagonal lines ) and make bookings for specific time slots at other page(s) You can define list of pages where to use this feature at the Booking > Settings General page in "Calendar" section.(8.9.4.10) *(Business Small/Medium/Large, MultiUser)*
+	* **New**. Accurate clear display of the diagonal change over days line. Now it correctly shows the diagonal line for any shape of day cells (square or rectangle). This means that for any calendar size you will see the correct sharp diagonal line.
+	* **New**. Show diagonal line in dates, where we have check in/out bookings with the same status (pending or approved). Previously was showed just pending or approved full date without diagonal line. (8.9.4.13.1)
+	* **Fix**. Issue at some servers during response from PayPal and showing "Error code: 100000" (8.9.4.14)
+	* **Deprecated**. Elements ".check-in-div" and ".check-out-div" are deprecated. Currently it's commented and in future updates such elements will be removed from calendar JS file and from all skins.
+
+= 8.9.3 =
+- Changes in **all** versions:
+	* **Support**. WordPress 5.9
+	* **Support**. Twenty Twenty-Two theme.	(8.9.3.3)
+	* **Fix**. PHP Warning:  Undefined array key 1 in ..\core\wpbc-dates.php on line 449 (8.9.3.1)
+	* **Fix**. PHP 8.1 Deprecated message:  str_replace(): Passing null to parameter #2 ($replace) of type array|string is deprecated in ..\\core\\any\\api-emails.php on line 178 (8.9.3.2)
+	* **Fix**. Showing titles at buttons in booking form in several rows. It's help to show correctly booking form at the mobile devices with long text at buttons.
+- Changes in **Personal / Business Small / Business Medium / Business Large / MultiUser** versions:
+	* **Improvement**. Ability to activate option "Disable booked time slots in multiple days selection mode". System disables booked time slots if multiple days selection mode is enabled. The system only disabled time slots booked for the first selected day only. (8.9.3.4) *(Business Small/Medium/Large, MultiUser)*
+	* **Improvement**. If activated "Set capacity based on number of visitors", then default activated radio option will be "Display tooltip on calendar(s) to show availability based on total (fixed) number of visitors for the resource, which can be at free booking resource items." (8.9.3.5) *(Business Large, MultiUser)*
+
+= 8.9.2 =
+- Changes in **all** versions:
+	* **Fix**. Fix security issue in Booking Calendar Free version. More accurate sanitising and escaping parameters. (8.9.2.1)
+
+= 8.9.1 =
+- Changes in **all** versions:
+	* **Translation**. Romanian translation [100% completed] by Cosmin Diaconu
+	* **Fix**. Small correction bootstrap.min.css ( https://wordpress.org/support/topic/small-correction-bootstrap-min-css/ )
+- Changes in **Personal / Business Small / Business Medium / Business Large / MultiUser** versions:
+	* **Improvement**. Bookings export to CSV format without real creation of files at the server. Provide compatibility with new GoDaddy police. Fix showing 403 error when bookings are exported to CSV. (8.9.1.4) *(Personal, Business Small/Medium/Large, MultiUser)*
+	* **Fix**. Fix issue of not ability to auto select correct saved value for select boxes in conditional sections, while editing the bookings. (8.9.1.1)  *(Business Medium/Large, MultiUser)*
+	* **Fix**. Fix PHP Warning: strtolower() expects parameter 1 to be string, array given in ../inc/_ps/admin/wpbc-resources-cache.php on line 401 (8.9.1.2) *(Personal, Business Small/Medium/Large, MultiUser)*
+	* **Fix**. Fix generate 404 error by accessing file /wp-content/wp-admin/images/xit.gif in admin-support.css on line 332. (8.9.1.3) *(Personal, Business Small/Medium/Large, MultiUser)*
+
 = 8.9 =
 - Changes in **all** versions:
 	* **Translation**. French translation [100% completed] by Walid Chaafi
@@ -897,5 +955,5 @@ Please see [Video Guides](https://wpbookingcalendar.com/help/).
 For more information, see the [full release notes](https://wpbookingcalendar.com/changelog/).
 
 == Upgrade Notice ==
-= 8.9 =
-Show help info about costs to better understand cost calculations. Improvements in .ics export functionality. Other improvements...
+= 9.0 =
+New time slots view, as a dots. Accurate clear display of the diagonal change over days line. Define how many days to show in Timeline for day view. New translation system. Many other improvements...

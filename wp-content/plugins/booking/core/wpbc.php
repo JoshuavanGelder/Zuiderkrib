@@ -27,42 +27,39 @@ final class Booking_Calendar {
     public $cron;
     public $notice;
     public $booking_obj;    
-    
 
     public $admin_menu;
     public $js;
     public $css;
-    
 
 /** Get Single Instance of this Class and Init Plugin */
 public static function init() {
     
     if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Booking_Calendar ) ) {
             
-                    global $wpbc_settings;
-                    $wpbc_settings = array();
+		global $wpbc_settings;
+		$wpbc_settings = array();
         
         self::$instance = new Booking_Calendar;
         self::$instance->constants();
         self::$instance->includes();
         self::$instance->define_version();
 
-
-        if ( class_exists( 'WPBC_BookingInstall' ) ) {                                 // Check if we need to run Install / Uninstal process.
-                        
+        if ( class_exists( 'WPBC_BookingInstall' ) ) {                                 									// Check if we need to run Install / Uninstal process.
             new WPBC_BookingInstall();
         }
 
-        // TODO: Finish here
-        //add_action('plugins_loaded', array(self::$instance, 'load_textdomain') );   // T r a n s l a t i o n
-        
-        
-        $is_continue = self::$instance->start();                                // Make Ajax, Response or Define Booking ClASS
+
+	    /**
+	     *   Make Ajax, Response,  in this case    				$is_continue_at_frontend = false
+	     *   or
+	     *   define Booking Class for front-end side,  then 	$is_continue_at_frontend = true
+	     */
+        $is_continue_at_frontend = self::$instance->start();
 
         make_bk_action('wpbc_booking_calendar_started');
-        
-        //TODO:  NEW        
-        if ( $is_continue ) {                                                   // Possible Load Admin or Front-End page
+
+        if ( $is_continue_at_frontend ) {                                                   							// Possible Load Admin or Front-End page
             
             self::$instance->js     = new WPBC_JS;
             self::$instance->css    = new WPBC_CSS;
@@ -70,17 +67,17 @@ public static function init() {
             if( is_admin() ) {
 
                 // Define Menu
-                add_action( '_admin_menu',   array( self::$instance, 'define_admin_menu') );    // _admin_menu - Fires before the administration menu loads in the admin.
+                add_action( '_admin_menu',   array( self::$instance, 'define_admin_menu') );    						// _admin_menu - Fires before the administration menu loads in the admin.
 
-                add_action( 'admin_footer', 'wpbc_print_js', 50 );              // Load my Queued JavaScript Code at  the footer of the Admin Panel page. Executed in ALL Admin Menu Pages
+                add_action( 'admin_footer', 'wpbc_print_js', 50 );              			// Load my Queued JavaScript Code at  the footer of the Admin Panel page. Executed in ALL Admin Menu Pages
                 
             } else {  
                 
-                if ( function_exists( 'wpbc_br_cache' ) ) $br_cache = wpbc_br_cache();  // Init booking resources cache
+                if ( function_exists( 'wpbc_br_cache' ) ) $br_cache = wpbc_br_cache();  								// Init booking resources cache
                 
-                add_action( 'wp_enqueue_scripts', array(self::$instance->css, 'load'), 1000000001 );   // Load CSS at front-end side  // Enqueue Scripts to All Client pages 
-                add_action( 'wp_enqueue_scripts', array(self::$instance->js,  'load'), 1000000001 );   // Load JavaScript files and define JS varibales at forn-end side
-                add_action( 'wp_footer', 'wpbc_print_js', 50 );                 // Load my Queued JavaScript Code at  the footer  of the page, if executed "wp_footer" hook at the Theme.
+                add_action( 'wp_enqueue_scripts', array(self::$instance->css, 'load'), 1000000001 );   					// Load CSS at front-end side  // Enqueue Scripts to All Client pages
+                add_action( 'wp_enqueue_scripts', array(self::$instance->js,  'load'), 1000000001 );   					// Load JavaScript files and define JS varibales at forn-end side
+                add_action( 'wp_footer', 'wpbc_print_js', 50 );                 			// Load my Queued JavaScript Code at  the footer  of the page, if executed "wp_footer" hook at the Theme.
             }            
         }
                 
@@ -102,12 +99,13 @@ public function define_admin_menu(){
         $title .= $update_count_title;
     }
 
-
-    //global $menu;
-    //if ( current_user_can(  ) ) {
-    //$menu[] = array( '', 'read', 'separator-wpbc', '', 'wp-menu-separator wpbc' );
-    //}
-    // debuge($menu);
+	/**
+		global $menu;
+		if ( current_user_can(  ) ) {
+			$menu[] = array( '', 'read', 'separator-wpbc', '', 'wp-menu-separator wpbc' );
+		}
+		debuge($menu);
+	*/
 
     $booking_menu_position = get_bk_option( 'booking_menu_position' );
     switch ( $booking_menu_position ) {
@@ -117,7 +115,7 @@ public function define_admin_menu(){
         case 'middle':
             global $_wp_last_object_menu;                                       // The index of the last top-level menu in the object menu group
             $_wp_last_object_menu++;
-            $booking_menu_position = $_wp_last_object_menu; // 58.9;
+            $booking_menu_position = $_wp_last_object_menu; 					// 58.9;
             break;
         case 'bottom':
             $booking_menu_position = '99.999';
@@ -126,7 +124,6 @@ public function define_admin_menu(){
             $booking_menu_position = '3.3';
             break;
     }
-
 
     self::$instance->admin_menu['master'] = new WPBC_Admin_Menus(
                                                     'wpbc' , array (
@@ -156,7 +153,6 @@ public function define_admin_menu(){
                                                                                     99 Separator
                                                                                      */
                                                                             )
-
                                                 );
 
     self::$instance->admin_menu['new']    = new WPBC_Admin_Menus(
@@ -191,7 +187,6 @@ public function define_admin_menu(){
                                                                             )
                                                 );
 
-
 	//FixIn: 8.0.1.6
 	if ( ! class_exists( 'wpdev_bk_personal' ) ) {
 
@@ -208,7 +203,6 @@ public function define_admin_menu(){
 													)
 												);
 	}
-
 
 }
 
@@ -248,41 +242,7 @@ public function define_admin_menu(){
         if (!defined('WPDEV_BK_VERSION'))    define('WPDEV_BK_VERSION',   $plugin_data['Version'] );
     }
 
-    
-    /**
-     * Load Plugin Locale.
-     * Look firstly in Global folder: /wp-content/languages/booking
-     *         then in Local  folder: /wp-content/plugins/booking/languages/
-     * and afterwards load default  : load_plugin_textdomain( ...
-     */
-    public function load_textdomain() {
-        // Set filter for plugin's languages directory
-        $plugin_lang_dir = WPBC_PLUGIN_DIR . '/languages/';
-        $plugin_lang_dir = apply_filters( 'wpbc~languages_directory', $plugin_lang_dir );
 
-        // Plugin locale filter
-        $locale        = apply_filters( 'plugin_locale',  get_locale() ,'booking');
-        $mofile        = sprintf( '%1$s-%2$s.mo', 'booking', $locale );
-
-        // Setup paths to current locale file
-        $mofile_local  = $plugin_lang_dir . $mofile;
-        $mofile_global = WP_LANG_DIR . '/booking/' . $mofile;
-
-        if ( file_exists( $mofile_global ) ) {                      
-            // Look in global /wp-content/languages/booking folder
-            load_textdomain( 'booking', $mofile_global );                       
-            
-        } elseif ( file_exists( $mofile_local ) ) {                
-            // Look in local /wp-content/plugins/booking/languages/ folder
-            load_textdomain( 'booking', $mofile_local );                        
-            
-        } else {                
-            // Load the default language files
-            load_plugin_textdomain( 'booking', false, $plugin_lang_dir );       
-        }
-    }    
-    
-    
     // Cloning instances of the class is forbidden
     public function __clone() {
 

@@ -522,9 +522,31 @@ class WPBC_Google_Calendar {
         }
         
         if ( isset($event_dates_start['dateTime']) &&  isset($event_dates_end['dateTime']) ) {
-            $start_date = $this->iso_to_ts( $event_dates_start['dateTime'] );
+
+
+			$start_date = $this->iso_to_ts( $event_dates_start['dateTime'] );
             $end_date   = $this->iso_to_ts( $event_dates_end['dateTime'] );
-            
+
+	        //FixIn: 8.9.4.2
+	        /**
+	         * Check  for situation,  when  we are having times starting or ending at  the midnight: 00:00:00
+			 * Because in this "IF section" we are checking events dates with  times (in the previous "IF section" was FULL day  events,
+			 * we need to  be sure that  the event do  not start  or end at  00:00 Otherwise Booking Calendar will
+			 * show such  date as fully  booked!
+	         */
+			$start_date_unix = $start_date;
+			$check_start_date = date_i18n( 'Y-m-d H:i:s', $start_date_unix );
+			if ( substr( $check_start_date, 11 ) === '00:00:00' ) {
+				$start_date_unix = $start_date_unix + 61;
+				$start_date = $start_date_unix;
+			}
+			$end_date_unix = $end_date;
+			$check_end_date   = date_i18n( 'Y-m-d H:i:s', $end_date_unix );
+			if ( substr( $check_end_date, 11 ) === '00:00:00' ) {
+				$end_date_unix = $end_date_unix - 2;
+				$end_date = $end_date_unix;
+			}
+
             $range_time  = date_i18n('H:i', $start_date ) . ' - ' . date_i18n('H:i', $end_date );
             
             //$start_date = date_i18n('Y-m-d', $start_date );
@@ -567,7 +589,7 @@ class WPBC_Google_Calendar {
             if ( ! in_array( $event['sync_gid'], $exist_bookings_guid ) ) {   
                 
                 $submit_array = $event['booking_submit_data'];
-//debuge($submit_array);                
+//debuge($submit_array);die;
                 $booking_id = apply_bk_filter('wpbc_add_new_booking_filter' , $submit_array ); 
                 
                 $this->events[$key]['id'] = $booking_id;
@@ -708,7 +730,7 @@ class WPBC_Google_Calendar {
                                                     trash__restore_booking( 1,         <?php //FixIn: 7.0.1  ?>
                                                                     get_selected_bookings_id_in_this_list('#gcal_imported_events<?php echo $this->getResource(); ?> .events_items', 13) 
                                                                     , <?php echo $this->getUserID(); ?>
-                                                                    , '<?php echo wpbc_get_booking_locale(); ?>' 
+                                                                    , '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>'
                                                                     , 1  
                                                     ); 
                                             } "

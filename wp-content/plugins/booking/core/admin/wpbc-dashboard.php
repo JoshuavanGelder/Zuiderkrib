@@ -455,14 +455,14 @@ function wpbc_dashboard_section_version() {
                 <td style="width:35%;text-align: right;;" class=""><?php _e('Version' ,'booking');?>:</td>
                 <td style="color: #e50;font-size: 13px;font-weight: 600;text-align: left;text-shadow: 0 -1px 0 #eee;;" 
                     class="bk_spec_font"><?php 
-                if ( substr( WPDEV_BK_VERSION, 0, 2 ) == '9.' ) {
-                    $show_version =  substr( WPDEV_BK_VERSION , 2 ) ;                            
+                if ( substr( WPDEV_BK_VERSION, 0, 3 ) == '10.' ) {
+                    $show_version =  substr( WPDEV_BK_VERSION , 3 ) ;
                     if ( substr($show_version, ( -1 * ( strlen( WP_BK_VERSION_NUM ) ) ) ) === WP_BK_VERSION_NUM ) {
                         $show_version = substr($show_version, 0, ( -1 * ( strlen( WP_BK_VERSION_NUM ) ) - 1 ) );
                         $show_version = str_replace('.', ' ', $show_version) . " <sup><strong style='font-size:12px;'>" . WP_BK_VERSION_NUM . "</strong></sup>" ;
-                    }                                           
-                    echo $show_version ; 
-                } else 
+                    }
+                    echo $show_version ;
+                } else
                     echo WPDEV_BK_VERSION;
                 ?></td>
             </tr>

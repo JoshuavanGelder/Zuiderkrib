@@ -17,6 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;                                             
 ////////////////////////////////////////////////////////////////////////////////
 //   L O A D   F I L E S
 ////////////////////////////////////////////////////////////////////////////////
+require_once( WPBC_PLUGIN_DIR . '/core/wpbc-debug.php' );                       // Debug                                            = Package: WPBC =
+require_once( WPBC_PLUGIN_DIR . '/core/wpbc-core.php' );                        // Core
+
 
 require_once( WPBC_PLUGIN_DIR . '/core/any/class-css-js.php' );                 // Abstract. Loading CSS & JS files                 = Package: Any =
 require_once( WPBC_PLUGIN_DIR . '/core/any/class-admin-settings-api.php' );     // Abstract. Settings API.        
@@ -29,29 +32,28 @@ if( is_admin() ) {
     require_once WPBC_PLUGIN_DIR . '/core/class/wpbc-class-welcome.php';        // Class - Welcome Page - info  about  new version.
 }
 // Functions
-require_once( WPBC_PLUGIN_DIR . '/core/wpbc-debug.php' );                       // Debug                                            = Package: WPBC =
-require_once( WPBC_PLUGIN_DIR . '/core/wpbc-core.php' );                        // Core 
-require_once( WPBC_PLUGIN_DIR . '/core/wpbc-dates.php' );                       // Dates 
-require_once( WPBC_PLUGIN_DIR . '/core/wpbc-translation.php' );                 // Translations 
-if ( file_exists( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations.php' ) ){  
+require_once( WPBC_PLUGIN_DIR . '/core/wpbc-dates.php' );                       // Dates
+require_once( WPBC_PLUGIN_DIR . '/core/wpbc-translation.php' );                 // Translation,  must be loaded after '/core/wpbc-core.php',  because there defined  add_bk_filter(), etc...
+//FixIn: 8.9.4.12
+if ( file_exists( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations.php' ) ){
 
-	require_once( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations.php' );    // All Translation Terms
+	require_once( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations.php' );    // All Translation Terms
 
 	//FixIn: 8.7.3.6
-	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations1.php' ) ){
-		require_once( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations1.php' );
+	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations1.php' ) ){
+		require_once( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations1.php' );
 	}
-	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations2.php' ) ){
-		require_once( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations2.php' );
+	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations2.php' ) ){
+		require_once( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations2.php' );
 	}
-	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations3.php' ) ){
-		require_once( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations3.php' );
+	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations3.php' ) ){
+		require_once( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations3.php' );
 	}
-	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations4.php' ) ){
-		require_once( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations4.php' );
+	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations4.php' ) ){
+		require_once( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations4.php' );
 	}
-	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations5.php' ) ){
-		require_once( WPBC_PLUGIN_DIR . '/core/lib/wpbc_all_translations5.php' );
+	if ( file_exists( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations5.php' ) ){
+		require_once( WPBC_PLUGIN_DIR . '/core/lang/wpbc_all_translations5.php' );
 	}
 }
 require_once( WPBC_PLUGIN_DIR . '/core/wpbc-functions.php' );                   // Functions
@@ -73,6 +75,7 @@ require_once( WPBC_PLUGIN_DIR . '/core/admin/page-bookings.php' );              
 require_once( WPBC_PLUGIN_DIR . '/core/admin/page-timeline.php' );              // Timeline
 require_once( WPBC_PLUGIN_DIR . '/core/admin/page-new.php' );                   // Add New Booking page
 
+require_once( WPBC_PLUGIN_DIR . '/core/admin/wpbc-settings-functions.php' );    // Support functions for Booking > Settings General page
 require_once( WPBC_PLUGIN_DIR . '/core/admin/page-settings.php' );              // Settings page 
     require_once( WPBC_PLUGIN_DIR . '/core/admin/api-settings.php' );           // Settings API
 
@@ -103,30 +106,6 @@ if ( file_exists( WPBC_PLUGIN_DIR.'/inc/_ps/personal.php' ) ){
 // Old Working        
 require_once WPBC_PLUGIN_DIR . '/core/lib/wpdev-booking-widget.php';            // W i d g e t s
 require_once WPBC_PLUGIN_DIR . '/js/captcha/captcha.php';                       // C A P T C H A
-
-
-//FixIn: 8.8.3.8
-add_action( 'plugins_loaded', 'wpbc_late_load_country_list', 100, 1 );
-/**
- * Load country list after locale defined by some other translation  plugin.
- */
-function wpbc_late_load_country_list() {
-
-	//FixIn: 8.8.2.5
-	$locale = wpbc_get_booking_locale();
-	if ( ! empty( $locale ) ) {
-		$locale_lang    = strtolower( substr( $locale, 0, 2 ) );
-		$locale_country = strtolower( substr( $locale, 3 ) );
-
-		if ( ( $locale_lang !== 'en' ) && ( wpbc_is_file_exist( '/languages/wpdev-country-list-' . $locale . '.php' ) ) ) {
-			require_once WPBC_PLUGIN_DIR . '/languages/wpdev-country-list-' . $locale . '.php';
-		} else {
-			require_once WPBC_PLUGIN_DIR . '/languages/wpdev-country-list.php';
-		}
-	} else {
-		require_once WPBC_PLUGIN_DIR . '/languages/wpdev-country-list.php';
-	}
-}
 
 
 require_once WPBC_PLUGIN_DIR . '/core/lib/wpdev-booking-class.php';             // C L A S S    B o o k i n g

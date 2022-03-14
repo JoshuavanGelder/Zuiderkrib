@@ -53,7 +53,7 @@ function wpbc_check_nonce_in_admin_panel( $action_check = 'wpbc_ajax_admin_nonce
     return wpdev_check_nonce_in_admin_panel( $action_check );
 }
 
-//FixIn: 8.4.5.1	function wpbc_check_locale_for_ajax()  moved to ../wp-content/plugins/booking/core/wpbc-translation.php
+//FixIn: 8.4.5.1	function wpbc_check_ajax_locale__reload_it($locale)  moved to ../wp-content/plugins/booking/core/wpbc-translation.php
 
 ////////////////////////////////////////////////////////////////////////////////
 //    A j a x    H o o k s    f o r    s p e c i f i c    A c t i o n s    /////
@@ -650,8 +650,7 @@ function wpbc_ajax_WPBC_IMPORT_GCAL_EVENTS() {
 ////////////////////////////////////////////////////////////////////////////////
 if (  is_admin() && ( defined( 'DOING_AJAX' ) ) && ( DOING_AJAX )  ) {
 
-    // Reload Locale if its required
-    add_action( 'admin_init', 'wpbc_check_locale_for_ajax' );    
+	//FixIn: 8.9.4.5
 
     // Hooks list 
     $actions_list = array(   'WPBC_TIMELINE_NAV'                    => 'both'

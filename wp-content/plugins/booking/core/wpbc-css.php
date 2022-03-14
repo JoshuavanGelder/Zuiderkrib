@@ -165,6 +165,11 @@ function wpbc_get_calendar_skin_url() {
 		$check_skin_path = str_replace( 'inc/skins/', 'css/skins/', $check_skin_path );
 		update_bk_option( 'booking_skin', $check_skin_path );
 	}
+	//FixIn: 8.9.4.8
+	if ( false !== strpos( $check_skin_path, WPBC_PLUGIN_DIR ) ) {
+		$check_skin_path = str_replace( WPBC_PLUGIN_DIR, '', $check_skin_path );
+		update_bk_option( 'booking_skin', $check_skin_path );
+	}
 
     // Check if this skin exist in the plugin  folder //////////////////////
     if ( file_exists( WPBC_PLUGIN_DIR . str_replace( WPBC_PLUGIN_URL, '', get_bk_option( 'booking_skin') ) ) ) {
@@ -180,7 +185,11 @@ function wpbc_get_calendar_skin_url() {
     if ( file_exists( $custom_user_skin_folder . str_replace(  array( WPBC_PLUGIN_URL , $custom_user_skin_url ), '', get_bk_option( 'booking_skin') ) ) ) {
         $calendar_skin_path = $custom_user_skin_url . str_replace( array(WPBC_PLUGIN_URL, $custom_user_skin_url ), '', get_bk_option( 'booking_skin') );
     }
-
+//	debuge(
+//		get_bk_option( 'booking_skin')
+//	, WPBC_PLUGIN_URL . str_replace( WPBC_PLUGIN_URL, '', get_bk_option( 'booking_skin') )
+//	, $custom_user_skin_url . str_replace( array(WPBC_PLUGIN_URL, $custom_user_skin_url ), '', get_bk_option( 'booking_skin') )
+//	);
     return $calendar_skin_path;
 }
 

@@ -276,20 +276,40 @@ class WPBC_TimelineFlex {
                     if ( isset( $this->request_args['scroll_day'] ) ) $scroll_day = intval( $this->request_args['scroll_day'] );
                     else                                              $scroll_day = 0;
 
-                    if ( $attr['nav_step'] == '-1' )    $this->request_args['scroll_day'] = intval( $scroll_day - 7 );
-                    if ( $attr['nav_step'] == '1' )     $this->request_args['scroll_day'] = intval( $scroll_day + 7 );
+					//FixIn: 8.9.4.3
+					// Here we need to define number of days to scroll depends from selected number of days to show.
+					$days_num_to_scroll = intval( get_bk_option( 'booking_timeline__month_mode__days_number_show' ) );
+					if ( empty( $days_num_to_scroll ) ) {
+						$days_num_to_scroll = 7;
+					}
 
-                    /*
-                    $scroll_params = array( '&scroll_day='.intval($scroll_day-4*7),
-                                            '&scroll_day='.intval($scroll_day-7),
-                                            '&scroll_day=0',
-                                            '&scroll_day='.intval($scroll_day+7 ),
-                                            '&scroll_day='.intval($scroll_day+4*7) );
-                    $scroll_titles = array(  __('Previous 4 weeks' ,'booking'),
-                                             __('Previous week' ,'booking'),
-                                             __('Current week' ,'booking'),
-                                             __('Next week' ,'booking'),
-                                             __('Next 4 weeks' ,'booking') ); */
+					if ( $attr['nav_step'] == '-1' ) {
+						$this->request_args['scroll_day'] = intval( $scroll_day - $days_num_to_scroll );
+					}
+					if ( $attr['nav_step'] == '1' ) {
+						$this->request_args['scroll_day'] = intval( $scroll_day + $days_num_to_scroll );
+					}
+
+					/*
+					 * From Admin panel:
+					 *
+					// Here we need to define number of days to scroll depends from selected number of days to show.
+					$days_num_to_scroll = intval( get_bk_option( 'booking_calendar_overview__day_mode__days_number_show' ) );
+					if ( empty( $days_num_to_scroll ) ) {
+						$days_num_to_scroll = 7;
+					}
+
+					$scroll_params = array( '&scroll_day='.intval( $scroll_day - $days_num_to_scroll * 2 ),
+											'&scroll_day='.intval( $scroll_day - $days_num_to_scroll ),
+											'&scroll_day=0',
+											'&scroll_day='.intval( $scroll_day + $days_num_to_scroll ),
+											'&scroll_day='.intval( $scroll_day + $days_num_to_scroll *2 ) );
+					$scroll_titles = array(  __( 'Previous', 'booking' ) . ' ' . ( 2 * $days_num_to_scroll ) . ' ' . __( 'days', 'booking' ),
+											 __( 'Previous', 'booking' ) . ' ' . $days_num_to_scroll . ' ' . __( 'days', 'booking' ),
+											 __('Current week' ,'booking'),
+											 __( 'Next', 'booking' ) . ' ' . $days_num_to_scroll . ' ' . __( 'days', 'booking' ),
+											 __( 'Next', 'booking' ) . ' ' . ( 2 * $days_num_to_scroll ) . ' ' . __( 'days', 'booking' ) );
+					*/
                     break;
                 default:  // 365
                     if ( !isset( $this->request_args['scroll_month'] ) )    $this->request_args['scroll_month'] = 0;
@@ -738,11 +758,15 @@ class WPBC_TimelineFlex {
 	 * Define View Params from  $_REQUEST
 	 */
     public function define_request_view_params() {
-        
-        if ( isset( $_REQUEST['wh_booking_type'] ) ) {                          
-                                                        $this->request_args['wh_booking_type'] = $_REQUEST['wh_booking_type'];          // Used once for comma seperated resources only.            
-        } elseif ( isset( $_GET['booking_type'] ) ) {   $this->request_args['wh_booking_type'] = $_GET['booking_type'];
-        } 
+
+		// All  other sanitizing and escaping are inside of this function wpbc_check_request_paramters(), which  executing before.  //FixIn: 8.9.2.1
+
+		// Used once for comma seperated resources only.
+	    if ( isset( $_REQUEST['wh_booking_type'] ) ) {
+		    $this->request_args['wh_booking_type'] = wpbc_clean_digit_or_csd( $_REQUEST['wh_booking_type'] );           //FixIn: 8.9.2.1
+	    } elseif ( isset( $_GET['booking_type'] ) ) {
+		    $this->request_args['wh_booking_type'] = wpbc_clean_digit_or_csd( $_GET['booking_type'] );					//FixIn: 8.9.2.1
+	    }
         
         if (  ( isset( $_REQUEST['wh_booking_type'] ) ) && ( strpos( $_REQUEST['wh_booking_type'], ',' ) !== false )  ) 
                                                         $this->request_args['is_matrix'] = true;                    
@@ -1788,9 +1812,11 @@ if(1)
 									( $is_show_popover_in_timeline ) ? 'popover_click' : '',
 					 				( count( $bookings_in_cell ) > 1 ) ? 'several_bookings_in_cell' : ''
 						 )); ?>"
-				 <?php if ( $is_show_popover_in_timeline ) { ?>
-					 data-content="<?php echo str_replace( '"', "", $popup_content_arr ); ?>"
-					 data-original-title="<?php echo str_replace( '"', "", $popup_title_arr ); ?>"
+				 <?php
+					//FixIn: 8.9.3.3
+					if ( $is_show_popover_in_timeline ) { ?>
+					 data-content="<?php echo esc_html( str_replace( '"', "", $popup_content_arr ) ); ?>"
+					 data-original-title="<?php echo esc_html( str_replace( '"', "", $popup_title_arr ) ); ?>"
 				 <?php } ?>
 			><?php
 				echo $bk_a_title__text;
@@ -2281,7 +2307,16 @@ if(1)
                     else
                         $scroll_day = 0;
 
-                    $max_rows_number = 31;
+	                //FixIn: 8.9.4.3
+					if ( $this->is_frontend ) {
+						$max_rows_number = intval( get_bk_option( 'booking_timeline__month_mode__days_number_show' ) );
+					} else {
+						$max_rows_number = intval( get_bk_option( 'booking_calendar_overview__day_mode__days_number_show' ) );;
+					}
+					if (empty($max_rows_number)) {
+						$max_rows_number = 31;
+					}
+
                     if ( empty( $this->request_args['scroll_start_date'] ) )
                         $start_day = date_i18n( "d" );                          //FixIn: 7.0.1.13
                     break;
@@ -2653,31 +2688,31 @@ if(1)
 						$header_title .= '<span class=\'wpbc-buttons-separator\'></span>';
 					}
 					// Trash
-					//$header_title .= '<a class=\'button button-secondary\' href=\'javascript:;\' onclick=\'javascript:delete_booking(' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-trash\'></i></a>';
+					//$header_title .= '<a class=\'button button-secondary\' href=\'javascript:;\' onclick=\'javascript:delete_booking(' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_maybe_reloaded_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-trash\'></i></a>';
 					//FixIn: 6.1.1.10
 					$is_trash = $bookings[$bk_id]->trash;
 
 					// Trash
 					$header_title .= '<a class=\'button button-secondary trash_bk_link'.(( $is_trash)?' hidden_items ':'').'\'  
 										 title=\'' . esc_js( str_replace( "'", '', __( 'Trash / Reject', 'booking' ) ) ) . '\'
-										 href=\'javascript:;\' onclick=\'javascript:if ( wpbc_are_you_sure_popup() ) trash__restore_booking(1,' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-trash\'></i></a>';		//FixIn: 8.4.7.14
+										 href=\'javascript:;\' onclick=\'javascript:if ( wpbc_are_you_sure_popup() ) trash__restore_booking(1,' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_maybe_reloaded_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-trash\'></i></a>';		//FixIn: 8.4.7.14
 					// Restore
 					$header_title .= '<a 	class=\'button button-secondary restore_bk_link'.((!$is_trash)?' hidden_items ':'').'\'  
 											title=\'' . esc_js( str_replace( "'", '', __( 'Restore', 'booking' ) ) ) . '\'
-											href=\'javascript:;\' onclick=\'javascript:trash__restore_booking(0,' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-repeat\'></i></a>';
+											href=\'javascript:;\' onclick=\'javascript:trash__restore_booking(0,' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_maybe_reloaded_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-repeat\'></i></a>';
 					// Delete
 					$header_title .= '<a 	class=\'button button-secondary delete_bk_link'.((!$is_trash)?' hidden_items ':'').'\'  
 											title=\'' . esc_js( str_replace( "'", '', __( 'Delete', 'booking' ) ) ) . '\'
-											href=\'javascript:;\' onclick=\'javascript:if ( wpbc_are_you_sure_popup() ) delete_booking(' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-remove\'></i></a>';				//FixIn: 8.4.7.14
+											href=\'javascript:;\' onclick=\'javascript:if ( wpbc_are_you_sure_popup() ) delete_booking(' . $bk_id . ', ' . $this->current_user_id . ', &quot;' . wpbc_get_maybe_reloaded_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-remove\'></i></a>';				//FixIn: 8.4.7.14
 					//End FixIn: 6.1.1.10
 
 					// Approve | Decline
 					$header_title .= '<a 	class=\'button button-secondary approve_bk_link ' . ($is_approved ? 'hidden_items' : '') . '\'
 											title=\'' . esc_js( str_replace( "'", '', __( 'Approve', 'booking' ) ) ) . '\' 
-											href=\'javascript:;\' onclick=\'javascript:approve_unapprove_booking(' . $bk_id . ',1, ' . $this->current_user_id . ', &quot;' . wpbc_get_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-ok-circle\'></i></a>';
+											href=\'javascript:;\' onclick=\'javascript:approve_unapprove_booking(' . $bk_id . ',1, ' . $this->current_user_id . ', &quot;' . wpbc_get_maybe_reloaded_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-ok-circle\'></i></a>';
 					$header_title .= '<a 	class=\'button button-secondary pending_bk_link ' . ($is_approved ? '' : 'hidden_items') . '\' 
 											title=\'' . esc_js( str_replace( "'", '', __( 'Pending', 'booking' ) ) ) . '\'
-											href=\'javascript:;\' onclick=\'javascript:approve_unapprove_booking(' . $bk_id . ',0, ' . $this->current_user_id . ', &quot;' . wpbc_get_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-ban-circle\'></i></a>';
+											href=\'javascript:;\' onclick=\'javascript:approve_unapprove_booking(' . $bk_id . ',0, ' . $this->current_user_id . ', &quot;' . wpbc_get_maybe_reloaded_booking_locale() . '&quot; , 1   );\' ><i class=\'glyphicon glyphicon-ban-circle\'></i></a>';
 
 
 				}
@@ -2835,8 +2870,21 @@ if(1)
 
         $content_text .= '<div class=\'flex-label-dates \'>';
         $content_text .= 	  $short_dates_content;
-        $content_text .= '</div>';                
+        $content_text .= '</div>';
 
+	    //FixIn: 8.9.4.14
+	    $date_format = get_bk_option( 'booking_date_format' );
+	    if ( empty( $date_format ) ) {
+		    $date_format = 'm / d / Y, D';
+	    }
+	    $time_format = get_bk_option( 'booking_time_format' );
+	    if ( empty( $time_format ) ) {
+		    $time_format = 'h:i a';
+	    }
+	    $cr_date = date_i18n( $date_format . ' ' . $time_format, mysql2date( 'U', $bookings[ $bk_id ]->modification_date ) );
+	    $content_text .= '<div class=\'wpbc-listing-collumn field-system-info \'>';
+	    $content_text .= __( 'Created', 'booking' ) . ': ' . $cr_date;
+	    $content_text .= '</div>';
 
 
         $content_text .= '</div>';	// Main Container: 'flex-popover-content-data'
@@ -3046,6 +3094,18 @@ function bookingflextimeline_shortcode($attr) {
 		echo '</div>';
 
 	echo '</div>';
+
+	// Fix for "Twenty Two" theme.
+	//  Theme incorrectly closing HTML elements with attributes that contain HTML tags in content of the posts and pages.
+	//  For example, if the HTML element have tags  like this
+	//  <div data-content="<div class='flex-popover-content-data'>Data</div>" data-original-title="<div class='popover-title-id' > ID: 19</div>" >My text</div>
+	//  Theme show info  like this
+	//  <div data-content="<div class='flex-popover-content-data'>Data</div>” data-original-title=”<div class='popover-title-id' > ID: 19</div>” >My text</div>
+	/*
+	?><script type="text/javascript">
+			wpbc_flextimeline_nav( wpbc_timeline_obj['<?php echo  $html_client_id; ?>'],  0 );
+	</script><?php
+	*/
 
 	$timeline_results = ob_get_contents();
 

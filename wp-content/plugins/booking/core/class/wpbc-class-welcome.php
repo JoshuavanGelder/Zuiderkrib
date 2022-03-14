@@ -439,10 +439,120 @@ class WPBC_Welcome {
 
 
             $this->maintence_section();
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// 9.0
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			?>
+			<h2 style='font-size: 2.1em;'>What's New in Booking Calendar <span style="font-size: 1.1em;
+							font-weight: 600;font-family: Consolas,Monaco,monospace;padding-left: 10px;color: #5F5F5F;">9.0</span></h2><?php
+
+            ?><div class="feature-section  two-col">
+				<div class="col col-1" style="flex: 1 1 50%;width: 100%;">
+					<?php  echo
+					'<h4>' .wpbc_recheck_strong_symbols( 'Time slots' ) . '</h4>' .
+					'<ul style="list-style: disc outside;padding: 20px;margin:0;">'
+. '<li>' . wpbc_recheck_strong_symbols( 'Showing **time slots as dots** in calendar day cells. Modern and beautiful view of time slots within calendar days.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( 'Display the **exact number** of booked **time slots** in calendar day cells. System shows **as many dots** (time slots) as many time slots have been booked for a particular day. Your customers can see occupancy by time interval from the beginning of the calendar view.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Improvement** CSS styling in all calendar skins. If you have customized a calendar skin before, check the changes in the new calendar skins marked with a number: 8.9.4.13  ' ) . '</li>'
+											. '</ul>';
+					?>
+				</div>
+				<div class="col col-2 last-feature" style="flex: 1 1 auto;width: 60%;">
+
+					<img src="<?php echo $this->asset_path; ?>9.0/wpbc-9-0-time-slots.png"
+					style="margin:30px 5px 0;width: 98%;box-shadow: 0 1px 3px #aaa;border-radius: 2px;"
+					class="wpbc-section-image" />
+
+				</div>
+			</div><?php
+
+			$this->show_separator();
+
+            ?><div class="feature-section  two-col">
+				<div class="col col-1" style="flex: 1 1 50%;width: 100%;">
+						<img src="<?php echo $this->asset_path; ?>9.0/wpbc-9-0-co2.png"
+								style="margin:30px 5px 0;width: 98%;box-shadow: 0 1px 3px #aaa;border-radius: 2px;"
+								class="wpbc-section-image" />
+				</div>
+				<div class="col col-2 last-feature" style="flex: 1 1 auto;width: 60%;">
+					<?php  echo
+					'<h4>' .wpbc_recheck_strong_symbols( 'Change over days' ) . '</h4>' .
+					'<ul style="list-style: disc outside;padding: 20px;margin:0;">'
+. '<li>' . wpbc_recheck_strong_symbols( 'Accurate clear display of the diagonal change over days line. Now it correctly shows the **diagonal line for any shape of day cells** (square or rectangle). This means that for any calendar size you will see the correct sharp diagonal line.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( 'Show **diagonal line in dates**, where we have check in/out bookings with the **same status (pending or approved)**. It is useful to see where one booking ends and another begins when both bookings are pending or approved. Previously it was shown just full booked date without diagonal line.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( 'The ability to use **change over days only on certain pages**. Useful in a situation where you need to make a booking with change over days at on a certain page(s) (check in/out dates with diagonal lines) and make bookings for specific time slots on another page(s). You can define list of pages on which to use this feature at the Booking > Settings General page in "Calendar" section.' ) . '</li>'
+											. '</ul>';
+					?>
+					<span style="font-size:0.8em;padding:1em;">* This feature is available in the Booking Calendar Business Small or higher versions.</span>
+				</div>
+			</div><?php
+
+			$this->show_separator();
+
+
+            ?><div class="feature-section  one-col">
+				<div class="col col-1" style="flex: 1 1 100%;width: 100%;">
+					<?php echo '<h4>' .wpbc_recheck_strong_symbols( 'Timeline' ) . '</h4>' ;?>
+						<img src="<?php echo $this->asset_path; ?>9.0/wpbc-9-0-timeline.png"
+								style="margin:30px 5px 0;width: 100%;box-shadow: 0 1px 3px #aaa;border-radius: 2px;"
+								class="wpbc-section-image" />
+				</div>
+				<div class="col col-2 last-feature" style="flex: 1 1 100%;width: 100%;">
+					<?php  echo
+					'<ul style="list-style: disc outside;padding: 20px;margin:0;">'
+. '<li>' . wpbc_recheck_strong_symbols( '**Timeline**. Ability to **define how many days to show in Timeline** at the front-end side, while showing Timeline for one booking resource, and select "**Month view mode**" in shortcode (parameter "view_days_num=30" or this parameter skipped). You can define it at the Booking > Settings General page in "Calendar Overview | Timeline" section.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Calendar Overview** page. Ability to **define how many days to show** in the Calendar Overview page in the admin panel, while showing Calendar Overview page for one booking resource, and selected "**Day view mode**". You can define it at the Booking > Settings General page in "Calendar Overview | Timeline" section.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( 'Timeline / Calendar Overview page. Scroll exactly the number of days (for one booking resource, and select "Month view mode" / "Day view mode"), that was defined at option "Days number to show in Month mode in Timeline" / "Days number to show in Day view mode in Calendar Overview page".' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( 'Separate settings sections for "Calendar Overview" | "Timeline" options at the Booking > Settings General page.' ) . '</li>'
+											. '</ul>';
+					?>
+				</div>
+			</div><?php
+
+			$this->show_separator();
+
+            ?><div class="feature-section  two-col">
+				<div class="col col-1" style="flex: 1 1 50%;width: 100%;">
+					<?php  echo
+					'<h4>' .wpbc_recheck_strong_symbols( 'Translations' ) . '</h4>' .
+					'<ul style="list-style: disc outside;padding: 20px;margin:0;">'
+. '<li>' . wpbc_recheck_strong_symbols( '**New**. Ability to define where firstly plugin tries to use translations from "../wp-content/languages/plugins/", or from "../wp-content/plugins/{Booking Calendar Folder}/languages/" folder. You can change this behavior at the Booking > Settings General page.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**New**. Force plugin translation update. Download and update plugin translations from WordPress translation repository and from wpbookingcalendar.com You can make updates at Booking > Settings General page in Translation section.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**New**. Check translation status at WordPress translation repository and local translation from wpbookingcalendar.com to understand what translation to load. You can check it at the Booking > Settings General page in the Translation section.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Improvement**. Booking Calendar by default does not contain MO and PO translation files. You can force download them at the Booking > Settings General page in the Translation section.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Improvement**. Switching language/locale by using "Globe icon" in the Booking Listing page has higher priority than switching languages by translation plugins.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Improvement**. Optimization structure of country list file for future translations.' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Compatibility**. Support WPML 4.5.4' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Compatibility**. Support Polylang 3.1.4' ) . '</li>'
+. '<li>' . wpbc_recheck_strong_symbols( '**Compatibility**. Support qTranslate-X 3.4.6.8 (Currently closed "qTranslate-X", was tested with Booking Calendar in php 5.6)' ) . '</li>'
+											. '</ul>';
+					?>
+				</div>
+				<div class="col col-2 last-feature" style="flex: 1 1 auto;width: 60%;">
+
+					<img src="<?php echo $this->asset_path; ?>9.0/wpbc-9-0-translations.png"
+					style="margin:30px 5px 0;width: 62%;box-shadow: 0 1px 3px #aaa;border-radius: 2px;"
+					class="wpbc-section-image" />
+
+				</div>
+			</div><?php
+
+			$this->show_separator();
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.9 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.9
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			?>
+			<div class="clear" style="margin-top:20px;"></div>
+			<a id="wpbc_show_advanced_section_link_show" class="wpbc_expand_section_link" href="javascript:void(0)"
+			   onclick="javascript:jQuery( '.version_update_8_9' ).toggle();"
+		    >+ Show changes in version update <span style="font-size: 1.35em;font-weight: 600;color: #079;font-family: Consolas,Monaco,monospace;padding-left:12px;">8.9</span></a>
+
+			<div class="version_update_8_9" style="display:none;">
+
+
 			<h2 style='font-size: 2.1em;'>What's New in Booking Calendar <span style="font-size: 1.1em;
 							font-weight: 600;font-family: Consolas,Monaco,monospace;padding-left: 10px;color: #5F5F5F;">8.9</span></h2><?php
 
@@ -484,13 +594,27 @@ class WPBC_Welcome {
 					style="margin:30px 5px 0;width: 98%;box-shadow: 0 1px 3px #aaa;border-radius: 2px;"
 					class="wpbc-section-image" />
 				<span style="font-size:0.8em;padding:1em;">* This feature is available in the Booking Calendar Business Medium or higher versions.</span>
-			</div>		</div><?php
+			</div>
 
+			</div><?php
 
+			?></div><?php
+
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.8 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.8
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			?>
+			<div class="clear" style="margin-top:20px;"></div>
+			<a id="wpbc_show_advanced_section_link_show" class="wpbc_expand_section_link" href="javascript:void(0)"
+			   onclick="javascript:jQuery( '.version_update_8_8' ).toggle();"
+		    >+ Show changes in version update <span style="font-size: 1.35em;font-weight: 600;color: #079;font-family: Consolas,Monaco,monospace;padding-left:12px;">8.8</span></a>
+
+			<div class="version_update_8_8" style="display:none;">
+
+
 			<div class="clear" style="margin-top:20px;"></div>
 			<h2 style='font-size: 2.1em;'>What's New in Booking Calendar <span style="font-size: 1.1em;
 							font-weight: 600;font-family: Consolas,Monaco,monospace;padding-left: 10px;color: #5F5F5F;">8.8</span></h2><?php
@@ -570,8 +694,10 @@ class WPBC_Welcome {
 										  )
                                 )
                             );
+			?></div><?php
+			// </editor-fold>
 
-
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.7 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.7
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -656,6 +782,9 @@ class WPBC_Welcome {
                             );
 			?></div><?php
 
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.6 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.6
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -785,6 +914,9 @@ class WPBC_Welcome {
 			);
 			*/
 
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.5 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.5
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -863,6 +995,9 @@ class WPBC_Welcome {
 					$this->show_separator();
 			?></div><?php
 
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.4 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.4
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -888,6 +1023,9 @@ class WPBC_Welcome {
 				</div><?php
 			?></div><?php
 
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.3 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.3
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -911,6 +1049,10 @@ class WPBC_Welcome {
 					?>
 				</div><?php
 			?></div><?php
+
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.2 "  >
             ?>
 			<div class="clear" style="margin-top:20px;"></div>
 			<a id="wpbc_show_advanced_section_link_show" class="wpbc_expand_section_link" href="javascript:void(0)"
@@ -933,6 +1075,10 @@ class WPBC_Welcome {
 				</div><?php
 
 			?></div><?php
+
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.1 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.1
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1031,7 +1177,9 @@ class WPBC_Welcome {
 	    $this->show_separator();
 		?></div><?php
 
-	    //--
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 8.0 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 8.0
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1181,7 +1329,9 @@ class WPBC_Welcome {
 			$this->show_separator();			
 			?></div><?php
 
+			// </editor-fold>
 
+			// <editor-fold     defaultstate="collapsed"                        desc=" 7.1 - 7.2 "  >
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 7.1 - 7.2
@@ -1357,7 +1507,7 @@ class WPBC_Welcome {
 . '<li>' . wpbc_recheck_strong_symbols( ' **Fix** do not show option for ability to select as parent booking resource itself, at Booking > Resources page. Its prevent from generating lost booking resources. (7.1.2.3) <em>(Business Large, MultiUser)</em>' ) . '</li>'
 . '<li>' . wpbc_recheck_strong_symbols( ' **Fix** issue of not having access in modal  windows (like payment request) to enter some data,  when opened page with  mobile device (7.1.2.7) <em>(Personal Business Small/Medium/Large, MultiUser)</em>' ) . '</li>'
 . '<li>' . wpbc_recheck_strong_symbols( ' **Fix** issue in Danish translation,  which  was show warning at Booking > Settings > Payment > Bank transfer page (7.1.2.9) <em>(Business Small/Medium/Large, MultiUser)</em>' ) . '</li>'    
-. '<li>' . wpbc_recheck_strong_symbols( ' **Fix** issue of showing &ampp;#36, instead of $ symbol in the Booking Listing,  if was used in "Content of booking fields data" form HINT cost shortcodes (7.1.2.12) <em>(Business Medium/Large, MultiUser)</em>' ) . '</li>'        
+. '<li>' . wpbc_recheck_strong_symbols( ' **Fix** issue of showing &amp;#36, instead of $ symbol in the Booking Listing,  if was used in "Content of booking fields data" form HINT cost shortcodes (7.1.2.12) <em>(Business Medium/Large, MultiUser)</em>' ) . '</li>'
 . '<li>' . wpbc_recheck_strong_symbols( ' **Fix** issue of hiding selection of booking resources field after submit of booking (7.1.2.13) <em>(Personal Business Small/Medium/Large, MultiUser)</em>' ) . '</li>'
 . '<li>' . wpbc_recheck_strong_symbols( ' **Fix** issue of not checking (during booking submit process) elements from  conditional fields logic, if these fields does not visible. (7.1.2.14) <em>(Business Medium/Large, MultiUser)</em>' ) . '</li>'	
 
@@ -1391,7 +1541,10 @@ class WPBC_Welcome {
 			<?php //$this->show_separator(); ?>
 		</div>
 			<?php  
-			
+
+			// </editor-fold>
+
+			// <editor-fold     defaultstate="collapsed"                        desc=" 7.0 "  >
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// 7.0
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1767,7 +1920,9 @@ class WPBC_Welcome {
                 
     $this->show_separator();
 	?></div><?php
-	
+
+			// </editor-fold>
+
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			// Footer
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////	
@@ -2491,8 +2646,6 @@ at the popup configuration dialog, during inserting booking shortcode into post 
         <?php
     }
 
-    }
-
+}
 
 $wpbc_welcome = new WPBC_Welcome();
-

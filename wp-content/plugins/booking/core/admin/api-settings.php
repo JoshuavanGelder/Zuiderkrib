@@ -53,11 +53,13 @@ class  WPBC_Settings_API_General extends WPBC_Settings_API {
         $calendar_skins_options  = array();
         
         // Skins in the Custom User folder (need to create it manually):    http://example.com/wp-content/uploads/wpbc_skins/ ( This folder do not owerwrited during update of plugin )
-        $upload_dir = wp_upload_dir();             
-        $files_in_folder = wpbc_dir_list( array(  '/css/skins/', $upload_dir['basedir'].'/wpbc_skins/' ) );  // Folders where to look about calendar skins
+        $upload_dir = wp_upload_dir();
+	    //FixIn: 8.9.4.8
+		$files_in_folder = wpbc_dir_list( array(  WPBC_PLUGIN_DIR . '/css/skins/', $upload_dir['basedir'].'/wpbc_skins/' ) );  // Folders where to look about calendar skins
 
-        foreach ( $files_in_folder as $skin_file ) {                                                                            // Example: $skin_file['/css/skins/standard.css'] => 'Standard';                        
-            $skin_file[1] = str_replace( array( WPBC_PLUGIN_URL, $upload_dir['basedir'] ), '', $skin_file[1] );                 // Get relative path for calendar skin  
+        foreach ( $files_in_folder as $skin_file ) {                                                                            // Example: $skin_file['/css/skins/standard.css'] => 'Standard';
+            //FixIn: 8.9.4.8
+			$skin_file[1] = str_replace( array( WPBC_PLUGIN_URL, WPBC_PLUGIN_DIR, $upload_dir['basedir'] ), '', $skin_file[1] );                 // Get relative path for calendar skin
             $calendar_skins_options[ $skin_file[1] ] = $skin_file[2];
         } 
 
@@ -177,10 +179,12 @@ class  WPBC_Settings_API_General extends WPBC_Settings_API {
 
         // Skins in the Custom User folder (need to create it manually):    http://example.com/wp-content/uploads/wpbc_skins/ ( This folder do not owerwrited during update of plugin )
         $upload_dir = wp_upload_dir();
-        $files_in_folder = wpbc_dir_list( array(  '/css/time_picker_skins/', $upload_dir['basedir'].'/wpbc_time_picker_skins/' ) );  // Folders where to look about Time Picker skins
+		//FixIn: 8.9.4.8
+        $files_in_folder = wpbc_dir_list( array(  WPBC_PLUGIN_DIR . '/css/time_picker_skins/', $upload_dir['basedir'].'/wpbc_time_picker_skins/' ) );  // Folders where to look about Time Picker skins
 
         foreach ( $files_in_folder as $skin_file ) {                                                                            // Example: $skin_file['/css/skins/standard.css'] => 'Standard';
-            $skin_file[1] = str_replace( array( WPBC_PLUGIN_URL, $upload_dir['basedir'] ), '', $skin_file[1] );                 // Get relative path for Time Picker skin
+			//FixIn: 8.9.4.8
+            $skin_file[1] = str_replace( array( WPBC_PLUGIN_URL, WPBC_PLUGIN_DIR, $upload_dir['basedir'] ), '', $skin_file[1] );                 // Get relative path for Time Picker skin
             $timeslot_picker_skins_options[ $skin_file[1] ] = $skin_file[2];
         }
 
@@ -656,7 +660,8 @@ class  WPBC_Settings_API_General extends WPBC_Settings_API {
                                 , 'options'     => $field_options
                                 , 'group'       => 'booking_listing'
                         );
-        
+
+
         //Default booking resources 
         $this->fields = apply_filters( 'wpbc_settings_booking_listing_br_default_count', $this->fields, $default_options_values );
 
@@ -677,22 +682,47 @@ class  WPBC_Settings_API_General extends WPBC_Settings_API {
                                 );                                                      
         else
              $field_options = array(
-                                      '30' => __('Month' ,'booking')
-                                    , '90' => __('3 Months' ,'booking')
-                                    , '365' => __('Year' ,'booking')
+                                      '30' => __('Month' ,'booking')        // Day   ?
+                                    , '90' => __('3 Months' ,'booking')     // Week  ?
+                                    , '365' => __('Year' ,'booking')        // Month ?
                                 );                                                      
         $this->fields['booking_view_days_num'] = array( 
                                 'type'          => 'select'
                                 , 'default'     => $default_options_values['booking_view_days_num']         //'30'            
-                                , 'title'       => __('Default calendar view mode', 'booking')
+                                , 'title'       => __('Default view mode', 'booking')
                                 , 'description' => __('Select your default calendar view mode at booking calendar overview page' ,'booking')
                                 , 'options'     => $field_options
-                                , 'group'       => 'booking_timeline'   //FixIn: 8.5.2.20
+                                , 'group'       => 'booking_calendar_overview'   //FixIn: 8.5.2.20  //FixIn: 8.9.4.4
                         );
-        
+
+		//FixIn: 8.9.4.3
+	    $field_options = array();
+	    foreach ( range( 1, 31, 1) as $value ) {
+	        $field_options[ $value ] = $value;
+	    }
+	    $this->fields['booking_calendar_overview__day_mode__days_number_show'] = array(
+	                            'type'          => 'select'
+	                            , 'default'     => $default_options_values['booking_calendar_overview__day_mode__days_number_show']   // 31
+	                            , 'title'       => __('Days number to show in day view mode', 'booking')
+	                            , 'description' => sprintf(__('Select number of days to show in %sDay%s view mode' ,'booking'),'<b>','</b>')
+		                                           . ( ( class_exists( 'wpdev_bk_personal' ) ) ? ' ' . __( 'for one booking resource', 'booking' ) : '' )
+	                            , 'options'     => $field_options
+	                            , 'group'       => 'booking_calendar_overview'  //FixIn: 8.9.4.4
+	                    );
+	    $this->fields['booking_timeline__month_mode__days_number_show'] = array(
+	                            'type'          => 'select'
+	                            , 'default'     => $default_options_values['booking_timeline__month_mode__days_number_show']           //31
+	                            , 'title'       => __('Days number to show in month view mode', 'booking')
+	                            , 'description' => __('Select number of days to show in month view mode for one booking resource.' ,'booking')
+	                            , 'options'     => $field_options
+	                            , 'group'       => 'booking_timeline'
+	                    );
+
+
         //Default Titles in Calendar cells
-        $this->fields = apply_filters( 'wpbc_settings_booking_listing_timeline_title_in_day', $this->fields, $default_options_values ); 
-        
+        $this->fields = apply_filters( 'wpbc_settings_booking_listing_timeline_title_in_day', $this->fields, $default_options_values );
+
+
         // Default Toolbar
         $field_options = array(
                                  'filter' => __('Filter tab' ,'booking')
@@ -964,7 +994,18 @@ class  WPBC_Settings_API_General extends WPBC_Settings_API {
                                 , 'is_demo_safe' => wpbc_is_this_demo()
             );       
 
-		
+		//FixIn:8.9.3.4
+        $this->fields[ 'booking_is_time_disable_in_multidays' ] = array(
+                                'type'          => 'checkbox'
+                                , 'default'     => $default_options_values['booking_is_time_disable_in_multidays']         //'Off'
+                                , 'title'       => __('Disable booked time slots in multiple days selection mode' ,'booking')
+                                , 'label'       => __('System disables booked time slots if multiple days selection mode is enabled. The system only disabled time slots booked for the first selected day only.' ,'booking')
+                                , 'description' => ''
+                                , 'group'       => 'advanced'
+                                , 'tr_class'    => 'wpbc_advanced_js_loading_settings wpbc_sub_settings_grayed hidden_items'
+                                , 'is_demo_safe' => wpbc_is_this_demo()
+            );
+
         if ( wpbc_is_this_demo() ) 
             $this->fields['booking_pages_for_load_js_css_demo'] = array( 'group' => 'advanced', 'type' => 'html', 'html' => wpbc_get_warning_text_in_demo_mode(), 'cols' => 2 , 'tr_class' => 'wpbc_advanced_js_loading_settings wpbc_sub_settings_grayed hidden_items' ); 
         
@@ -1134,52 +1175,76 @@ class  WPBC_Settings_API_General extends WPBC_Settings_API {
                  ); 
 
         if ( ( ! wpbc_is_this_demo() ) && ( current_user_can( 'activate_plugins' ) ) ) {         
-        
-            $this->fields['help_translation_section_after_legend_items']['value'][] = 
-                '<div class="clear"></div><hr/><center><a class="button button" href="' 
-                                                                        . wpbc_get_settings_url() 
-                                                                        . '&system_info=show#wpbc_general_settings_system_info_metabox">' 
-                                                                                . 'Booking System ' . __('Info' ,'booking') 
-                                                        . '</a></center>';
+
+			$my_system_buttons = '';
+
+			$my_system_buttons .= '<a class="button button" href="'
+		                                        . wpbc_get_settings_url()
+		                                        . '&system_info=show&booking_system_info=show#wpbc_general_settings_system_info_metabox">'
+		                                                . 'Booking System ' . __('Info' ,'booking')
+		                        . '</a>';
+			//FixIn: 8.4.7.19
+			$my_system_buttons .= ' <a class="button button" href="'
+		            . wpbc_get_bookings_url()
+		              . '&wh_booking_type=lost">'
+		            . 'Find Lost Bookings'
+	            . '</a>';  //FixIn: 8.5.2.19
 
             if (  $_SERVER['HTTP_HOST'] === 'beta'  ) {
-	            // // Link: http://server.com/wp-admin/admin.php?page=wpbc-settings&system_info=show&pot=1#wpbc_general_settings_system_info_metabox
-	            $this->fields['help_translation_section_after_legend_items']['value'][] =
-		            '<div class="clear"></div><hr/><center><a class="button button" href="'
-		            . wpbc_get_settings_url()
-		            . '&system_info=show&pot=1#wpbc_general_settings_system_info_metabox">'
-		            . 'Generate POT file'
-		            . '</a></center>';
+
+				$my_system_buttons .=  '<div style="width:100%;height:2em;border-bottom:1px dashed #777;margin-bottom:1em;"></div>';
+
 	            // Link: http://server.com/wp-admin/admin.php?page=wpbc-settings&system_info=show&reset=custom_forms#wpbc_general_settings_system_info_metabox
-	            $this->fields['help_translation_section_after_legend_items']['value'][] =
-		            '<div class="clear"></div><hr/><center><a class="button button" href="'
-		            . wpbc_get_settings_url()
-		            . '&system_info=show&reset=custom_forms#wpbc_general_settings_system_info_metabox">'
-		            . 'Reset custom forms'
-		            . '</a></center>';
+	            $my_system_buttons .=  ' <a class="button button-secondary" style="background:#fff9e6;" href="'
+								            . wpbc_get_settings_url()
+								            . '&system_info=show&reset=custom_forms#wpbc_general_settings_system_info_metabox">'
+								            . 'Reset custom forms'
+							            . '</a>';
             }
 
-	        //FixIn: 8.4.7.19
-            $this->fields['help_translation_section_after_legend_items']['value'][] =
-	            '<div class="clear"></div><hr/><center><a class="button button" href="'
-	            . wpbc_get_bookings_url()
-	              . '&wh_booking_type=lost">'
-	            //. '&wh_booking_datenext=1&wh_booking_dateprior=1&wh_booking_date=3&wh_trash=any&wh_modification_dateprior=1&wh_modification_date=3&wh_pay_status=all&view_mode=vm_listing&wh_booking_type">'
-	            . 'Find Lost Bookings'
-	            . '</a></center>';  //FixIn: 8.5.2.19
-        }
-        if ( 0 ) { // ! wpbc_is_this_demo() ) {
-
-            $this->fields['help_translation_section_after_legend_items']['value'][] =
-                '<div class="clear"></div><hr/><center><a class="button button" href="'
-                                                                        . wpbc_get_settings_url()
-                                                                        . '&restore_dismissed=On#wpbc_general_settings_restore_dismissed_metabox">'
-                                                                                . __('Restore all dismissed windows' ,'booking')
-                                                        . '</a></center>';
+            $this->fields['help_translation_section_after_legend_items']['value'][] = 
+                  '<div class="clear"></div><hr/>'
+                . '<div class="wpbc_booking_system_info_buttons_align">'
+                .       $my_system_buttons
+                . '</div>';
         }
 
         // </editor-fold>
-        
+
+
+        // <editor-fold     defaultstate="collapsed"                        desc=" Transaltions "  >
+
+        $this->fields['booking_translation_load_from'] = array(
+                                'type'          => 'select'
+                                , 'default'     => 'top'
+                                , 'title'       => __('Firstly load translation', 'booking')
+                                , 'options'     => array(
+													        'wp.org' => 'WordPress.org '
+												        ,   'wpbc'   => __( 'Local', 'booking' )
+                                                        )
+                                , 'group'       => 'translations'
+                                , 'is_demo_safe' => wpbc_is_this_demo()
+                        );
+
+        $this->fields['help_translation_section_after_translation_load_from'] = array(
+                           'type'              => 'help'
+                         , 'value'             => array(
+							 sprintf(
+								 __('The plugin tries to use translations from %s, if failed (doesn\'t exist), try using translations from %s folder. You can change this behavior with this option.', 'booking')
+							        , '"<strong>../wp-content/languages/plugins/</strong>"'
+								    , '"<strong>../wp-content/plugins/{Booking Calendar Folder}/languages/</strong>"' )
+	                                                    )
+                         , 'class'             => ''
+                         , 'css'               => 'margin:0;padding:0;border:0;'
+                         , 'description'       => ''
+                         , 'cols'              => 2
+                         , 'group'             => 'translations'
+                         , 'tr_class'          => ''
+                         , 'description_tag'   => 'p'
+                 );
+		// </editor-fold>
+
+
 //debuge($this->fields);die;                
     }      
     

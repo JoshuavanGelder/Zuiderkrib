@@ -512,10 +512,11 @@ function wpbc_replace_booking_shortcodes( $subject, $replace_array , $replace_un
 
         if (is_string($directories)) $directories = array($directories);
         foreach ($directories as $dir) {
-            if ( is_dir($dir) )
-                $directory = $dir ;
-            else
-                $directory = WPBC_PLUGIN_DIR . $dir ;
+	        if ( is_dir( $dir ) ) {
+		        $directory = $dir;
+	        } else {
+		        $directory = WPBC_PLUGIN_DIR . $dir;
+	        }
             
             if ( file_exists( $directory ) ) {                                  //FixIn: 5.4.5
                 // create a handler for the directory
@@ -2651,7 +2652,32 @@ function wpbc_welcome_panel() {
     ?>
     <style type="text/css" media="screen">
         /*<![CDATA[*/
-        /* WPBC Welcome Panel */                
+        /* WPBC Welcome Panel */
+		/* //FixIn: 8.9.3.6 */
+		.wpbc-panel .welcome-panel .welcome-panel-column-container {
+			display: block;
+			margin-top: 0px;
+			padding: 0px;
+			background: #fff;
+		}
+		.wpbc-panel .welcome-panel .welcome-panel-column ul {
+			margin: 1.8em 1em 1em 0;
+		}
+		.wpbc-panel .welcome-panel {
+			background-blend-mode: overlay;
+			font-size: 14px;
+			line-height: 1.3;
+		}
+		.wpbc-panel .welcome-panel-column {
+			display: block;
+		}
+		.wpbc-panel .welcome-panel::before {
+			content: none;
+		}
+		.wpbc-panel .welcome-panel-content {
+			min-height: 100px;
+		}
+		/* End //FixIn: 8.9.3.6 */
         .wpbc-panel .welcome-panel {
             background: linear-gradient(to top, #F5F5F5, #FAFAFA) repeat scroll 0 0 #F5F5F5;
             border-color: #DFDFDF;
@@ -2681,7 +2707,8 @@ function wpbc_welcome_panel() {
         }
         .wpbc-panel .welcome-panel .about-description {
             font-size: 16px;
-            margin: 0;
+            margin: 10px 0 5px;
+			color: #72777c;
         }
         .wpbc-panel .welcome-panel .welcome-panel-close {
             position: absolute;
@@ -2732,7 +2759,7 @@ function wpbc_welcome_panel() {
         .wpbc-panel .welcome-panel .welcome-icon {
             background: none;    
             display: block;
-            padding: 2px 0 8px 2px;    
+            padding: 4px 0 0 2px;
         }
         .wpbc-panel .welcome-panel .welcome-add-page {
             background-position: 0 2px;
@@ -2760,7 +2787,7 @@ function wpbc_welcome_panel() {
             margin: 0.8em 1em 1em 0;
         }
         .wpbc-panel .welcome-panel .welcome-panel-column li {
-            line-height: 16px;
+            line-height: 1.8em;
             list-style-type: none;
         }
         @media screen and (max-width: 870px) {
@@ -2783,7 +2810,7 @@ function wpbc_welcome_panel() {
         }
         /*]]>*/
     </style>                
-    <div id="wpbc-panel-get-started" class="wpbc-panel" style="display:none;"> <div class="welcome-panel"><?php 
+    <div id="wpbc-panel-get-started" class="wpbc-panel" style="display:none;"> <div class="welcome-panel"><?php
 
         if ( ( class_exists( 'WPBC_Dismiss' )) && ( ! wpbc_is_this_demo() ) ) {
             
@@ -2946,332 +2973,6 @@ function wpbc_get_warning_text_in_demo_mode() {
     return '<div class="wpbc-settings-notice notice-warning"><strong>Warning!</strong> Demo test version does not allow changes to these items.</div>';
 }
 
-
-/**
-	 * Load transaltion POT file,  and generate PHP file with all translations relative to plugin.
- *  Link: http://server.com/wp-admin/admin.php?page=wpbc-settings&system_info=show&pot=1#wpbc_general_settings_system_info_metabox
- */
-function wpbc_pot_to_php() {
-    
-/*
- *         $shortcode = 'wpml';
-
-        // Find anything between [wpml] and [/wpml] shortcodes. Magic here: [\s\S]*? - fit to any text
-        preg_match_all( '/\[' . $shortcode . '\]([\s\S]*?)\[\/' . $shortcode . '\]/i', $text, $wpml_translations, PREG_SET_ORDER );               
-//debuge( $wpml_translations );
-
-        foreach ( $wpml_translations as $translation ) {                
-
- */    
- 
-    $pot_file = WP_PLUGIN_DIR . '/' . trim( WPBC_PLUGIN_DIRNAME . '/languages/booking.pot' , '/' );
-
-    if ( !is_readable( $pot_file ) ) {
-        wpbc_show_message_in_settings( 'POT file not found: ' . $pot_file , 'error' );
-        return false;
-    } else 
-        wpbc_show_message_in_settings( 'POT file found: ' . $pot_file , 'info' );
-        
-        
-    if ( ! class_exists( 'PO' ) )
-        require_once ABSPATH . WPINC . '/pomo/po.php';
-    
-    if ( class_exists( 'PO' ) ) {
-        
-        $po = new PO();
-        $po->import_from_file( $pot_file );   
-        
-        wpbc_show_message_in_settings( 'Found <strong>' . count($po->entries)  . '</strong> translations' , 'info' );
-
-	    	//FixIn: 8.7.3.6
-        	$translation_files = array();
-
-
-			// Generate content of the file
-			//$all_translations = '<?php  function wpbc_all_translations() { $wpbc_all_translations = array(); ';
-
-			$lines_number = 1;
-			$all_translations = '';
-			foreach ( $po->entries as $transaltion => $transaltion_obj ) {
-
-				$all_translations .= ' $wpbc_all_translations[] = __(\''.  $transaltion  .'\', \'booking\'); ' . "\n";
-				$lines_number++;
-
-				// Maximum  number of lines in such  files
-				if ( $lines_number >= 998 ) {
-					$file_number         = count( $translation_files ) + 1;
-					$translation_files[] = '<?php  function wpbc_all_translations' . $file_number . '() { $wpbc_all_translations = array(); ' . "\n" . $all_translations . " } ";
-					$all_translations    = '';
-					$lines_number        = 1;
-				}
-
-			}
-
-			if ( ! empty( $all_translations ) ) {
-				$file_number         = count( $translation_files ) + 1;
-				$translation_files[] = '<?php  function wpbc_all_translations' . $file_number . '() { $wpbc_all_translations = array(); ' . "\n" . $all_translations . " } ";
-			}
-
-
-			//$all_translations .= ' } ';
-
-			foreach ( $translation_files as $file_number => $file_content ) {
-
-				// Path  to new PHP file with  all
-				$new_php_file = WP_PLUGIN_DIR . '/' . trim( WPBC_PLUGIN_DIRNAME . '/core/lib/wpbc_all_translations' . ( ( ! empty( $file_number ) ) ? $file_number : '' ) . '.php', '/' );
-
-				$fh = fopen( $new_php_file, 'w' );
-				if ( false === $fh ) {
-					wpbc_show_message_in_settings( 'Can not create or edit PHP file: ' . $new_php_file, 'error' );
-
-					return false;
-				}
-				$res = fwrite( $fh, $file_content );
-				if ( false === $res ) {
-					wpbc_show_message_in_settings( 'Some error during saving data into file ' . $new_php_file, 'error' );
-
-					return false;
-				}
-				$res = fclose( $fh );
-
-				wpbc_show_message_in_settings( 'Completed! [ ' . htmlentities( $new_php_file ) . ' ]', 'info' );
-			}
-
-        return $res;
-        
-    } else  {
-        wpbc_show_message_in_settings( 'PO class does not exist or do not loaded' , 'error' );
-    }
-    
-    
-    
-//                $filename = $pot_file;
-//		$reader = new POMO_FileReader( $filename );
-////debuge($reader);
-//		if ( ! $reader->is_resource() ) {
-//			return false;
-//		}
-//
-//		$file_data = $reader->read_all();
-//
-//                $mo = new PO();
-//                $pomo_reader = new POMO_StringReader($file_data);
-//                $mo->import_from_reader( $pomo_reader );                
-//debuge($mo)       ;         
-//    if ( isset( $l10n[$domain] ) )
-//            $mo->merge_with( $l10n[$domain] );
-
-    
-}
-
-
-
- /**
-	 * Show System Info (status) at Booking > Settings General page
-  *  Link: http://server.com/wp-admin/admin.php?page=wpbc-settings&system_info=show#wpbc_general_settings_system_info_metabox
-  */
-function wpbc_system_info() {
-
-    if ( wpbc_is_this_demo() ) return;
-        
-    if ( current_user_can( 'activate_plugins' ) ) {                                // Only for Administrator or Super admin. More here: https://codex.wordpress.org/Roles_and_Capabilities
-
-		// Link: http://server.com/wp-admin/admin.php?page=wpbc-settings&system_info=show&pot=1#wpbc_general_settings_system_info_metabox
-        if ( ( isset( $_GET['pot'] ) ) && ( $_GET['pot'] == '1' ) ) {
-            
-            wpbc_pot_to_php();
-            
-            return;
-        }
-
-        // Link: http://server.com/wp-admin/admin.php?page=wpbc-settings&system_info=show&reset=custom_forms#wpbc_general_settings_system_info_metabox
-        if ( ( isset( $_GET['reset'] ) ) && ( $_GET['reset'] == 'custom_forms' ) ) {                                    //FixIn: 8.1.3.21
-
-        	// Reset Custom Booking Forms to  NONE
-			update_bk_option( 'booking_forms_extended' , serialize( array() ) );
-
-			wpbc_show_message_in_settings( '<strong>Custom  forms</strong> have been reseted!' , 'info' );
-            return;
-        }
-
-
-        global $wpdb, $wp_version;
-        
-        $all_plugins = get_plugins();
-        $active_plugins = get_option( 'active_plugins' );
-        
-        $mysql_info = $wpdb->get_results( "SHOW VARIABLES LIKE 'sql_mode'" );
-        if ( is_array( $mysql_info ) )  $sql_mode = $mysql_info[0]->Value;
-        if ( empty( $sql_mode ) )       $sql_mode = 'Not set';
-
-	    //FixIn: 8.4.7.24
-        $allow_url_fopen    = ( ini_get( 'allow_url_fopen' ) ) ?  'On' : 'Off';
-        $upload_max_filesize = ( ini_get( 'upload_max_filesize' ) ) ? ini_get( 'upload_max_filesize' ) : 'N/A';
-        $post_max_size      = ( ini_get( 'post_max_size' ) ) ? ini_get( 'post_max_size' ) : 'N/A';
-        $max_execution_time = ( ini_get( 'max_execution_time' ) ) ? ini_get( 'max_execution_time' ) : 'N/A';
-        $memory_limit       = ( ini_get( 'memory_limit' ) ) ? ini_get( 'memory_limit' ) : 'N/A';
-        $memory_usage       = ( function_exists( 'memory_get_usage' ) ) ? round( memory_get_usage() / 1024 / 1024, 2 ) . ' Mb' : 'N/A';
-        $exif_read_data     = ( is_callable( 'exif_read_data' ) ) ? 'Yes' . " ( V" . substr( phpversion( 'exif' ), 0, 4 ) . ")" : 'No';
-        $iptcparse          = ( is_callable( 'iptcparse' ) ) ? 'Yes' : 'No';
-        $xml_parser_create  = ( is_callable( 'xml_parser_create' ) ) ? 'Yes' : 'No';
-        $theme              = ( function_exists( 'wp_get_theme' ) ) ? wp_get_theme() : get_theme( get_current_theme() );
-
-        if ( function_exists( 'is_multisite' ) ) {
-            if ( is_multisite() )   $multisite = 'Yes';
-            else                    $multisite = 'No';
-        } else {                    $multisite = 'N/A';
-        }
-
-        $system_info = array(
-            'system_info' => '',
-            'php_info' => '',
-            'active_plugins' => array(),			//FixIn: 8.4.4.1
-            'inactive_plugins' => array()			//FixIn: 8.4.4.1
-        );
-            
-        $ver_small_name = get_bk_version();
-        if ( class_exists( 'wpdev_bk_multiuser' ) ) $ver_small_name = 'multiuser';
-        
-        $system_info['system_info'] = array(
-            'Plugin Update'         => ( defined( 'WPDEV_BK_VERSION' ) ) ? WPDEV_BK_VERSION : 'N/A',
-            'Plugin Version'        => ucwords( $ver_small_name ),
-            'Plugin Update Date'   => date( "Y-m-d", filemtime( WPBC_FILE ) ),
-            
-            'WP Version' => $wp_version,
-            'WP DEBUG'   =>  ( ( defined('WP_DEBUG') ) && ( WP_DEBUG ) ) ? 'On' : 'Off',
-            'WP DB Version' => get_option( 'db_version' ),
-            'Operating System' => PHP_OS,
-            'Server' => $_SERVER["SERVER_SOFTWARE"],
-            'PHP Version' => PHP_VERSION,
-            'MYSQL Version' => $wpdb->get_var( "SELECT VERSION() AS version" ),
-            'SQL Mode' => $sql_mode,
-            'Memory usage' => $memory_usage,
-            'Site URL' => get_option( 'siteurl' ),
-            'Home URL' => home_url(),
-            'SERVER[HTTP_HOST]' => $_SERVER['HTTP_HOST'],
-            'SERVER[SERVER_NAME]' => $_SERVER['SERVER_NAME'],
-            'Multisite' => $multisite,
-            'Active Theme' => $theme['Name'] . ' ' . $theme['Version']
-        );
-        
-        $system_info['php_info'] = array(
-            'PHP Version' => PHP_VERSION,
-                'PHP Memory Limit'              => '<strong>' . $memory_limit . '</strong>',
-                'PHP Max Script Execute Time'   => '<strong>' . $max_execution_time . '</strong>',
-                
-                'PHP Max Post Size'  => '<strong>' . $post_max_size . '</strong>',
-                'PHP MAX Input Vars' => '<strong>' . ( ( ini_get( 'max_input_vars' ) ) ? ini_get( 'max_input_vars' ) : 'N/A' ) . '</strong>',           //How many input variables may be accepted (limit is applied to $_GET, $_POST and $_COOKIE superglobal separately).                 
-            
-            'PHP Max Upload Size'   => $upload_max_filesize,
-            'PHP Allow URL fopen'   => $allow_url_fopen,
-            'PHP Exif support'      => $exif_read_data,
-            'PHP IPTC support'      => $iptcparse,
-            'PHP XML support'       => $xml_parser_create            
-        );
-                
-        $system_info['php_info']['PHP cURL'] =  ( function_exists('curl_init') ) ? 'On' : 'Off';   
-        $system_info['php_info']['Max Nesting Level'] = ( ( ini_get( 'max_input_nesting_level' ) ) ? ini_get( 'max_input_nesting_level' ) : 'N/A' );   
-        $system_info['php_info']['Max Time 4 script'] = ( ( ini_get( 'max_input_time' ) ) ? ini_get( 'max_input_time' ) : 'N/A' );                     //Maximum amount of time each script may spend parsing request data
-        $system_info['php_info']['Log'] =      ( ( ini_get( 'error_log' ) ) ? ini_get( 'error_log' ) : 'N/A' );
-        
-        if ( ini_get( "suhosin.get.max_value_length" ) ) { 
-            
-            $system_info['suhosin_info'] = array();
-            $system_info['suhosin_info']['POST max_array_index_length']     = ( ( ini_get( 'suhosin.post.max_array_index_length' ) ) ? ini_get( 'suhosin.post.max_array_index_length' ) : 'N/A' );
-            $system_info['suhosin_info']['REQUEST max_array_index_length']  = ( ( ini_get( 'suhosin.request.max_array_index_length' ) ) ? ini_get( 'suhosin.request.max_array_index_length' ) : 'N/A' );
-            
-            $system_info['suhosin_info']['POST max_totalname_length']    = ( ( ini_get( 'suhosin.post.max_totalname_length' ) ) ? ini_get( 'suhosin.post.max_totalname_length' ) : 'N/A' );
-            $system_info['suhosin_info']['REQUEST max_totalname_length'] = ( ( ini_get( 'suhosin.request.max_totalname_length' ) ) ? ini_get( 'suhosin.request.max_totalname_length' ) : 'N/A' );
-            
-            $system_info['suhosin_info']['POST max_vars']               = ( ( ini_get( 'suhosin.post.max_vars' ) ) ? ini_get( 'suhosin.post.max_vars' ) : 'N/A' );
-            $system_info['suhosin_info']['REQUEST max_vars']            = ( ( ini_get( 'suhosin.request.max_vars' ) ) ? ini_get( 'suhosin.request.max_vars' ) : 'N/A' );
-            
-            $system_info['suhosin_info']['POST max_value_length']       = ( ( ini_get( 'suhosin.post.max_value_length' ) ) ? ini_get( 'suhosin.post.max_value_length' ) : 'N/A' );
-            $system_info['suhosin_info']['REQUEST max_value_length']    = ( ( ini_get( 'suhosin.request.max_value_length' ) ) ? ini_get( 'suhosin.request.max_value_length' ) : 'N/A' );
-            
-            $system_info['suhosin_info']['POST max_name_length']        = ( ( ini_get( 'suhosin.post.max_name_length' ) ) ? ini_get( 'suhosin.post.max_name_length' ) : 'N/A' );
-            $system_info['suhosin_info']['REQUEST max_varname_length']  = ( ( ini_get( 'suhosin.request.max_varname_length' ) ) ? ini_get( 'suhosin.request.max_varname_length' ) : 'N/A' );
-            
-            $system_info['suhosin_info']['POST max_array_depth']        = ( ( ini_get( 'suhosin.post.max_array_depth' ) ) ? ini_get( 'suhosin.post.max_array_depth' ) : 'N/A' );            
-            $system_info['suhosin_info']['REQUEST max_array_depth']     = ( ( ini_get( 'suhosin.request.max_array_depth' ) ) ? ini_get( 'suhosin.request.max_array_depth' ) : 'N/A' );
-        }
-
-        
-        if ( function_exists('gd_info') ) {
-            $gd_info = gd_info();
-            if ( isset( $gd_info['GD Version'] ) )
-                $gd_info = $gd_info['GD Version'];
-            else 
-                $gd_info = json_encode( $gd_info );
-        } else {
-            $gd_info = 'Off';
-        }
-        $system_info['php_info']['PHP GD'] = $gd_info;
-
-        // More here https://docs.woocommerce.com/document/problems-with-large-amounts-of-data-not-saving-variations-rates-etc/
-
-
-        foreach ( $all_plugins as $path => $plugin ) {
-            if ( is_plugin_active( $path ) )
-                $system_info['active_plugins'][$plugin['Name']] = $plugin['Version'];
-            else
-                $system_info['inactive_plugins'][$plugin['Name']] = $plugin['Version'];
-        }
-
-        // Showing
-        foreach ( $system_info as $section_name => $section_values ) {
-            ?>
-            <span class="wpdevelop">
-            <table class="table table-striped table-bordered">
-                <thead><tr><th colspan="2" style="border-bottom: 1px solid #eeeeee;padding: 10px;"><?php echo strtoupper( $section_name ); ?></th></tr></thead>
-                <tbody>
-                <?php 
-                if ( !empty( $section_values ) ) {
-                    foreach ( $section_values as $key => $value ) {
-                        ?>
-                        <tr>
-                            <td scope="row" style="width:18em;padding:4px 8px;"><?php echo $key; ?></td>
-                            <td scope="row" style="padding:4px 8px;"><?php echo $value; ?></td>
-                        </tr>
-                        <?php                 
-                    }
-                }
-                ?>
-                </tbody>
-            </table>
-            </span>
-            <div class="clear"></div>
-            <?php
-        }
-?>
-<hr>            
-<div style="color:#777;">
-<h4 style="font-size:1.1em;">Commonly required configuration vars in php.ini file:</h4>            
-<h4>General section:</h4>            
-<pre><code>memory_limit = 256M
- max_execution_time = 120
- post_max_size = 8M
- upload_max_filesize = 8M
- max_input_vars = 20480
- post_max_size = 64M</code></pre>  
-<h4>Suhosin section (if installed):</h4>
-<pre><code>suhosin.post.max_array_index_length = 1024
- suhosin.post.max_totalname_length = 65535
- suhosin.post.max_vars = 2048
- suhosin.post.max_value_length = 1000000
- suhosin.post.max_name_length = 256
- suhosin.post.max_array_depth = 1000
- suhosin.request.max_array_index_length = 1024
- suhosin.request.max_totalname_length = 65535
- suhosin.request.max_vars = 2048
- suhosin.request.max_value_length = 1000000
- suhosin.request.max_varname_length = 256
- suhosin.request.max_array_depth = 1000</code></pre> 
-</div>
-<?php
-        // phpinfo();        
-    }
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3548,4 +3249,438 @@ function wpbc_add_log_info( $booking_id_arr, $message ) {
 		$date_time = date_i18n( ' [Y-m-d H:i]' );
 		make_bk_action('wpdev_make_update_of_remark' , $booking_id , $message . $date_time , $is_append );
 	}
+}
+
+
+/**
+ * Get list of cities for timezone usage in format like:		$city["Europe"]["Kiev"] = "Kiev";
+ *
+ * @return array|array[]
+ */
+function wpbc_get_booking_region_cities_list(){                                                                         //FixIn: 8.9.4.9
+
+	$city = array(
+					  'Africa' => array()
+					, 'America' => array()
+					, 'Antarctica' => array()
+					, 'Arctic' => array()
+					, 'Asia' => array()
+					, 'Atlantic' => array()
+					, 'Australia' => array()
+					, 'Europe' => array()
+					, 'Indian' => array()
+					, 'Pacific' => array()
+				);
+	$city["Africa"]["Abidjan"] = "Abidjan";
+	$city["Africa"]["Accra"] = "Accra";
+	$city["Africa"]["Addis_Ababa"] = "Addis Ababa";
+	$city["Africa"]["Algiers"] = "Algiers";
+	$city["Africa"]["Asmara"] = "Asmara";
+	$city["Africa"]["Bamako"] = "Bamako";
+	$city["Africa"]["Bangui"] = "Bangui";
+	$city["Africa"]["Banjul"] = "Banjul";
+	$city["Africa"]["Bissau"] = "Bissau";
+	$city["Africa"]["Blantyre"] = "Blantyre";
+	$city["Africa"]["Brazzaville"] = "Brazzaville";
+	$city["Africa"]["Bujumbura"] = "Bujumbura";
+	$city["Africa"]["Cairo"] = "Cairo";
+	$city["Africa"]["Casablanca"] = "Casablanca";
+	$city["Africa"]["Ceuta"] = "Ceuta";
+	$city["Africa"]["Conakry"] = "Conakry";
+	$city["Africa"]["Dakar"] = "Dakar";
+	$city["Africa"]["Dar_es_Salaam"] = "Dar es Salaam";
+	$city["Africa"]["Djibouti"] = "Djibouti";
+	$city["Africa"]["Douala"] = "Douala";
+	$city["Africa"]["El_Aaiun"] = "El Aaiun";
+	$city["Africa"]["Freetown"] = "Freetown";
+	$city["Africa"]["Gaborone"] = "Gaborone";
+	$city["Africa"]["Harare"] = "Harare";
+	$city["Africa"]["Johannesburg"] = "Johannesburg";
+	$city["Africa"]["Kampala"] = "Kampala";
+	$city["Africa"]["Khartoum"] = "Khartoum";
+	$city["Africa"]["Kigali"] = "Kigali";
+	$city["Africa"]["Kinshasa"] = "Kinshasa";
+	$city["Africa"]["Lagos"] = "Lagos";
+	$city["Africa"]["Libreville"] = "Libreville";
+	$city["Africa"]["Lome"] = "Lome";
+	$city["Africa"]["Luanda"] = "Luanda";
+	$city["Africa"]["Lubumbashi"] = "Lubumbashi";
+	$city["Africa"]["Lusaka"] = "Lusaka";
+	$city["Africa"]["Malabo"] = "Malabo";
+	$city["Africa"]["Maputo"] = "Maputo";
+	$city["Africa"]["Maseru"] = "Maseru";
+	$city["Africa"]["Mbabane"] = "Mbabane";
+	$city["Africa"]["Mogadishu"] = "Mogadishu";
+	$city["Africa"]["Monrovia"] = "Monrovia";
+	$city["Africa"]["Nairobi"] = "Nairobi";
+	$city["Africa"]["Ndjamena"] = "Ndjamena";
+	$city["Africa"]["Niamey"] = "Niamey";
+	$city["Africa"]["Nouakchott"] = "Nouakchott";
+	$city["Africa"]["Ouagadougou"] = "Ouagadougou";
+	$city["Africa"]["Porto-Novo"] = "Porto-Novo";
+	$city["Africa"]["Sao_Tome"] = "Sao Tome";
+	$city["Africa"]["Tripoli"] = "Tripoli";
+	$city["Africa"]["Tunis"] = "Tunis";
+	$city["Africa"]["Windhoek"] = "Windhoek";
+
+	$city["America"]["Adak"] = "Adak";
+	$city["America"]["Anchorage"] = "Anchorage";
+	$city["America"]["Anguilla"] = "Anguilla";
+	$city["America"]["Antigua"] = "Antigua";
+	$city["America"]["Araguaina"] = "Araguaina";
+	$city["America"]["Argentina/Buenos_Aires"] = "Argentina - Buenos Aires";
+	$city["America"]["Argentina/Catamarca"] = "Argentina - Catamarca";
+	$city["America"]["Argentina/Cordoba"] = "Argentina - Cordoba";
+	$city["America"]["Argentina/Jujuy"] = "Argentina - Jujuy";
+	$city["America"]["Argentina/La_Rioja"] = "Argentina - La Rioja";
+	$city["America"]["Argentina/Mendoza"] = "Argentina - Mendoza";
+	$city["America"]["Argentina/Rio_Gallegos"] = "Argentina - Rio Gallegos";
+	$city["America"]["Argentina/Salta"] = "Argentina - Salta";
+	$city["America"]["Argentina/San_Juan"] = "Argentina - San Juan";
+	$city["America"]["Argentina/San_Luis"] = "Argentina - San Luis";
+	$city["America"]["Argentina/Tucuman"] = "Argentina - Tucuman";
+	$city["America"]["Argentina/Ushuaia"] = "Argentina - Ushuaia";
+	$city["America"]["Aruba"] = "Aruba";
+	$city["America"]["Asuncion"] = "Asuncion";
+	$city["America"]["Atikokan"] = "Atikokan";
+	$city["America"]["Bahia"] = "Bahia";
+	$city["America"]["Barbados"] = "Barbados";
+	$city["America"]["Belem"] = "Belem";
+	$city["America"]["Belize"] = "Belize";
+	$city["America"]["Blanc-Sablon"] = "Blanc-Sablon";
+	$city["America"]["Boa_Vista"] = "Boa Vista";
+	$city["America"]["Bogota"] = "Bogota";
+	$city["America"]["Boise"] = "Boise";
+	$city["America"]["Cambridge_Bay"] = "Cambridge Bay";
+	$city["America"]["Campo_Grande"] = "Campo Grande";
+	$city["America"]["Cancun"] = "Cancun";
+	$city["America"]["Caracas"] = "Caracas";
+	$city["America"]["Cayenne"] = "Cayenne";
+	$city["America"]["Cayman"] = "Cayman";
+	$city["America"]["Chicago"] = "Chicago";
+	$city["America"]["Chihuahua"] = "Chihuahua";
+	$city["America"]["Costa_Rica"] = "Costa Rica";
+	$city["America"]["Cuiaba"] = "Cuiaba";
+	$city["America"]["Curacao"] = "Curacao";
+	$city["America"]["Danmarkshavn"] = "Danmarkshavn";
+	$city["America"]["Dawson"] = "Dawson";
+	$city["America"]["Dawson_Creek"] = "Dawson Creek";
+	$city["America"]["Denver"] = "Denver";
+	$city["America"]["Detroit"] = "Detroit";
+	$city["America"]["Dominica"] = "Dominica";
+	$city["America"]["Edmonton"] = "Edmonton";
+	$city["America"]["Eirunepe"] = "Eirunepe";
+	$city["America"]["El_Salvador"] = "El Salvador";
+	$city["America"]["Fortaleza"] = "Fortaleza";
+	$city["America"]["Glace_Bay"] = "Glace Bay";
+	$city["America"]["Godthab"] = "Godthab";
+	$city["America"]["Goose_Bay"] = "Goose Bay";
+	$city["America"]["Grand_Turk"] = "Grand Turk";
+	$city["America"]["Grenada"] = "Grenada";
+	$city["America"]["Guadeloupe"] = "Guadeloupe";
+	$city["America"]["Guatemala"] = "Guatemala";
+	$city["America"]["Guayaquil"] = "Guayaquil";
+	$city["America"]["Guyana"] = "Guyana";
+	$city["America"]["Halifax"] = "Halifax";
+	$city["America"]["Havana"] = "Havana";
+	$city["America"]["Hermosillo"] = "Hermosillo";
+	$city["America"]["Indiana/Indianapolis"] = "Indiana - Indianapolis";
+	$city["America"]["Indiana/Knox"] = "Indiana - Knox";
+	$city["America"]["Indiana/Marengo"] = "Indiana - Marengo";
+	$city["America"]["Indiana/Petersburg"] = "Indiana - Petersburg";
+	$city["America"]["Indiana/Tell_City"] = "Indiana - Tell City";
+	$city["America"]["Indiana/Vevay"] = "Indiana - Vevay";
+	$city["America"]["Indiana/Vincennes"] = "Indiana - Vincennes";
+	$city["America"]["Indiana/Winamac"] = "Indiana - Winamac";
+	$city["America"]["Inuvik"] = "Inuvik";
+	$city["America"]["Iqaluit"] = "Iqaluit";
+	$city["America"]["Jamaica"] = "Jamaica";
+	$city["America"]["Juneau"] = "Juneau";
+	$city["America"]["Kentucky/Louisville"] = "Kentucky - Louisville";
+	$city["America"]["Kentucky/Monticello"] = "Kentucky - Monticello";
+	$city["America"]["La_Paz"] = "La Paz";
+	$city["America"]["Lima"] = "Lima";
+	$city["America"]["Los_Angeles"] = "Los Angeles";
+	$city["America"]["Maceio"] = "Maceio";
+	$city["America"]["Managua"] = "Managua";
+	$city["America"]["Manaus"] = "Manaus";
+	$city["America"]["Marigot"] = "Marigot";
+	$city["America"]["Martinique"] = "Martinique";
+	$city["America"]["Mazatlan"] = "Mazatlan";
+	$city["America"]["Menominee"] = "Menominee";
+	$city["America"]["Merida"] = "Merida";
+	$city["America"]["Mexico_City"] = "Mexico City";
+	$city["America"]["Miquelon"] = "Miquelon";
+	$city["America"]["Moncton"] = "Moncton";
+	$city["America"]["Monterrey"] = "Monterrey";
+	$city["America"]["Montevideo"] = "Montevideo";
+	$city["America"]["Montreal"] = "Montreal";
+	$city["America"]["Montserrat"] = "Montserrat";
+	$city["America"]["Nassau"] = "Nassau";
+	$city["America"]["New_York"] = "New York";
+	$city["America"]["Nipigon"] = "Nipigon";
+	$city["America"]["Nome"] = "Nome";
+	$city["America"]["Noronha"] = "Noronha";
+	$city["America"]["North_Dakota/Center"] = "North Dakota - Center";
+	$city["America"]["North_Dakota/New_Salem"] = "North Dakota - New Salem";
+	$city["America"]["Panama"] = "Panama";
+	$city["America"]["Pangnirtung"] = "Pangnirtung";
+	$city["America"]["Paramaribo"] = "Paramaribo";
+	$city["America"]["Phoenix"] = "Phoenix";
+	$city["America"]["Port-au-Prince"] = "Port-au-Prince";
+	$city["America"]["Port_of_Spain"] = "Port of Spain";
+	$city["America"]["Porto_Velho"] = "Porto Velho";
+	$city["America"]["Puerto_Rico"] = "Puerto Rico";
+	$city["America"]["Rainy_River"] = "Rainy River";
+	$city["America"]["Rankin_Inlet"] = "Rankin Inlet";
+	$city["America"]["Recife"] = "Recife";
+	$city["America"]["Regina"] = "Regina";
+	$city["America"]["Resolute"] = "Resolute";
+	$city["America"]["Rio_Branco"] = "Rio Branco";
+	$city["America"]["Santarem"] = "Santarem";
+	$city["America"]["Santiago"] = "Santiago";
+	$city["America"]["Santo_Domingo"] = "Santo Domingo";
+	$city["America"]["Sao_Paulo"] = "Sao Paulo";
+	$city["America"]["Scoresbysund"] = "Scoresbysund";
+	$city["America"]["Shiprock"] = "Shiprock";
+	$city["America"]["St_Barthelemy"] = "St Barthelemy";
+	$city["America"]["St_Johns"] = "St Johns";
+	$city["America"]["St_Kitts"] = "St Kitts";
+	$city["America"]["St_Lucia"] = "St Lucia";
+	$city["America"]["St_Thomas"] = "St Thomas";
+	$city["America"]["St_Vincent"] = "St Vincent";
+	$city["America"]["Swift_Current"] = "Swift Current";
+	$city["America"]["Tegucigalpa"] = "Tegucigalpa";
+	$city["America"]["Thule"] = "Thule";
+	$city["America"]["Thunder_Bay"] = "Thunder Bay";
+	$city["America"]["Tijuana"] = "Tijuana";
+	$city["America"]["Toronto"] = "Toronto";
+	$city["America"]["Tortola"] = "Tortola";
+	$city["America"]["Vancouver"] = "Vancouver";
+	$city["America"]["Whitehorse"] = "Whitehorse";
+	$city["America"]["Winnipeg"] = "Winnipeg";
+	$city["America"]["Yakutat"] = "Yakutat";
+	$city["America"]["Yellowknife"] = "Yellowknife";
+
+	$city["Antarctica"]["Casey"] = "Casey";
+	$city["Antarctica"]["Davis"] = "Davis";
+	$city["Antarctica"]["DumontDUrville"] = "DumontDUrville";
+	$city["Antarctica"]["Mawson"] = "Mawson";
+	$city["Antarctica"]["McMurdo"] = "McMurdo";
+	$city["Antarctica"]["Palmer"] = "Palmer";
+	$city["Antarctica"]["Rothera"] = "Rothera";
+	$city["Antarctica"]["South_Pole"] = "South Pole";
+	$city["Antarctica"]["Syowa"] = "Syowa";
+	$city["Antarctica"]["Vostok"] = "Vostok";
+
+	$city["Arctic"]["Longyearbyen"] = "Longyearbyen";
+
+	$city["Asia"]["Aden"] = "Aden";
+	$city["Asia"]["Almaty"] = "Almaty";
+	$city["Asia"]["Amman"] = "Amman";
+	$city["Asia"]["Anadyr"] = "Anadyr";
+	$city["Asia"]["Aqtau"] = "Aqtau";
+	$city["Asia"]["Aqtobe"] = "Aqtobe";
+	$city["Asia"]["Ashgabat"] = "Ashgabat";
+	$city["Asia"]["Baghdad"] = "Baghdad";
+	$city["Asia"]["Bahrain"] = "Bahrain";
+	$city["Asia"]["Baku"] = "Baku";
+	$city["Asia"]["Bangkok"] = "Bangkok";
+	$city["Asia"]["Beirut"] = "Beirut";
+	$city["Asia"]["Bishkek"] = "Bishkek";
+	$city["Asia"]["Brunei"] = "Brunei";
+	$city["Asia"]["Choibalsan"] = "Choibalsan";
+	$city["Asia"]["Chongqing"] = "Chongqing";
+	$city["Asia"]["Colombo"] = "Colombo";
+	$city["Asia"]["Damascus"] = "Damascus";
+	$city["Asia"]["Dhaka"] = "Dhaka";
+	$city["Asia"]["Dili"] = "Dili";
+	$city["Asia"]["Dubai"] = "Dubai";
+	$city["Asia"]["Dushanbe"] = "Dushanbe";
+	$city["Asia"]["Gaza"] = "Gaza";
+	$city["Asia"]["Harbin"] = "Harbin";
+	$city["Asia"]["Ho_Chi_Minh"] = "Ho Chi Minh";
+	$city["Asia"]["Hong_Kong"] = "Hong Kong";
+	$city["Asia"]["Hovd"] = "Hovd";
+	$city["Asia"]["Irkutsk"] = "Irkutsk";
+	$city["Asia"]["Jakarta"] = "Jakarta";
+	$city["Asia"]["Jayapura"] = "Jayapura";
+	$city["Asia"]["Jerusalem"] = "Jerusalem";
+	$city["Asia"]["Kabul"] = "Kabul";
+	$city["Asia"]["Kamchatka"] = "Kamchatka";
+	$city["Asia"]["Karachi"] = "Karachi";
+	$city["Asia"]["Kashgar"] = "Kashgar";
+	$city["Asia"]["Kathmandu"] = "Kathmandu";
+	$city["Asia"]["Kolkata"] = "Kolkata";
+	$city["Asia"]["Krasnoyarsk"] = "Krasnoyarsk";
+	$city["Asia"]["Kuala_Lumpur"] = "Kuala Lumpur";
+	$city["Asia"]["Kuching"] = "Kuching";
+	$city["Asia"]["Kuwait"] = "Kuwait";
+	$city["Asia"]["Macau"] = "Macau";
+	$city["Asia"]["Magadan"] = "Magadan";
+	$city["Asia"]["Makassar"] = "Makassar";
+	$city["Asia"]["Manila"] = "Manila";
+	$city["Asia"]["Muscat"] = "Muscat";
+	$city["Asia"]["Nicosia"] = "Nicosia";
+	$city["Asia"]["Novosibirsk"] = "Novosibirsk";
+	$city["Asia"]["Omsk"] = "Omsk";
+	$city["Asia"]["Oral"] = "Oral";
+	$city["Asia"]["Phnom_Penh"] = "Phnom Penh";
+	$city["Asia"]["Pontianak"] = "Pontianak";
+	$city["Asia"]["Pyongyang"] = "Pyongyang";
+	$city["Asia"]["Qatar"] = "Qatar";
+	$city["Asia"]["Qyzylorda"] = "Qyzylorda";
+	$city["Asia"]["Rangoon"] = "Rangoon";
+	$city["Asia"]["Riyadh"] = "Riyadh";
+	$city["Asia"]["Sakhalin"] = "Sakhalin";
+	$city["Asia"]["Samarkand"] = "Samarkand";
+	$city["Asia"]["Seoul"] = "Seoul";
+	$city["Asia"]["Shanghai"] = "Shanghai";
+	$city["Asia"]["Singapore"] = "Singapore";
+	$city["Asia"]["Taipei"] = "Taipei";
+	$city["Asia"]["Tashkent"] = "Tashkent";
+	$city["Asia"]["Tbilisi"] = "Tbilisi";
+	$city["Asia"]["Tehran"] = "Tehran";
+	$city["Asia"]["Thimphu"] = "Thimphu";
+	$city["Asia"]["Tokyo"] = "Tokyo";
+	$city["Asia"]["Ulaanbaatar"] = "Ulaanbaatar";
+	$city["Asia"]["Urumqi"] = "Urumqi";
+	$city["Asia"]["Vientiane"] = "Vientiane";
+	$city["Asia"]["Vladivostok"] = "Vladivostok";
+	$city["Asia"]["Yakutsk"] = "Yakutsk";
+	$city["Asia"]["Yekaterinburg"] = "Yekaterinburg";
+	$city["Asia"]["Yerevan"] = "Yerevan";
+
+	$city["Atlantic"]["Azores"] = "Azores";
+	$city["Atlantic"]["Bermuda"] = "Bermuda";
+	$city["Atlantic"]["Canary"] = "Canary";
+	$city["Atlantic"]["Cape_Verde"] = "Cape Verde";
+	$city["Atlantic"]["Faroe"] = "Faroe";
+	$city["Atlantic"]["Madeira"] = "Madeira";
+	$city["Atlantic"]["Reykjavik"] = "Reykjavik";
+	$city["Atlantic"]["South_Georgia"] = "South Georgia";
+	$city["Atlantic"]["Stanley"] = "Stanley";
+	$city["Atlantic"]["St_Helena"] = "St Helena";
+
+	$city["Australia"]["Adelaide"] = "Adelaide";
+	$city["Australia"]["Brisbane"] = "Brisbane";
+	$city["Australia"]["Broken_Hill"] = "Broken Hill";
+	$city["Australia"]["Currie"] = "Currie";
+	$city["Australia"]["Darwin"] = "Darwin";
+	$city["Australia"]["Eucla"] = "Eucla";
+	$city["Australia"]["Hobart"] = "Hobart";
+	$city["Australia"]["Lindeman"] = "Lindeman";
+	$city["Australia"]["Lord_Howe"] = "Lord Howe";
+	$city["Australia"]["Melbourne"] = "Melbourne";
+	$city["Australia"]["Perth"] = "Perth";
+	$city["Australia"]["Sydney"] = "Sydney";
+
+	$city["Europe"]["Amsterdam"] = "Amsterdam";
+	$city["Europe"]["Andorra"] = "Andorra";
+	$city["Europe"]["Athens"] = "Athens";
+	$city["Europe"]["Belgrade"] = "Belgrade";
+	$city["Europe"]["Berlin"] = "Berlin";
+	$city["Europe"]["Bratislava"] = "Bratislava";
+	$city["Europe"]["Brussels"] = "Brussels";
+	$city["Europe"]["Bucharest"] = "Bucharest";
+	$city["Europe"]["Budapest"] = "Budapest";
+	$city["Europe"]["Chisinau"] = "Chisinau";
+	$city["Europe"]["Copenhagen"] = "Copenhagen";
+	$city["Europe"]["Dublin"] = "Dublin";
+	$city["Europe"]["Gibraltar"] = "Gibraltar";
+	$city["Europe"]["Guernsey"] = "Guernsey";
+	$city["Europe"]["Helsinki"] = "Helsinki";
+	$city["Europe"]["Isle_of_Man"] = "Isle of Man";
+	$city["Europe"]["Istanbul"] = "Istanbul";
+	$city["Europe"]["Jersey"] = "Jersey";
+	$city["Europe"]["Kaliningrad"] = "Kaliningrad";
+	$city["Europe"]["Kiev"] = "Kiev";
+	$city["Europe"]["Lisbon"] = "Lisbon";
+	$city["Europe"]["Ljubljana"] = "Ljubljana";
+	$city["Europe"]["London"] = "London";
+	$city["Europe"]["Luxembourg"] = "Luxembourg";
+	$city["Europe"]["Madrid"] = "Madrid";
+	$city["Europe"]["Malta"] = "Malta";
+	$city["Europe"]["Mariehamn"] = "Mariehamn";
+	$city["Europe"]["Minsk"] = "Minsk";
+	$city["Europe"]["Monaco"] = "Monaco";
+	$city["Europe"]["Moscow"] = "Moscow";
+	$city["Europe"]["Oslo"] = "Oslo";
+	$city["Europe"]["Paris"] = "Paris";
+	$city["Europe"]["Podgorica"] = "Podgorica";
+	$city["Europe"]["Prague"] = "Prague";
+	$city["Europe"]["Riga"] = "Riga";
+	$city["Europe"]["Rome"] = "Rome";
+	$city["Europe"]["Samara"] = "Samara";
+	$city["Europe"]["San_Marino"] = "San Marino";
+	$city["Europe"]["Sarajevo"] = "Sarajevo";
+	$city["Europe"]["Simferopol"] = "Simferopol";
+	$city["Europe"]["Skopje"] = "Skopje";
+	$city["Europe"]["Sofia"] = "Sofia";
+	$city["Europe"]["Stockholm"] = "Stockholm";
+	$city["Europe"]["Tallinn"] = "Tallinn";
+	$city["Europe"]["Tirane"] = "Tirane";
+	$city["Europe"]["Uzhgorod"] = "Uzhgorod";
+	$city["Europe"]["Vaduz"] = "Vaduz";
+	$city["Europe"]["Vatican"] = "Vatican";
+	$city["Europe"]["Vienna"] = "Vienna";
+	$city["Europe"]["Vilnius"] = "Vilnius";
+	$city["Europe"]["Volgograd"] = "Volgograd";
+	$city["Europe"]["Warsaw"] = "Warsaw";
+	$city["Europe"]["Zagreb"] = "Zagreb";
+	$city["Europe"]["Zaporozhye"] = "Zaporozhye";
+	$city["Europe"]["Zurich"] = "Zurich";
+
+	$city["Indian"]["Antananarivo"] = "Antananarivo";
+	$city["Indian"]["Chagos"] = "Chagos";
+	$city["Indian"]["Christmas"] = "Christmas";
+	$city["Indian"]["Cocos"] = "Cocos";
+	$city["Indian"]["Comoro"] = "Comoro";
+	$city["Indian"]["Kerguelen"] = "Kerguelen";
+	$city["Indian"]["Mahe"] = "Mahe";
+	$city["Indian"]["Maldives"] = "Maldives";
+	$city["Indian"]["Mauritius"] = "Mauritius";
+	$city["Indian"]["Mayotte"] = "Mayotte";
+	$city["Indian"]["Reunion"] = "Reunion";
+
+	$city["Pacific"]["Apia"] = "Apia";
+	$city["Pacific"]["Auckland"] = "Auckland";
+	$city["Pacific"]["Chatham"] = "Chatham";
+	$city["Pacific"]["Easter"] = "Easter";
+	$city["Pacific"]["Efate"] = "Efate";
+	$city["Pacific"]["Enderbury"] = "Enderbury";
+	$city["Pacific"]["Fakaofo"] = "Fakaofo";
+	$city["Pacific"]["Fiji"] = "Fiji";
+	$city["Pacific"]["Funafuti"] = "Funafuti";
+	$city["Pacific"]["Galapagos"] = "Galapagos";
+	$city["Pacific"]["Gambier"] = "Gambier";
+	$city["Pacific"]["Guadalcanal"] = "Guadalcanal";
+	$city["Pacific"]["Guam"] = "Guam";
+	$city["Pacific"]["Honolulu"] = "Honolulu";
+	$city["Pacific"]["Johnston"] = "Johnston";
+	$city["Pacific"]["Kiritimati"] = "Kiritimati";
+	$city["Pacific"]["Kosrae"] = "Kosrae";
+	$city["Pacific"]["Kwajalein"] = "Kwajalein";
+	$city["Pacific"]["Majuro"] = "Majuro";
+	$city["Pacific"]["Marquesas"] = "Marquesas";
+	$city["Pacific"]["Midway"] = "Midway";
+	$city["Pacific"]["Nauru"] = "Nauru";
+	$city["Pacific"]["Niue"] = "Niue";
+	$city["Pacific"]["Norfolk"] = "Norfolk";
+	$city["Pacific"]["Noumea"] = "Noumea";
+	$city["Pacific"]["Pago_Pago"] = "Pago Pago";
+	$city["Pacific"]["Palau"] = "Palau";
+	$city["Pacific"]["Pitcairn"] = "Pitcairn";
+	$city["Pacific"]["Ponape"] = "Ponape";
+	$city["Pacific"]["Port_Moresby"] = "Port Moresby";
+	$city["Pacific"]["Rarotonga"] = "Rarotonga";
+	$city["Pacific"]["Saipan"] = "Saipan";
+	$city["Pacific"]["Tahiti"] = "Tahiti";
+	$city["Pacific"]["Tarawa"] = "Tarawa";
+	$city["Pacific"]["Tongatapu"] = "Tongatapu";
+	$city["Pacific"]["Truk"] = "Truk";
+	$city["Pacific"]["Wake"] = "Wake";
+	$city["Pacific"]["Wallis"] = "Wallis";
+
+	return $city;
 }

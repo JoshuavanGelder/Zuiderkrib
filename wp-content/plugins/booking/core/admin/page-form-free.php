@@ -613,7 +613,7 @@ class WPBC_Page_SettingsFormFieldsFree extends WPBC_Page_Structure {
         $my_form.='<div class="form-group">[captcha]</div>' . "\n";
         //FixIn:  8.8.1.14
         $submit_button_title = str_replace( '"','', html_entity_decode( esc_js( apply_bk_filter( 'wpdev_check_for_active_language', get_bk_option( 'booking_send_button_title' ) ) ),ENT_QUOTES) );
-		$my_form.='<div class="form-group"><button class="btn btn-default" type="button" onclick="mybooking_submit(this.form,'.$my_boook_type.',\''.wpbc_get_booking_locale().'\');" >'
+		$my_form.='<div class="form-group"><button class="btn btn-default" type="button" onclick="mybooking_submit(this.form,'.$my_boook_type.',\''.wpbc_get_maybe_reloaded_booking_locale().'\');" >'
 				  		. $submit_button_title
 				  . '</button></div>' . "\n";
 

@@ -342,9 +342,10 @@ function init_datepick_cal(bk_type,  date_approved_par, my_num_month, start_day_
                                   || ( ( additional_class.indexOf('check_out_time_date_approved') != -1 ) && ( additional_class.indexOf('check_in_time_date2approve') != -1 ) )
                             ) ) { 
                             // Remove CSS classes from this date
-                            time_return_value[1]=time_return_value[1].replace("check_in_time",""); 
-                            time_return_value[1]=time_return_value[1].replace("check_out_time",""); 
-                            time_return_value[1]=time_return_value[1].replace("timespartly","");        
+                            /*  //FixIn: 8.9.4.13.1  - Show diagonal line in dates, where we have check in/out bookings with  the same status (pending or approved) */
+                            // time_return_value[1]=time_return_value[1].replace("check_in_time","");
+                            // time_return_value[1]=time_return_value[1].replace("check_out_time","");
+                            // time_return_value[1]=time_return_value[1].replace("timespartly","");
                         }
                         time_return_value[1]=time_return_value[1].replace("date_available",""); 
                     }

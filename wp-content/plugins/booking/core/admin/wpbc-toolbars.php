@@ -950,7 +950,7 @@ function wpbc_toolbar_btn__approve_reject( $user_bk_id ) {
                                             , 'hint' => array( 'title' => __('Approve selected bookings' ,'booking') , 'position' => 'top' ) // Hint
                                             , 'link' => 'javascript:void(0)'        // Direct link or skip  it
                                             , 'action' => "approve_unapprove_booking( get_selected_bookings_id_in_booking_listing(), 1, " .
-                                                            $user_bk_id . ", '" . wpbc_get_booking_locale() . "' , 1);"                // Some JavaScript to execure, for example run  the function
+                                                            $user_bk_id . ", '" . wpbc_get_maybe_reloaded_booking_locale() . "' , 1);"                // Some JavaScript to execure, for example run  the function
                                             , 'class' => 'button-primary'                 // button-secondary  | button-primary
                                             , 'icon' => ''
                                             , 'font_icon' => 'glyphicon glyphicon-ok-circle glyphicon-white'
@@ -966,7 +966,7 @@ function wpbc_toolbar_btn__approve_reject( $user_bk_id ) {
                                             , 'link' => 'javascript:void(0)'        // Direct link or skip  it
                                             , 'action' => "if ( wpbc_are_you_sure('" . esc_js(__('Do you really want to set booking as pending ?' ,'booking')) . "') )
                                                             approve_unapprove_booking( get_selected_bookings_id_in_booking_listing() ,
-                                                                    0, " . $user_bk_id . ", '" . wpbc_get_booking_locale() . "' , 1);"                // Some JavaScript to execure, for example run  the function
+                                                                    0, " . $user_bk_id . ", '" . wpbc_get_maybe_reloaded_booking_locale() . "' , 1);"                // Some JavaScript to execure, for example run  the function
                                             , 'class' => ''                 // button-secondary  | button-primary
                                             , 'icon' => ''
                                             , 'font_icon' => 'glyphicon glyphicon-ban-circle'
@@ -997,7 +997,7 @@ function wpbc_toolbar_btn__delete_reason( $user_bk_id ) {
                                         , 'action' => "if ( wpbc_are_you_sure('" . esc_js( __('Do you really want to do this ?' ,'booking') ) . "') )
                                                          trash__restore_booking( 1, get_selected_bookings_id_in_booking_listing() , "
                                                         . $user_bk_id . ", '"
-                                                        . wpbc_get_booking_locale() . "' , 1  );"                // Some JavaScript to execure, for example run  the function
+                                                        . wpbc_get_maybe_reloaded_booking_locale() . "' , 1  );"                // Some JavaScript to execure, for example run  the function
                                         , 'class' => ''                 // button-secondary  | button-primary
                                         , 'icon' => ''
                                         , 'font_icon' => 'glyphicon glyphicon-trash'
@@ -1014,7 +1014,7 @@ function wpbc_toolbar_btn__delete_reason( $user_bk_id ) {
                                         , 'action' => "if ( wpbc_are_you_sure('" . esc_js( __('Do you really want to do this ?' ,'booking') ) . "') )
                                                          trash__restore_booking( 0, get_selected_bookings_id_in_booking_listing() , "
                                                         . $user_bk_id . ", '"
-                                                        . wpbc_get_booking_locale() . "' , 1  );"                // Some JavaScript to execure, for example run  the function
+                                                        . wpbc_get_maybe_reloaded_booking_locale() . "' , 1  );"                // Some JavaScript to execure, for example run  the function
                                         , 'class' => ''                 // button-secondary  | button-primary
                                         , 'icon' => ''
                                         , 'font_icon' => 'glyphicon glyphicon-repeat'
@@ -1031,7 +1031,7 @@ function wpbc_toolbar_btn__delete_reason( $user_bk_id ) {
                                         , 'action' => "if ( wpbc_are_you_sure('" . esc_js( __('Do you really want to delete selected booking(s) ?' ,'booking') ) . "') )
                                                         delete_booking( get_selected_bookings_id_in_booking_listing() , "
                                                         . $user_bk_id . ", '"
-                                                        . wpbc_get_booking_locale() . "' , 1  );"                // Some JavaScript to execure, for example run  the function
+                                                        . wpbc_get_maybe_reloaded_booking_locale() . "' , 1  );"                // Some JavaScript to execure, for example run  the function
                                         , 'class' => ''                 // button-secondary  | button-primary
                                         , 'icon' => ''
                                         , 'font_icon' => 'glyphicon glyphicon-remove'
@@ -1077,7 +1077,7 @@ function  wpbc_toolbar_btn__empty_trash( $user_bk_id ) {
                                                 , 'link' => 'javascript:void(0)'        // Direct link or skip  it
 												, 'action' => "if ( wpbc_are_you_sure('" . esc_js( __('Do you really want to do this ?' ,'booking') ) . "') )
 																 wpbc_empty_trash( " . $user_bk_id .
-															  		", '" . wpbc_get_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
+															  		", '" . wpbc_get_maybe_reloaded_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
 
                                                 , 'class' => ''                        // button-secondary  | button-primary
                                                 , 'icon' => ''
@@ -1106,7 +1106,7 @@ function wpbc_toolbar_btn__read_all( $user_bk_id ) {
                                             , 'title' => __('Read All', 'booking') . '&nbsp;&nbsp;'    // Title of the button
                                             , 'hint' => array( 'title' => __('Mark as read all bookings' ,'booking') , 'position' => 'top' ) // Hint
                                             , 'link' => 'javascript:void(0)'        // Direct link or skip  it
-                                            , 'action' => "mark_read_booking( 'all', 0, " . $user_bk_id . ", '" . wpbc_get_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
+                                            , 'action' => "mark_read_booking( 'all', 0, " . $user_bk_id . ", '" . wpbc_get_maybe_reloaded_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
                                             , 'class' => ''                 // button-secondary  | button-primary
                                             , 'icon' => ''
                                             , 'font_icon' => 'glyphicon glyphicon-eye-close'
@@ -1121,7 +1121,7 @@ function wpbc_toolbar_btn__read_all( $user_bk_id ) {
                                             , 'hint' => array( 'title' => __('Mark as read selected bookings' ,'booking') , 'position' => 'top' ) // Hint
                                             , 'link' => 'javascript:void(0)'        // Direct link or skip  it
                                             , 'action' => "mark_read_booking( get_selected_bookings_id_in_booking_listing(), 0, "
-                                                            . $user_bk_id . ", '" . wpbc_get_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
+                                                            . $user_bk_id . ", '" . wpbc_get_maybe_reloaded_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
                                             , 'class' => ''                 // button-secondary  | button-primary
                                             , 'icon' => ''
                                             , 'font_icon' => 'glyphicon glyphicon-eye-close'
@@ -1136,7 +1136,7 @@ function wpbc_toolbar_btn__read_all( $user_bk_id ) {
                                             , 'hint' => array( 'title' => __('Mark as Unread selected bookings' ,'booking') , 'position' => 'top' ) // Hint
                                             , 'link' => 'javascript:void(0)'        // Direct link or skip  it
                                             , 'action' => "mark_read_booking( get_selected_bookings_id_in_booking_listing() , 1, "
-                                                            . $user_bk_id . ", '" . wpbc_get_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
+                                                            . $user_bk_id . ", '" . wpbc_get_maybe_reloaded_booking_locale() . "' );"                // Some JavaScript to execure, for example run  the function
                                             , 'class' => ''                 // button-secondary  | button-primary
                                             , 'icon' => ''
                                             , 'font_icon' => 'glyphicon glyphicon-eye-open'
@@ -1350,16 +1350,24 @@ function wpbc_toolbar_btn__timeline_navigation() {
             case '30':
                 if (isset($_REQUEST['scroll_day'])) $scroll_day = intval( $_REQUEST['scroll_day'] );
                 else $scroll_day = 0;
-                $scroll_params = array( '&scroll_day='.intval($scroll_day-4*7),
-                                        '&scroll_day='.intval($scroll_day-7),
+
+	            //FixIn: 8.9.4.3
+	            // Here we need to define number of days to scroll depends from selected number of days to show.
+	            $days_num_to_scroll = intval( get_bk_option( 'booking_calendar_overview__day_mode__days_number_show' ) );;
+	            if ( empty( $days_num_to_scroll ) ) {
+		            $days_num_to_scroll = 7;
+	            }
+
+                $scroll_params = array( '&scroll_day='.intval( $scroll_day - $days_num_to_scroll * 2 ),
+                                        '&scroll_day='.intval( $scroll_day - $days_num_to_scroll ),
                                         '&scroll_day=0',
-                                        '&scroll_day='.intval($scroll_day+7 ),
-                                        '&scroll_day='.intval($scroll_day+4*7) );
-                $scroll_titles = array(  __('Previous 4 weeks' ,'booking'),
-                                         __('Previous week' ,'booking'),
+                                        '&scroll_day='.intval( $scroll_day + $days_num_to_scroll ),
+                                        '&scroll_day='.intval( $scroll_day + $days_num_to_scroll *2 ) );
+                $scroll_titles = array(  __( 'Previous', 'booking' ) . ' ' . ( 2 * $days_num_to_scroll ) . ' ' . __( 'days', 'booking' ),
+	                					 __( 'Previous', 'booking' ) . ' ' . $days_num_to_scroll . ' ' . __( 'days', 'booking' ),
                                          __('Current week' ,'booking'),
-                                         __('Next week' ,'booking'),
-                                         __('Next 4 weeks' ,'booking') );
+                                         __( 'Next', 'booking' ) . ' ' . $days_num_to_scroll . ' ' . __( 'days', 'booking' ),
+                                         __( 'Next', 'booking' ) . ' ' . ( 2 * $days_num_to_scroll ) . ' ' . __( 'days', 'booking' ) );
                 break;
             default:  // 365
                 if (! isset($_REQUEST['scroll_month'])) $_REQUEST['scroll_month'] = 0;
@@ -1842,7 +1850,7 @@ function wpbc_toolbar_btn__add_new_booking() {
              onclick="mybooking_submit(
                                         document.getElementById('booking_form<?php echo $bk_type; ?>' )
                                         , <?php echo $bk_type; ?>
-                                        , '<?php echo wpbc_get_booking_locale(); ?>'
+                                        , '<?php echo wpbc_get_maybe_reloaded_booking_locale(); ?>'
                                     );"
              ><?php _e('Add booking' , 'booking') ?></a><?php
 }

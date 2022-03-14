@@ -167,5 +167,3 @@ function add_bk_option( $option, $value = '', $deprecated = '', $autoload = 'yes
 
     return add_option( $option, $value  , $deprecated  , $autoload   );
 }
-
-

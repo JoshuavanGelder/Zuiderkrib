@@ -5,12 +5,12 @@ Plugin URI: https://wpbookingcalendar.com/demo/
 Description: Online reservation and availability checking service for your site.
 Author: wpdevelop, oplugins
 Author URI: https://wpbookingcalendar.com/
-Text Domain: booking 
+Text Domain: booking
 Domain Path: /languages/
-Version: 8.9
+Version: 9.0
 */
 
-/*  Copyright 2009 - 2021  www.wpbookingcalendar.com  (email: info@wpbookingcalendar.com),
+/*  Copyright 2009 - 2022  www.wpbookingcalendar.com  (email: info@wpbookingcalendar.com),
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ Version: 8.9
 if ( ! defined( 'ABSPATH' ) ) die( '<h3>Direct access to this file do not allow!</h3>' );       // Exit if accessed directly
 
 
-if ( ! defined( 'WP_BK_VERSION_NUM' ) ) {       define( 'WP_BK_VERSION_NUM',    '8.9' ); }
+if ( ! defined( 'WP_BK_VERSION_NUM' ) ) {       define( 'WP_BK_VERSION_NUM',    '9.0' ); }
 
 ////////////////////////////////////////////////////////////////////////////////
 // PRIMARY URL CONSTANTS                        

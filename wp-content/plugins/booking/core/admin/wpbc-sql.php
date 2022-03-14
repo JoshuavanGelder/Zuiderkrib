@@ -129,11 +129,17 @@ function wpbc_check_request_paramters() {                                       
     $clean_params = array();  
 
     $clean_params['wh_booking_id']                  = 'digit_or_csd';
-	if ( ( ! empty( $_REQUEST['wh_booking_type'] ) ) && ( 'lost' == $_REQUEST['wh_booking_type'] ) ) {       //FixIn: 8.5.2.19
+	if ( ( ! empty( $_REQUEST['wh_booking_type'] ) ) && ( 'lost' == $_REQUEST['wh_booking_type'] ) ) {          //FixIn: 8.5.2.19
 		$clean_params['wh_booking_type'] = 'checked_skip_it';
 	} else {
 		$clean_params['wh_booking_type'] =  'digit_or_csd';
 	}
+	if ( ( ! empty( $_REQUEST['booking_type'] ) ) && ( 'lost' == $_REQUEST['booking_type'] ) ) {                //FixIn: 8.9.2.1
+		$clean_params['booking_type'] = 'checked_skip_it';
+	} else {
+		$clean_params['booking_type'] =  'digit_or_csd';
+	}
+
     $clean_params['wh_approved']                    = 'digit_or_csd';       // '0' | '1' | ''
 
     $clean_params['wh_booking_date']                = 'digit_or_date';      // number | date 2016-07-20
@@ -166,7 +172,15 @@ function wpbc_check_request_paramters() {                                       
     $clean_params['page_num']                       = 'd';                  // '' | '1' ...         // does not exist  in 6.2.1.4
     $clean_params['page_items_count']               = 'd';                  // '' | '1' ...         // does not exist  in 6.2.1.4
     $clean_params['view_days_num']               = 'd';                  // '' | '1' ...         // does not exist  in 6.2.1.4
-//debuge($_REQUEST);
+
+	//FixIn: 8.9.2.1
+	$clean_params['scroll_start_date']     = 'digit_or_date';
+	$clean_params['scroll_day']            = 'd';
+	$clean_params['scroll_month']          = 'd';
+	$clean_params['limit_hours']           = 'digit_or_csd';
+	$clean_params['only_booked_resources'] = 'd';
+
+
     foreach ( $clean_params as $request_key => $clean_type ) {
         
         // elements only listed in array::
@@ -185,34 +199,67 @@ function wpbc_check_request_paramters() {                                       
                 break;
 
             case 'digit_or_date':                                            // digit or comma separated digit
-                if ( isset( $_REQUEST[ $request_key ] ) ) 
-                    $_REQUEST[ $request_key ] = wpbc_clean_digit_or_date( $_REQUEST[ $request_key ] );        // nums    
+	            if ( isset( $_REQUEST[ $request_key ] ) ) {
+		            $_REQUEST[ $request_key ] = wpbc_clean_digit_or_date( $_REQUEST[ $request_key ] );
+	            }
+	            if ( isset( $_GET[ $request_key ] ) ) {
+		            $_GET[ $request_key ] = wpbc_clean_digit_or_date( $_GET[ $request_key ] );
+	            }
+	            if ( isset( $_POST[ $request_key ] ) ) {
+		            $_POST[ $request_key ] = wpbc_clean_digit_or_date( $_POST[ $request_key ] );
+	            }
 
                 break;
 
             case 'digit_or_csd':                                            // digit or comma separated digit
-                if ( isset( $_REQUEST[ $request_key ] ) ) 
-                    $_REQUEST[ $request_key ] = wpbc_clean_digit_or_csd( $_REQUEST[ $request_key ] );        // nums    
+	            if ( isset( $_REQUEST[ $request_key ] ) ) {
+		            $_REQUEST[ $request_key ] = wpbc_clean_digit_or_csd( $_REQUEST[ $request_key ] );
+	            }
+	            if ( isset( $_GET[ $request_key ] ) ) {
+		            $_GET[ $request_key ] = wpbc_clean_digit_or_csd( $_GET[ $request_key ] );
+	            }
+	            if ( isset( $_POST[ $request_key ] ) ) {
+		            $_POST[ $request_key ] = wpbc_clean_digit_or_csd( $_POST[ $request_key ] );
+	            }
 
                 break;
 
             case 's':                                                       // string
-                if ( isset( $_REQUEST[ $request_key ] ) ) 
-                    $_REQUEST[ $request_key ] = wpbc_clean_like_string_for_db( $_REQUEST[ $request_key ] );
+	            if ( isset( $_REQUEST[ $request_key ] ) ) {
+		            $_REQUEST[ $request_key ] = wpbc_clean_like_string_for_db( $_REQUEST[ $request_key ] );
+	            }
+	            if ( isset( $_GET[ $request_key ] ) ) {
+		            $_GET[ $request_key ] = wpbc_clean_like_string_for_db( $_GET[ $request_key ] );
+	            }
+	            if ( isset( $_POST[ $request_key ] ) ) {
+		            $_POST[ $request_key ] = wpbc_clean_like_string_for_db( $_POST[ $request_key ] );
+	            }
 
                 break;
 
             case 'd':                                                       // digit
-                if ( isset( $_REQUEST[ $request_key ] ) ) 
-                    if ( $_REQUEST[ $request_key ] !== '' )
-                        $_REQUEST[ $request_key ] = intval( $_REQUEST[ $request_key ] );
+	            if ( ( isset( $_REQUEST[ $request_key ] ) ) && ( $_REQUEST[ $request_key ] !== '' ) ) {
+		            $_REQUEST[ $request_key ] = intval( $_REQUEST[ $request_key ] );
+	            }
+	            if ( ( isset( $_GET[ $request_key ] ) ) && ( $_GET[ $request_key ] !== '' ) ) {
+		            $_GET[ $request_key ] = intval( $_GET[ $request_key ] );
+	            }
+	            if ( ( isset( $_POST[ $request_key ] ) ) && ( $_POST[ $request_key ] !== '' ) ) {
+		            $_POST[ $request_key ] = intval( $_POST[ $request_key ] );
+	            }
 
                 break;
 
             default:
-                if ( isset( $_REQUEST[ $request_key ] ) ) {
-                    $_REQUEST[ $request_key ] = intval( $_REQUEST[ $request_key ] );                    
-                }
+	            if ( isset( $_REQUEST[ $request_key ] ) ) {
+		            $_REQUEST[ $request_key ] = intval( $_REQUEST[ $request_key ] );
+	            }
+	            if ( isset( $_GET[ $request_key ] ) ) {
+		            $_GET[ $request_key ] = intval( $_GET[ $request_key ] );
+	            }
+	            if ( isset( $_POST[ $request_key ] ) ) {
+		            $_POST[ $request_key ] = intval( $_POST[ $request_key ] );
+	            }
                 break;
         }
 

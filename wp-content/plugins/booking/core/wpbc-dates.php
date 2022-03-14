@@ -422,6 +422,11 @@ function wpbc_change_dates_format( $dates_in_sql_format ) {
  */
 function wpbc_time_slot_in_format( $timeslot, $time_format = false ){
 
+	//FixIn: 8.9.3.1
+	if ( ( empty( $timeslot ) ) ) {
+		return '';
+	}
+
 	if ( empty( $time_format ) ) {
 		$time_format = get_bk_option( 'booking_time_format' );    	// get  from  Booking Calendar
 		if ( empty( $time_format ) ) {

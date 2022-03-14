@@ -329,7 +329,7 @@ table.wpbc_sort_table {
         left: -12px;
         width: 10px;
         height: 100%;
-        background: url('../../../../../wp-admin/images/xit.gif') 0 7% no-repeat;
+        background: url('../../../../../../wp-admin/images/xit.gif') 0 7% no-repeat;    /* //FixIn: 8.9.1.3  */
 }
 .wpbc-panel-dismiss:hover:before {
         background-position: 100% 7%;
