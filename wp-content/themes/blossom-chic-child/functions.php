@@ -451,17 +451,19 @@ function blossom_feminine_header(){
                 if( function_exists( 'has_custom_logo' ) && has_custom_logo() ){
                     the_custom_logo();
                 } 
-                if( is_front_page() ){ ?>
+                if ( !has_custom_logo() ){
+                    if( is_front_page() ){ ?>
                     <h1 class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></h1>
                     <?php 
-                }else{ ?>
-                    <p class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></p>
-                <?php
+                    }else{ ?>
+                        <p class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></p>
+                        <?php
+                    }
                 }
                 $description = get_bloginfo( 'description', 'display' );
                 if ( $description || is_customize_preview() ){ ?>
                     <p class="site-description" itemprop="description"><?php echo $description; ?></p>
-                <?php
+                    <?php
 
                 }
                 ?>
@@ -509,6 +511,10 @@ function blossom_feminine_header(){
         
     </header><!-- #masthead -->
     <?php
+}
+
+function blossom_feminine_breadcrumb() {
+    return;
 }
 
 function blossom_feminine_banner(){
