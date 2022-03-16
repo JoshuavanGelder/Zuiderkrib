@@ -48,6 +48,9 @@ function enqueue_scss_editor_styles() {
 }
 add_action( 'admin_init', 'enqueue_scss_editor_styles' );
 
+// Add block styling
+require_once( get_stylesheet_directory().'/inc/wp-styles.php' );
+
 //Remove a function from the parent theme
 function remove_parent_filters(){ //Have to do it after theme setup, because child theme functions are loaded first
     remove_action( 'customize_register', 'blossom_feminine_customizer_theme_info' );
@@ -451,17 +454,19 @@ function blossom_feminine_header(){
                 if( function_exists( 'has_custom_logo' ) && has_custom_logo() ){
                     the_custom_logo();
                 } 
-                if( is_front_page() ){ ?>
+                if ( !has_custom_logo() ){
+                    if( is_front_page() ){ ?>
                     <h1 class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></h1>
                     <?php 
-                }else{ ?>
-                    <p class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></p>
-                <?php
+                    }else{ ?>
+                        <p class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></p>
+                        <?php
+                    }
                 }
                 $description = get_bloginfo( 'description', 'display' );
                 if ( $description || is_customize_preview() ){ ?>
                     <p class="site-description" itemprop="description"><?php echo $description; ?></p>
-                <?php
+                    <?php
 
                 }
                 ?>
@@ -509,6 +514,10 @@ function blossom_feminine_header(){
         
     </header><!-- #masthead -->
     <?php
+}
+
+function blossom_feminine_breadcrumb() {
+    return;
 }
 
 function blossom_feminine_banner(){

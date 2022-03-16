@@ -1,1 +1,5 @@
-@import "blocks/card";
+@import "blocks";
+
+html {
+    scroll-behavior: smooth;
+}
