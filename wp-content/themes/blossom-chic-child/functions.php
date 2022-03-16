@@ -48,6 +48,9 @@ function enqueue_scss_editor_styles() {
 }
 add_action( 'admin_init', 'enqueue_scss_editor_styles' );
 
+// Add block styling
+require_once( get_stylesheet_directory().'/inc/wp-styles.php' );
+
 //Remove a function from the parent theme
 function remove_parent_filters(){ //Have to do it after theme setup, because child theme functions are loaded first
     remove_action( 'customize_register', 'blossom_feminine_customizer_theme_info' );
