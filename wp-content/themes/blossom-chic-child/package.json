@@ -4,7 +4,10 @@
   "description": "=== Blossom Chic ===",
   "main": "gulp.js",
   "scripts": {
-    "dev-build": "gulp styles && gulp editor"
+    "build": "gulp build && gulp minify",
+    "dev-build": "gulp build",
+    "dev": "gulp watch",
+    "start": "npm run dev"
   },
   "author": "SGD",
   "license": "ISC",
@@ -12,6 +15,7 @@
   "devDependencies": {
     "browser-sync": "^2.27.7",
     "gulp": "^4.0.2",
+    "gulp-cssnano": "^2.1.3",
     "gulp-sass": "^5.1.0",
     "sass": "^1.49.7"
   }
