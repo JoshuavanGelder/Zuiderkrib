@@ -80,6 +80,11 @@
   margin-left: 0.5rem;
 }
 
+ul.social-networks {
+  align-items: center;
+  grid-template-columns: 2fr 1fr 2fr;
+}
+
 html {
   scroll-behavior: smooth;
 }
