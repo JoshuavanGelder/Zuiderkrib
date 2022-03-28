@@ -6,6 +6,14 @@
   text-decoration: underline;
 }
 
+.header-m {
+  padding: 0;
+}
+.header-m .custom-logo {
+  max-height: 250px;
+  object-fit: contain;
+}
+
 .wp-block-gallery .wp-card {
   overflow: hidden;
   box-shadow: 0.5px 0.5px 10px #333;
