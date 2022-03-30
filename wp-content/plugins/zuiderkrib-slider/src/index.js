@@ -1,7 +1,8 @@
 import { registerBlockType } from '@wordpress/blocks';
-import './style.scss';
+import './styles/style.scss';
 import edit from './edit';
 import save from './save';
+import {settings, meta, name} from './slide';
 
 registerBlockType( 'slider/zuiderkrib-slider', {
 	attributes: {
@@ -24,3 +25,5 @@ registerBlockType( 'slider/zuiderkrib-slider', {
 	edit,
 	save,
 } );
+
+registerBlockType( { name, ...meta }, settings );

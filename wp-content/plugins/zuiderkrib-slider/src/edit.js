@@ -1,14 +1,30 @@
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
-import './editor.scss';
+import { InnerBlocks, useBlockProps, InspectorControls, } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
+import { useState, useRef } from 'react';
+// import { SliderSettings } from './components/inspector/SliderSettings';
+import './styles/editor.scss';
 
-export default function edit() {
+const template = [
+    ['slider/slide', {}],
+    ['slider/slide', {}],
+    ['slider/slide', {}],
+];
+
+export default function edit( props ) {
+	const blockProps = useBlockProps();
+	const { attributes, setAttributes } = props;
+
 	return (
-		<p { ...useBlockProps() }>
-			{ __(
-				'Zuiderkrib Slider – hello from the editor!',
-				'zuiderkrib-slider'
-			) }
-		</p>
+		<div {...blockProps}>
+			<InspectorControls>
+				{/* <SliderSettings
+					sliderSlidesPerView={sliderSlidesPerView}
+					sliderSpeed={sliderSpeed}
+					setAttributes={setAttributes}
+				/> */}
+			</InspectorControls>
+			<InnerBlocks template={template} allowedBlocks={['slider/slide']} />
+		</div>
 	);
 }

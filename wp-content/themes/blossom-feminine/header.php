@@ -17,7 +17,6 @@
     do_action( 'blossom_feminine_doctype' );   
 ?>
 <head itemscope itemtype="http://schema.org/WebSite">
-
 <?php 
     
     /**
@@ -29,7 +28,6 @@
     
     wp_head(); 
 ?>
-
 </head>
 
 <body <?php body_class(); ?> itemscope itemtype="http://schema.org/WebPage">
