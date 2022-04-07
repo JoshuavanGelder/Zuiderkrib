@@ -3,7 +3,7 @@
 	"name": "slider/slide",
 	"title": "slide",
 	"category": "media",
-	"icon": "awards",
+	"icon": "cover-image",
 	"parent": ["slider/zuiderkrib-slider"],
 	"description": "Add a slide to the slider",
 	"support": {

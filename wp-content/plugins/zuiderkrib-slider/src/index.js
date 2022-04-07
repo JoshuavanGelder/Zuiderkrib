@@ -6,12 +6,13 @@ import {settings, meta, name} from './slide';
 
 registerBlockType( 'slider/zuiderkrib-slider', {
 	attributes: {
-		blockId: {
-			type: 'string'
+		sliderAutoSlide: {
+			type: 'boolean',
+			default: true
 		},
-		sliderSpeed: {
+		autoSlideCooldown: {
 			type: 'number',
-			default: 300
+			default: 2
 		},
 		sliderSlidesPerView: {
 			type: 'number',

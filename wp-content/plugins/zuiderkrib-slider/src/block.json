@@ -5,10 +5,11 @@
 	"version": "0.1.0",
 	"title": "Zuiderkrib Slider",
 	"category": "media",
-	"icon": "smiley",
+	"icon": "embed-photo",
 	"description": "Slider voor images. (requires blossom feminine theme)",
 	"supports": {
-		"html": false
+		"html": false,
+		"align": true
 	},
 	"textdomain": "zuiderkrib-slider",
 	"editorScript": "file:./index.js",
