@@ -1,16 +1,18 @@
 import { registerBlockType } from '@wordpress/blocks';
-import './style.scss';
+import './styles/style.scss';
 import edit from './edit';
 import save from './save';
+import {settings, meta, name} from './slide';
 
 registerBlockType( 'slider/zuiderkrib-slider', {
 	attributes: {
-		blockId: {
-			type: 'string'
+		sliderAutoSlide: {
+			type: 'boolean',
+			default: true
 		},
-		sliderSpeed: {
+		autoSlideCooldown: {
 			type: 'number',
-			default: 300
+			default: 2
 		},
 		sliderSlidesPerView: {
 			type: 'number',
@@ -24,3 +26,5 @@ registerBlockType( 'slider/zuiderkrib-slider', {
 	edit,
 	save,
 } );
+
+registerBlockType( { name, ...meta }, settings );
