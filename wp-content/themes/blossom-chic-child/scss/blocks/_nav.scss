@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
+
+.main-navigation ul {
+    .menu-item {
+        @media (min-width: 1024px) {
+            
+            .menu-first {
+                font-size: 1.4em;
+                font-weight: 900;
+        }
+
+        .menu-rest {
+            color: transparent;
+        }
+
+        &:hover {
+            .menu-rest{
+                color: #f69581;
+            }
+        }
+    }
+
+        .sub-menu {
+            .menu-item{
+                font-family: 'Handlee', cursive;
+                font-size: 1em;
+            }
+        }
+    }
+} 

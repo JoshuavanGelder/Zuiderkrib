@@ -51,12 +51,16 @@ add_action( 'admin_init', 'enqueue_scss_editor_styles' );
 // Add block styling
 require_once( get_stylesheet_directory().'/inc/wp-styles.php' );
 
+function enqueue_js_scripts() {
+    wp_enqueue_script( 'js-scripts', get_stylesheet_directory_uri() . '/js/nav.js', array( 'jquery' ), '', true);
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_js_scripts' );
+
 //Remove a function from the parent theme
 function remove_parent_filters(){ //Have to do it after theme setup, because child theme functions are loaded first
     remove_action( 'customize_register', 'blossom_feminine_customizer_theme_info' );
     remove_action( 'customize_register', 'blossom_feminine_customize_register_color' );
     remove_action( 'customize_register', 'blossom_feminine_customize_register_appearance' );
-
 }
 add_action( 'init', 'remove_parent_filters' );
 
