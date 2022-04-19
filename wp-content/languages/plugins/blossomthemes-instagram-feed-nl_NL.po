@@ -1,0 +1,231 @@
+# Translation of Plugins - BlossomThemes Social Feed - Stable (latest release) in Dutch
+# This file is distributed under the same license as the Plugins - BlossomThemes Social Feed - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-07-27 18:01:41+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: nl\n"
+"Project-Id-Version: Plugins - BlossomThemes Social Feed - Stable (latest release)\n"
+
+#: includes/template/backend/general.php:186
+msgid "Enable square Instagram images."
+msgstr "Vierkante Instagram afbeeldingen inschakelen."
+
+#: includes/template/backend/general.php:179
+msgid "Square Images"
+msgstr "Vierkante afbeeldingen"
+
+#: includes/template/backend/general.php:171
+msgid "Enable lazy loading of Instagram images."
+msgstr "Lazyloading inschakelen van Instagram afbeeldingen."
+
+#: includes/template/backend/general.php:164
+msgid "Lazy Load"
+msgstr "Lazyload"
+
+#: includes/class-blossomthemes-instagram-feed-api.php:167
+msgid "Every Fifty Days"
+msgstr "Elke vijftig dagen"
+
+#: includes/widgets/widget-blossomthemes-instagram-feed.php:108
+msgid "Please configure <a href=\"%1$s\">Plugin Settings</a> before using this widget."
+msgstr "Configureer de <a href=\"%1$s\">plugin instellingen</a> voordat je deze widget kunt gebruiken."
+
+#: includes/widgets/widget-blossomthemes-instagram-feed.php:25
+msgid "BlossomThemes: Feed for Instagram"
+msgstr "BlossomThemes: feed voor Instagram"
+
+#: includes/template/backend/sidebar.php:11
+msgid "Blossom Themes"
+msgstr "Blossom thema's"
+
+#: includes/template/backend/general.php:113
+msgid "Fetch new posts"
+msgstr "Nieuwe berichten ophalen"
+
+#: includes/template/backend/general.php:109
+msgid "Days"
+msgstr "Dagen"
+
+#: includes/template/backend/general.php:108
+msgid "Hours"
+msgstr "Uren"
+
+#: includes/template/backend/general.php:96
+msgid "Check for new posts every"
+msgstr "Controleer voor nieuwe berichten iedere"
+
+#: includes/template/backend/general.php:45
+msgid "Access Token is used as key to access your photos from Instagram so they can be displayed."
+msgstr "Een toegangstoken wordt gebruikt als sleutel om toegang te krijgen tot je foto's van Instagram, zodat ze kunnen worden weergegeven."
+
+#: includes/template/backend/general.php:36
+msgid "Access Token"
+msgstr "Toegangstoken"
+
+#: includes/template/backend/general.php:28
+msgid "Re-connect with Instagram"
+msgstr "Maak opnieuw verbinding met Instagram"
+
+#: includes/template/backend/general.php:18
+msgid "Due to recent Instagram API changes it is no longer possible to display photos from a different Instagram account than yours. The widget will automatically display the latest photos of the account which was authorized on this page."
+msgstr "Door recente wijzigingen in de Instagram API is het niet langer mogelijk om foto's van een ander Instagram account dan het jouwe weer te geven. De widget toont automatisch de nieuwste foto's van het account dat op deze pagina is geautoriseerd."
+
+#: includes/template/backend/general.php:13
+msgid "For help, please refer to this tutorial."
+msgstr "Raadpleeg deze tutorial voor hulp."
+
+#: includes/template/backend/general.php:11
+msgid "To get started click the button below. You’ll be prompted to authorize BlossomThemes Social Feed to access your Instagram photos."
+msgstr "Klik op de onderstaande knop om te beginnen. Je wordt gevraagd om BlossomThemes Social Feed toegang te geven tot je Instagram foto's."
+
+#: includes/template/backend/general.php:9
+#: includes/template/backend/general.php:26
+msgid "Connect with Instagram"
+msgstr "Maak verbinding met Instagram"
+
+#: includes/widgets/widget-blossomthemes-instagram-feed.php:69
+#: includes/class-blossomthemes-instagram-feed-shortcodes.php:35
+msgid "No posts available!"
+msgstr "Geen berichten beschikbaar!"
+
+#: includes/widgets/widget-blossomthemes-instagram-feed.php:66
+#: includes/class-blossomthemes-instagram-feed-shortcodes.php:32
+msgid "BlossomThemes Social Feed misconfigured, check plugin &amp; widget settings."
+msgstr "BlossomThemes Social Feed is verkeerd geconfigureerd, controleer Plugin &amp; Widget instellingen."
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:199
+msgid "You can ignore this message if you have already configured it."
+msgstr "Je kunt dit bericht negeren als je het al hebt geconfigureerd."
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:198
+msgid "and connect it with your Instagram account."
+msgstr "en verbind het met je Instagram account."
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:197
+msgid "Settings Page"
+msgstr "Instellingenpagina"
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:195
+msgid "If you have just installed or updated this plugin, please go to the"
+msgstr "Als je deze plugin zojuist hebt geïnstalleerd of geüpdatet, ga dan naar de"
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:193
+msgid "Please configure BlossomThemes Social Feed"
+msgstr "Configureer de BlossomThemes Social Feed"
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:183
+msgid "BlossomThemes: Invalid or expired Instagram Access Token. Please reconnect Instagram."
+msgstr "BlossomThemes: ongeldige of verlopen Instagram toegangstoken. Maak opnieuw verbinding met Instagram."
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:149
+msgid "Access Token rejected by Instagram API. Please add valid Access Token."
+msgstr "Toegangstoken afgewezen door Instagram API. Gebruik een geldige toegangstoken."
+
+#. Plugin Name of the plugin
+#: includes/template/backend/settings.php:9
+msgid "BlossomThemes Social Feed"
+msgstr "BlossomThemes Social Feed"
+
+#. Author URI of the plugin
+msgid "https://blossomthemes.com"
+msgstr "https://blossomthemes.com/"
+
+#. Author of the plugin
+msgid "blossomthemes"
+msgstr "blossomthemes"
+
+#. Description of the plugin
+msgid "Show instagram feed on your website using shortcode and widget."
+msgstr "Toon instagram feed op je site met behulp van een shortcode of een widget."
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/blossomthemes-instagram-feed"
+msgstr "https://wordpress.org/plugins/blossomthemes-instagram-feed"
+
+#: admin/partials/blossomthemes-instagram-feed-admin-display.php:47
+#: includes/template/backend/general.php:74
+msgid "Photos Per Row"
+msgstr "Foto's per rij"
+
+#: admin/partials/blossomthemes-instagram-feed-admin-display.php:37
+msgid "Number of photos"
+msgstr "Aantal foto's"
+
+#: admin/partials/blossomthemes-instagram-feed-admin-display.php:19
+msgid "Title"
+msgstr "Titel"
+
+#: includes/widgets/widget-blossomthemes-instagram-feed.php:89
+msgid "Instagram"
+msgstr "Instagram"
+
+#: includes/widgets/widget-blossomthemes-instagram-feed.php:26
+msgid "A widget that displays your latest Instagram photos."
+msgstr "Een widget die je laatste Instagram afbeeldingen laat zien."
+
+#: includes/template/backend/sidebar.php:15
+msgid "Leave a Review"
+msgstr "Laat een beoordeling achter"
+
+#: includes/template/backend/sidebar.php:14
+msgid "Please fill free to leave us a review, if you found this plugin helpful."
+msgstr "Laat gerust een recensie achter wanneer je deze plugin nuttig vond."
+
+#: includes/template/backend/sidebar.php:10
+msgid "Visit us at: "
+msgstr "Bezoek ons op: "
+
+#: includes/template/backend/sidebar.php:8
+msgid "More WordPress Themes and Plugins?"
+msgstr "Meer WordPress thema's en plugins?"
+
+#: includes/template/backend/usage.php:32
+msgid "Copy the PHP Function below to display your instagram gallery in templates :"
+msgstr "Kopieer de onderstaande PHP functie om je Instagram galerij in template weer te geven:"
+
+#: includes/template/backend/usage.php:26
+msgid "Display via PHP Function"
+msgstr "Weergave via PHP functie"
+
+#: includes/template/backend/usage.php:16
+msgid "Copy this Shortcode to display your instagram gallery in pages/posts => "
+msgstr "Kopieer deze shortcode om je Instagram galerij weer te geven in pagina's / berichten => "
+
+#: includes/template/backend/usage.php:10
+msgid "Display via Shortcode"
+msgstr "Weergave via shortcode"
+
+#: includes/template/backend/usage.php:7
+msgid "Uses"
+msgstr "Toepassingen"
+
+#: admin/partials/blossomthemes-instagram-feed-admin-display.php:57
+#: includes/template/backend/general.php:85
+msgid "Profile Link Text"
+msgstr "Profiel link tekst"
+
+#: includes/template/backend/general.php:63
+msgid "Number of Photos"
+msgstr "Aantal foto's"
+
+#: admin/partials/blossomthemes-instagram-feed-admin-display.php:28
+#: includes/template/backend/general.php:52
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: includes/template/backend/settings.php:19
+msgid "Usage"
+msgstr "Gebruik"
+
+#: includes/template/backend/settings.php:15
+msgid "General"
+msgstr "Algemeen"
+
+#: admin/class-blossomthemes-instagram-feed-admin.php:200
+msgid "Dismiss this notice"
+msgstr "Negeer dit bericht"
