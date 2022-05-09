@@ -10,6 +10,5 @@ function addClassFirstWord(item, firstCls, restCls) {
 }
 
 navItems.forEach(item => {
-    console.log(item.innerHTML);
     addClassFirstWord(item, 'menu-first', 'menu-rest');
 });

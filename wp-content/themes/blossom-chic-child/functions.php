@@ -407,7 +407,7 @@ function blossom_feminine_categories() {
 function blossom_feminine_header(){ 
     $bg = get_header_image() ? ' style="background-image:url(' . esc_url( get_header_image() ) . ')"' : '';
     $header_layout = get_theme_mod( 'header_layout_option', 'two' ); ?>
-    <header id="masthead" class="site-header wow fadeIn header-layout-<?php echo esc_attr( $header_layout ); ?>" data-wow-delay="0.1s" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="masthead" class="site-header wow header-layout-<?php echo esc_attr( $header_layout ); ?>" data-wow-delay="0.1s" itemscope itemtype="http://schema.org/WPHeader">
         <?php if( $header_layout == 'one' ) : ?>
             <div class="header-t">
                 <div class="container">                    
