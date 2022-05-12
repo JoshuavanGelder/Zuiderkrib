@@ -80,3 +80,80 @@
     object-fit: cover;
     object-position: center;
 }
+
+#page #primary {
+    .so-panel {
+        .sow-image-container {
+            margin-bottom: 1em;
+            border: 1px solid #f2f2f2;
+        }
+
+        .widget-title {
+            margin:  0 0 8px;
+            padding: 0;
+            background-color: transparent;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: normal;
+            text-transform: none;
+            
+            a {
+                text-decoration: none;
+                
+                &:hover {
+                    color: #333;
+                }
+            }
+        }
+
+    }
+    
+    .so-panel .so-widget-sow-image::after,
+    .woocommerce ul.products li.product .add_to_cart_button {
+        content: "Meer informatie";
+        position: static;
+        display: block;
+        width: fit-content;
+        min-width: 0;
+        margin: 0 auto;
+        padding: 0.618em 1em;
+        background-color: #ebe9eb;
+        color: #515151;
+        opacity: 1;
+        font-size: 100%;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        cursor: pointer;
+        border-radius: 3px;
+        transform: none;
+        transition: ease 0.2s;
+    }
+
+    .so-panel .so-widget-sow-image:hover::after,
+    .woocommerce ul.products li.product .add_to_cart_button:hover,
+    .product:hover .button {
+        background-color: #dfdcde;
+        color: #f69581;
+    }
+
+    .products {
+        display: flex;
+        align-items: stretch;
+        margin: 0;
+
+        .product {
+            float: none;
+            border: none;
+            
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+        } 
+    } 
+
+    .widget ul li:before {
+        content: none;
+    }
+}

@@ -163,6 +163,71 @@
   object-position: center;
 }
 
+#page #primary .so-panel .sow-image-container {
+  margin-bottom: 1em;
+  border: 1px solid #f2f2f2;
+}
+#page #primary .so-panel .widget-title {
+  margin: 0 0 8px;
+  padding: 0;
+  background-color: transparent;
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: normal;
+  text-transform: none;
+}
+#page #primary .so-panel .widget-title a {
+  text-decoration: none;
+}
+#page #primary .so-panel .widget-title a:hover {
+  color: #333;
+}
+#page #primary .so-panel .so-widget-sow-image::after,
+#page #primary .woocommerce ul.products li.product .add_to_cart_button {
+  content: "Meer informatie";
+  position: static;
+  display: block;
+  width: fit-content;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 0.618em 1em;
+  background-color: #ebe9eb;
+  color: #515151;
+  opacity: 1;
+  font-size: 100%;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transform: none;
+  transition: ease 0.2s;
+}
+#page #primary .so-panel .so-widget-sow-image:hover::after,
+#page #primary .woocommerce ul.products li.product .add_to_cart_button:hover,
+#page #primary .product:hover .button {
+  background-color: #dfdcde;
+  color: #f69581;
+}
+#page #primary .products {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+}
+#page #primary .products .product {
+  float: none;
+  border: none;
+}
+@media (max-width: 768px) {
+  #page #primary .products .product {
+    width: 100%;
+  }
+}
+#page #primary .widget ul li:before {
+  content: none;
+}
+
 .is-style-quicklinks {
   padding: 0;
   list-style: none;
@@ -186,6 +251,14 @@
 }
 .is-style-quicklinks li a:hover::after {
   margin-left: 0.5rem;
+}
+
+@font-face {
+  font-family: "Clean Up Your Mess";
+  src: url("../../fonts/clean up your mess.ttf");
+}
+.family-clean-mess {
+  font-family: "Clean Up Your Mess";
 }
 
 html {
