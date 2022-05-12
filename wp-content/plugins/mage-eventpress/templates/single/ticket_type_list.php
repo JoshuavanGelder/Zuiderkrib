@@ -1,4 +1,4 @@
-            <tr>
+<tr>
                 <?php do_action('mep_ticket_type_list_row_start',$field, $post_id); ?>
                     <td align="Left"><?php echo esc_html($field['option_name_t']); ?>
                         <?php if ($mep_available_seat == 'on') { ?><div class="xtra-item-left"><?php echo esc_html(max($total_ticket_left, 0)); ?>
@@ -42,6 +42,7 @@
                         }
                         $ticket_name = mep_remove_apostopie($field['option_name_t']);
                             do_action('mep_after_ticket_type_qty', $post_id, $ticket_name, $field, $default_quantity,$start_date);
+                            do_action('mepgq_max_qty_hook',$post_id);
                         ?>
                     </td>
                     <td class="ticket-price"><span class="tkt-pric">

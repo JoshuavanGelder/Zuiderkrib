@@ -499,7 +499,7 @@ if (!class_exists('MAGE_Events_Setting_Controls')) :
                             'label' => __('Email From Name', 'mage-eventpress'),
                             'desc' => __('Email From Name', 'mage-eventpress'),
                             'type' => 'text',
-                            'default' => mep_get_user_display_name_by_email(get_option('admin_email'))
+                            'default' => get_bloginfo( 'name' )
                         ),
                         array(
                             'name' => 'mep_email_form_email',
