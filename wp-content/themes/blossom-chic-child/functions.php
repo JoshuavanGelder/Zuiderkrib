@@ -36,6 +36,7 @@ if ( !function_exists( 'blossom_chic_styles' ) ):
 endif;
 add_action( 'wp_enqueue_scripts', 'blossom_chic_styles', 10 );
 
+// CUSTOM ADDED CODE
 // Import styles from the scss
 function enqueue_scss_styles() {
     wp_register_style( 'style', get_stylesheet_directory_uri().'/css/styles.css' );
@@ -63,6 +64,19 @@ function remove_parent_filters(){ //Have to do it after theme setup, because chi
     remove_action( 'customize_register', 'blossom_feminine_customize_register_appearance' );
 }
 add_action( 'init', 'remove_parent_filters' );
+
+// Adding short description to product categories
+function add_short_description_to_product_categories() {
+	global $product;
+	if ( ! $product->get_short_description() ) return;
+	?>
+	<div itemprop="description">
+		<?php echo apply_filters( 'woocommerce_short_description', $product->get_short_description() ) ?>
+	</div>
+	<?php
+}
+add_action('woocommerce_after_shop_loop_item_title', 'add_short_description_to_product_categories', 5);
+// END
 
 function blossom_feminine_body_classes( $classes ) {
     global $wp_query;

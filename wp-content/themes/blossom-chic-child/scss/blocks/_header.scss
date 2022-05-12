@@ -1,8 +1,14 @@
 .header-m {
+    // removed padding from header
     padding: 0;
 
+    // scaled down header
     .custom-logo {
         max-height: 250px;
         object-fit: contain;
     }
+}
+
+#page .page-title {
+    line-height: 1.2;
 }

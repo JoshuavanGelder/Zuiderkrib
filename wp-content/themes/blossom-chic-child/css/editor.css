@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Handlee&display=swap");
+@charset "UTF-8";
 .editor-styles-wrapper a {
   color: #333;
 }
@@ -11,50 +11,56 @@
   margin: 0;
 }
 
-.wp-block-gallery .wp-card {
-  overflow: hidden;
-  box-shadow: 0.5px 0.5px 10px #333;
-  transition: box-shadow ease-in-out 0.25s;
-}
-.wp-block-gallery .wp-card img {
-  transition: transform ease-in-out 0.25s;
-}
-.wp-block-gallery .wp-card:hover {
-  box-shadow: 5px 5px 10px #333;
-}
-.wp-block-gallery .wp-card:hover.-link figcaption::after {
-  right: 4px;
-}
-.wp-block-gallery .wp-card:hover img {
-  transform: scale(110%);
-}
-.wp-block-gallery .wp-card figcaption {
+.woocommerce #page .onsale {
   display: flex;
-  font-size: 14px !important;
   align-items: center;
-  padding: 8px !important;
-  background: #fff !important;
-  color: #000 !important;
-  font-weight: 900;
-  text-align: start;
-  vertical-align: middle;
-}
-.wp-block-gallery .wp-card.-link {
-  display: block;
-}
-.wp-block-gallery .wp-card.-link figcaption::after {
-  content: "";
-  position: absolute;
-  right: 8px;
-  display: block;
-  width: 24px;
-  height: 24px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' %3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3Cpolyline points='12 5 19 12 12 19'/%3E%3C/svg%3E");
-  transition: right ease-in-out 0.25s;
+  width: fit-content;
+  padding: 0.8em;
+  background-color: #f69581;
 }
 
-.mep-events-wrapper .mep-social-share a {
-  background-color: #000000;
+.product-meta {
+  display: none;
+}
+
+.single-mep_events .mep-events-wrapper .mep-default-sidrbar-events-schedule h3 svg,
+.single-mep_events .mep-events-wrapper .mep-default-sidrbar-meta svg,
+.single-mep_events .mep-events-wrapper .mep-default-sidrbar-calender-btn svg {
+  margin-right: 10px;
+}
+.single-mep_events .mep-events-wrapper .mep-default-sidrbar-meta::after {
+  content: "Locatie";
+  font-family: "Cormorant", serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #444444;
+}
+.single-mep_events .mep-events-wrapper .mep-more-date svg {
+  display: none;
+}
+.single-mep_events .mep-events-wrapper .mep-more-date span {
+  line-height: 1.2;
+}
+.single-mep_events .mep-events-wrapper .mep-more-date .mep_date_scdl_start_datetime::before {
+  content: "  ";
+}
+.single-mep_events .mep-events-wrapper .mep-more-date .mep_date_scdl_start_datetime::after {
+  content: "tot";
+  display: block;
+  text-align: center;
+}
+.single-mep_events .mep-events-wrapper .mep-more-date .mep_date_scdl_separator {
+  display: none;
+}
+.single-mep_events .mep-events-wrapper .mep-social-share a {
+  background-color: #0a0404;
+}
+.single-mep_events .mep-events-wrapper .mep-default-feature-cart-sec .mage_input_group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
 }
 
 .header-m {
@@ -63,6 +69,10 @@
 .header-m .custom-logo {
   max-height: 250px;
   object-fit: contain;
+}
+
+#page .page-title {
+  line-height: 1.2;
 }
 
 .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
@@ -85,8 +95,72 @@
   }
 }
 .main-navigation ul .menu-item .sub-menu .menu-item {
-  font-family: "Handlee", cursive;
+  font-family: "Clean Up Your Mess";
   font-size: 1em;
+  font-weight: 500;
+}
+
+.archive #page .page-title {
+  font-size: 0px;
+}
+.archive #page .page-title span {
+  font-size: 44px;
+}
+.archive #page .products .product h2 {
+  font-size: var(--wp--preset--font-size--large);
+  grid-area: b;
+}
+.archive.term-23 .products .product {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .archive.term-23 .products .product .add_to_cart_button {
+    position: static;
+    display: block;
+    width: fit-content;
+    min-width: 0;
+    margin-left: auto;
+    opacity: 1;
+    transform: translateY(-100%);
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "a b" "a c" "a d";
+    text-align: left;
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link > *:not(img) {
+    padding-left: 4rem;
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link img {
+    grid-area: a;
+    margin: 0;
+    padding-right: 4em;
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link h2 {
+    font-size: var(--wp--preset--font-size--large);
+    grid-area: b;
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link div[itemprop=description] {
+    grid-area: d;
+    padding-bottom: 3rem;
+    color: #444;
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link .price {
+    grid-area: c;
+  }
+  .archive.term-23 .products .product .woocommerce-loop-product__link .price::before {
+    content: "Prijs: ";
+  }
+}
+
+.products .product img {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: center;
 }
 
 .is-style-quicklinks {

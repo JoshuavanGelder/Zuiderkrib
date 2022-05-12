@@ -1,5 +1,64 @@
-.mep-events-wrapper {
+// styling the single event page
+.single-mep_events .mep-events-wrapper {
+    // give margin to svg in sidebar
+    .mep-default-sidrbar-events-schedule h3,
+    .mep-default-sidrbar-meta,
+    .mep-default-sidrbar-calender-btn {
+        svg {
+            margin-right: 10px;
+        }
+    }
+
+    // Added Title to location header in siebar
+    .mep-default-sidrbar-meta::after {
+        content: "Locatie";
+        font-family: 'Cormorant', serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #444444;
+    }
+
+    .mep-more-date {
+        // remove svg infront of date
+        svg {
+            display: none;
+        }
+
+        // increased line height of date text
+        span {
+            line-height: 1.2;
+        }
+
+        // added to spaces to match the bottom spaces
+        .mep_date_scdl_start_datetime::before {
+            content: "\00a0 \00a0";
+        }
+
+        // removed separator and added text
+        .mep_date_scdl_start_datetime::after {
+            content: "tot";
+            display: block;
+            text-align: center;
+        }
+
+        .mep_date_scdl_separator {
+            display: none;
+        }
+    }
+
+    // changed background color of social buttons
     .mep-social-share a {
-        background-color: #000000;
+        background-color: #0a0404;
+    }
+
+    // fixed tickets amount input
+    .mep-default-feature-cart-sec {
+        .mage_input_group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 0.5em;
+            padding-left: 0.5em;
+        }
     }
 }
