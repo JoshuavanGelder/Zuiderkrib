@@ -552,14 +552,20 @@ function blossom_feminine_header(){
     </header><!-- #masthead -->
     <?php
 }
-
+// CUSTOM ADDED CODE START
+// Removes breadcrumbs from pages
 function blossom_feminine_breadcrumb() {
     return;
 }
+// CUSTOM ADDED CODE END
 
 function blossom_feminine_banner(){
-    
+    /* CHANGED CODE START
+    FROM:
+    $ed_slider = get_theme_mod( 'ed_slider', true );
+    TO: ( disabled the slider ) */
     $ed_slider = get_theme_mod( 'ed_slider', false );
+    // CHANGED CODE END
     $slider_layout  = get_theme_mod( 'slider_layout', 'two' );
 
     if( ( is_front_page() || is_home() ) && $ed_slider ){ 
