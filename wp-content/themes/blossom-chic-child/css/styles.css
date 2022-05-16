@@ -19,7 +19,7 @@
   background-color: #f69581;
 }
 
-.product-meta {
+.product_meta {
   display: none;
 }
 
@@ -108,7 +108,6 @@
 }
 .archive #page .products .product h2 {
   font-size: var(--wp--preset--font-size--large);
-  grid-area: b;
 }
 .archive.term-23 .products .product {
   width: 100%;
@@ -138,7 +137,6 @@
   .archive.term-23 .products .product .woocommerce-loop-product__link img {
     grid-area: a;
     margin: 0;
-    padding-right: 4em;
   }
   .archive.term-23 .products .product .woocommerce-loop-product__link h2 {
     font-size: var(--wp--preset--font-size--large);
@@ -163,11 +161,11 @@
   object-position: center;
 }
 
-#page #primary .so-panel .sow-image-container {
+.page:not(.term-23) #page #primary .so-panel .sow-image-container {
   margin-bottom: 1em;
   border: 1px solid #f2f2f2;
 }
-#page #primary .so-panel .widget-title {
+.page:not(.term-23) #page #primary .so-panel .widget-title {
   margin: 0 0 8px;
   padding: 0;
   background-color: transparent;
@@ -176,14 +174,14 @@
   letter-spacing: normal;
   text-transform: none;
 }
-#page #primary .so-panel .widget-title a {
+.page:not(.term-23) #page #primary .so-panel .widget-title a {
   text-decoration: none;
 }
-#page #primary .so-panel .widget-title a:hover {
+.page:not(.term-23) #page #primary .so-panel .widget-title a:hover {
   color: #333;
 }
-#page #primary .so-panel .so-widget-sow-image::after,
-#page #primary .woocommerce ul.products li.product .add_to_cart_button {
+.page:not(.term-23) #page #primary .so-panel .so-widget-sow-image::after,
+.page:not(.term-23) #page #primary .woocommerce ul.products li.product .add_to_cart_button {
   content: "Meer informatie";
   position: static;
   display: block;
@@ -204,28 +202,31 @@
   transform: none;
   transition: ease 0.2s;
 }
-#page #primary .so-panel .so-widget-sow-image:hover::after,
-#page #primary .woocommerce ul.products li.product .add_to_cart_button:hover,
-#page #primary .product:hover .button {
+.page:not(.term-23) #page #primary .so-panel .so-widget-sow-image:hover::after,
+.page:not(.term-23) #page #primary .woocommerce ul.products li.product .add_to_cart_button:hover,
+.page:not(.term-23) #page #primary .product:hover .button {
   background-color: #dfdcde;
   color: #f69581;
 }
-#page #primary .products {
+.page:not(.term-23) #page #primary .products {
   display: flex;
-  align-items: stretch;
   margin: 0;
 }
-#page #primary .products .product {
+.page:not(.term-23) #page #primary .products .product {
   float: none;
   border: none;
 }
 @media (max-width: 768px) {
-  #page #primary .products .product {
+  .page:not(.term-23) #page #primary .products .product {
     width: 100%;
   }
 }
-#page #primary .widget ul li:before {
+.page:not(.term-23) #page #primary .widget ul li:before {
   content: none;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .is-style-quicklinks {
@@ -259,8 +260,4 @@
 }
 .family-clean-mess {
   font-family: "Clean Up Your Mess";
-}
-
-html {
-  scroll-behavior: smooth;
 }

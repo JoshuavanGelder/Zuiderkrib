@@ -1,5 +1,6 @@
 .archive {
     #page {
+        // Styling so that the page title only shows the page title and not the category: from woocommerce 
         .page-title {
             font-size: 0px;
             
@@ -9,19 +10,21 @@
         }
         
         .products .product {
+            // Makes the font size of products large
             h2 {
                 font-size: var(--wp--preset--font-size--large);
-                grid-area: b;
             }
         }
     }
 
+    // making the products full width and extra styling on the BED+BROOD page on the website.
     &.term-23 .products .product {
         width: 100%;
         margin: 0;
         padding: 0;
         
         @media (min-width: 768px) {
+            // changes the add to cart buttons styling and placement
             .add_to_cart_button {
                 position: static;
                 display: block;
@@ -32,6 +35,7 @@
                 transform: translateY(-100%);
             }
 
+            // making the product a grid
             .woocommerce-loop-product__link {
                 display: grid;
                 grid-template-columns: 1fr 2fr;
@@ -42,16 +46,18 @@
                 "a d";
                 text-align: left;
 
+                // giving everything exept the img a padding left 
                 > *:not(img) {
                     padding-left: 4rem;
                 }
 
+                // giving the image the left side of the product 
                 img {
                     grid-area: a;
                     margin: 0;
-                    padding-right: 4em;
                 }
 
+                // giving the rest of the text and the price the right side
                 h2 {
                     font-size: var(--wp--preset--font-size--large);
                     grid-area: b;
@@ -66,6 +72,7 @@
                 .price {
                     grid-area: c;
 
+                    // giving the price box a text infront
                     &::before {
                         content: "Prijs: ";
                     }
@@ -75,14 +82,17 @@
     }
 }
 
+
+// changing the images square
 .products .product img {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     object-position: center;
 }
 
-#page #primary {
+.page:not(.term-23) #page #primary {
     .so-panel {
+        // changing the site-origin product to match the woocommerce products
         .sow-image-container {
             margin-bottom: 1em;
             border: 1px solid #f2f2f2;
@@ -108,6 +118,7 @@
 
     }
     
+    // adding a button matching to woocommerce
     .so-panel .so-widget-sow-image::after,
     .woocommerce ul.products li.product .add_to_cart_button {
         content: "Meer informatie";
@@ -131,6 +142,7 @@
         transition: ease 0.2s;
     }
 
+    
     .so-panel .so-widget-sow-image:hover::after,
     .woocommerce ul.products li.product .add_to_cart_button:hover,
     .product:hover .button {
@@ -138,9 +150,9 @@
         color: #f69581;
     }
 
+    // makes the products container flex and removes float
     .products {
         display: flex;
-        align-items: stretch;
         margin: 0;
 
         .product {
@@ -151,8 +163,9 @@
                 width: 100%;
             }
         } 
-    } 
+    }
 
+    // removes a before from a widget
     .widget ul li:before {
         content: none;
     }

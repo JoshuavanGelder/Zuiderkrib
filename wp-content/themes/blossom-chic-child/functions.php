@@ -36,7 +36,7 @@ if ( !function_exists( 'blossom_chic_styles' ) ):
 endif;
 add_action( 'wp_enqueue_scripts', 'blossom_chic_styles', 10 );
 
-// CUSTOM ADDED CODE
+// CUSTOM ADDED CODE START
 // Import styles from the scss
 function enqueue_scss_styles() {
     wp_register_style( 'style', get_stylesheet_directory_uri().'/css/styles.css' );
@@ -76,7 +76,7 @@ function add_short_description_to_product_categories() {
 	<?php
 }
 add_action('woocommerce_after_shop_loop_item_title', 'add_short_description_to_product_categories', 5);
-// END
+// CUSTOM ADDED CODE END
 
 function blossom_feminine_body_classes( $classes ) {
     global $wp_query;
@@ -472,6 +472,26 @@ function blossom_feminine_header(){
                 if( function_exists( 'has_custom_logo' ) && has_custom_logo() ){
                     the_custom_logo();
                 } 
+                // CHANGED CODE START
+                /* FROM:
+                if( function_exists( 'has_custom_logo' ) && has_custom_logo() ){
+                    the_custom_logo();
+                } 
+                if( is_front_page() ){ ?>
+                    <h1 class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></h1>
+                    <?php 
+                }else{ ?>
+                    <p class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></p>
+                <?php
+                }
+                $description = get_bloginfo( 'description', 'display' );
+                if ( $description || is_customize_preview() ){ ?>
+                    <p class="site-description" itemprop="description"><?php echo $description; ?></p>
+                <?php
+
+                }
+                ?>
+                TO: ( The title gets removed if the page has a header ) */
                 if ( !has_custom_logo() ){
                     if( is_front_page() ){ ?>
                     <h1 class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></h1>
@@ -484,13 +504,12 @@ function blossom_feminine_header(){
                 $description = get_bloginfo( 'description', 'display' );
                 if ( $description || is_customize_preview() ){ ?>
                     <p class="site-description" itemprop="description"><?php echo $description; ?></p>
-                    <?php
-
+                <?php 
                 }
+                // CHANGED CODE END 
                 ?>
             </div>
         </div><!-- .header-m -->
-        
         <div class="header-b">
             <div class="container">
                 <button aria-label="<?php esc_attr_e( 'primary menu toggle button', 'blossom-chic' ); ?>" id="primary-toggle-button" data-toggle-target=".main-menu-modal" data-toggle-body-class="showing-main-menu-modal" aria-expanded="false" data-set-focus=".close-main-nav-toggle"><i class="fa fa-bars"></i></button>

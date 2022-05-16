@@ -1,7 +1,9 @@
+// Moves the calendar on the booking page to the left 
 .mvvwb_showInline .flatpickr-calendar {
     margin: 0;
 }
 
+// Changes the onsale tag from wordpress
 .woocommerce #page .onsale {
     display: flex;
     align-items: center;
@@ -10,6 +12,7 @@
     background-color: #f69581;
 }
 
-.product-meta {
+// Makes the product meta display none
+.product_meta {
     display: none;
 }
