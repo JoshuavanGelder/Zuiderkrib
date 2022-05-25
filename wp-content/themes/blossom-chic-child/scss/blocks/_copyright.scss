@@ -1,0 +1,28 @@
+// Added spaces between the copyright words
+#page .site-footer .site-info .container {
+    font-size: 0;
+
+    a, 
+    *::before, 
+    *::after {
+        font-size: 14px;
+    }
+    .copyright::before {
+        content: "2022 Copyright ";
+    }
+
+    .copyright::after {
+        content: ". Blossom Chic | Ontwikkeld door ";
+    }
+
+    > a:last-child {
+        &::before {
+            content: ". Mogelijk gemaakt door ";
+        }
+
+        &::after {
+            content: ".";
+        }
+
+    }
+}

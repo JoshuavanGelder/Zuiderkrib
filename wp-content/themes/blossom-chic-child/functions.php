@@ -52,8 +52,10 @@ add_action( 'admin_init', 'enqueue_scss_editor_styles' );
 // Add block styling
 require_once( get_stylesheet_directory().'/inc/wp-styles.php' );
 
+// Include js scripts
 function enqueue_js_scripts() {
-    wp_enqueue_script( 'js-scripts', get_stylesheet_directory_uri() . '/js/nav.js', array( 'jquery' ), '', true);
+    wp_enqueue_script( 'nav-script', get_stylesheet_directory_uri() . '/js/nav.js', array( 'jquery' ), '', true);
+    wp_enqueue_script( 'product-script', get_stylesheet_directory_uri() . '/js/product-date.js', array( 'jquery' ), '', true);
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_js_scripts' );
 

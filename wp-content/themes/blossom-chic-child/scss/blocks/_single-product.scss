@@ -1,0 +1,80 @@
+#page {
+    // Makes the product meta display none
+    .product_meta {
+        display: none;
+    }
+    
+    // Moves the calendar on the booking page to the left 
+    .mvvwb_showInline .flatpickr-calendar {
+        margin: 0;
+    }
+    
+    // Style the product page so that description is on top
+    .single-product & {
+        .product {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            
+            .woocommerce-Tabs-panel--description {
+                order: 0;
+                margin-top: 0;
+            }
+            
+            
+            .woocommerce-product-gallery {
+                order: 1;
+                margin-top: 1.5em;
+            }
+            
+            
+            .summary {
+                order: 2;
+                margin-top: 1.5em;
+                
+                .woocommerce-product-details__short-description {
+                    display: none;
+                }
+
+                // make the calendar selected dates the secandary color
+                .flatpickr-calendar {
+                    .flatpickr-day {
+                        &.selected,
+                        &.endRange,
+                        &.startRange {
+                            background-color: #f69581;
+                            border-color: #f69581;        
+                        }
+
+                        &.selected.startRange + .endRange:not(:nth-child(7n+1)),
+                        &.startRange + .endRange:not(:nth-child(7n+1)),
+                        &.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+                            box-shadow: -10px 0 0 #f69581;
+                        }
+                    } 
+                }
+
+                // Make the text that wasn't affected by js file "product-date" not appear.
+                .mvvwb_summary .mvvwb_booking_date {
+                    font-size: 0;
+                    color: #f69581;
+                }
+            }
+            
+            
+            .woocommerce-Tabs-panel--reviews {
+                order: 3;
+                
+                // Make the comment title same style as the other titles
+                .comment-reply-title {
+                    font-family: 'Clean Up Your Mess';
+                    font-weight: 700;
+                }
+            }
+            
+            .related.products {
+                order: 4;
+            }
+        }
+    }
+}
