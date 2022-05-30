@@ -37,6 +37,7 @@ $wrapper_classes   = apply_filters(
 );
 ?>
 <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" style="opacity: 0; transition: opacity .25s ease-in-out;">
+	<?php // Added onsale to the image instead of being a separate item  see old version at: wp-content/plugins/woocommerce/template/single-product/product-images.php ?>
 	<?php if ( $product->is_on_sale() ) : ?>
 	<?php echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product ); ?>
 	<?php endif; ?>
