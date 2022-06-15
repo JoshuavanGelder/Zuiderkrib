@@ -1,28 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
-
 .main-navigation ul {
     .menu-item {
+        // changed text styling of menu items
         @media (min-width: 1024px) {
-            
             .menu-first {
                 font-size: 1.4em;
                 font-weight: 900;
-        }
+            }
 
-        .menu-rest {
-            color: transparent;
-        }
+            // added a hover to text under the main text
+            .menu-rest {
+                color: transparent;
+            }
 
-        &:hover {
-            .menu-rest{
-                color: #f69581;
+            &:hover {
+                .menu-rest{
+                    color: #f69581;
+                }
             }
         }
-    }
 
+        // changed the font family and size of sub menu
         .sub-menu {
             .menu-item{
-                font-family: 'Handlee', cursive;
+                font-family: 'Clean Up Your Mess';
                 font-size: 1em;
             }
         }

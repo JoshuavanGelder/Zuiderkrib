@@ -1,3 +1,4 @@
+// Gives a class to the first word in the navigation bar
 let navItems = document.querySelectorAll("#primary-menu > .menu-item > a");
 
 function addClassFirstWord(item, firstCls, restCls) {
@@ -10,6 +11,5 @@ function addClassFirstWord(item, firstCls, restCls) {
 }
 
 navItems.forEach(item => {
-    console.log(item.innerHTML);
     addClassFirstWord(item, 'menu-first', 'menu-rest');
 });

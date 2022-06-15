@@ -1,0 +1,1 @@
+<?php // Removed salef flash here and added it to product-image.php see old version at: wp-content/plugins/woocommerce/template/single-product/sale-flash.php?>

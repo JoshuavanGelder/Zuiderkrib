@@ -36,6 +36,7 @@ if ( !function_exists( 'blossom_chic_styles' ) ):
 endif;
 add_action( 'wp_enqueue_scripts', 'blossom_chic_styles', 10 );
 
+// CUSTOM ADDED CODE START
 // Import styles from the scss
 function enqueue_scss_styles() {
     wp_register_style( 'style', get_stylesheet_directory_uri().'/css/styles.css' );
@@ -51,8 +52,10 @@ add_action( 'admin_init', 'enqueue_scss_editor_styles' );
 // Add block styling
 require_once( get_stylesheet_directory().'/inc/wp-styles.php' );
 
+// Include js scripts
 function enqueue_js_scripts() {
-    wp_enqueue_script( 'js-scripts', get_stylesheet_directory_uri() . '/js/nav.js', array( 'jquery' ), '', true);
+    wp_enqueue_script( 'nav-script', get_stylesheet_directory_uri() . '/js/nav.js', array( 'jquery' ), '', true);
+    wp_enqueue_script( 'product-script', get_stylesheet_directory_uri() . '/js/product-date.js', array( 'jquery' ), '', true);
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_js_scripts' );
 
@@ -63,6 +66,19 @@ function remove_parent_filters(){ //Have to do it after theme setup, because chi
     remove_action( 'customize_register', 'blossom_feminine_customize_register_appearance' );
 }
 add_action( 'init', 'remove_parent_filters' );
+
+// Adding short description to product categories
+function add_short_description_to_product_categories() {
+	global $product;
+	if ( ! $product->get_short_description() ) return;
+	?>
+	<div itemprop="description">
+		<?php echo apply_filters( 'woocommerce_short_description', $product->get_short_description() ) ?>
+	</div>
+	<?php
+}
+add_action('woocommerce_after_shop_loop_item_title', 'add_short_description_to_product_categories', 5);
+// CUSTOM ADDED CODE END
 
 function blossom_feminine_body_classes( $classes ) {
     global $wp_query;
@@ -407,7 +423,7 @@ function blossom_feminine_categories() {
 function blossom_feminine_header(){ 
     $bg = get_header_image() ? ' style="background-image:url(' . esc_url( get_header_image() ) . ')"' : '';
     $header_layout = get_theme_mod( 'header_layout_option', 'two' ); ?>
-    <header id="masthead" class="site-header wow fadeIn header-layout-<?php echo esc_attr( $header_layout ); ?>" data-wow-delay="0.1s" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="masthead" class="site-header wow header-layout-<?php echo esc_attr( $header_layout ); ?>" data-wow-delay="0.1s" itemscope itemtype="http://schema.org/WPHeader">
         <?php if( $header_layout == 'one' ) : ?>
             <div class="header-t">
                 <div class="container">                    
@@ -458,6 +474,26 @@ function blossom_feminine_header(){
                 if( function_exists( 'has_custom_logo' ) && has_custom_logo() ){
                     the_custom_logo();
                 } 
+                // CHANGED CODE START
+                /* FROM:
+                if( function_exists( 'has_custom_logo' ) && has_custom_logo() ){
+                    the_custom_logo();
+                } 
+                if( is_front_page() ){ ?>
+                    <h1 class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></h1>
+                    <?php 
+                }else{ ?>
+                    <p class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></p>
+                <?php
+                }
+                $description = get_bloginfo( 'description', 'display' );
+                if ( $description || is_customize_preview() ){ ?>
+                    <p class="site-description" itemprop="description"><?php echo $description; ?></p>
+                <?php
+
+                }
+                ?>
+                TO: ( The title gets removed if the page has a header ) */
                 if ( !has_custom_logo() ){
                     if( is_front_page() ){ ?>
                     <h1 class="site-title" itemprop="name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" itemprop="url"><?php bloginfo( 'name' ); ?></a></h1>
@@ -470,13 +506,12 @@ function blossom_feminine_header(){
                 $description = get_bloginfo( 'description', 'display' );
                 if ( $description || is_customize_preview() ){ ?>
                     <p class="site-description" itemprop="description"><?php echo $description; ?></p>
-                    <?php
-
+                <?php 
                 }
+                // CHANGED CODE END 
                 ?>
             </div>
         </div><!-- .header-m -->
-        
         <div class="header-b">
             <div class="container">
                 <button aria-label="<?php esc_attr_e( 'primary menu toggle button', 'blossom-chic' ); ?>" id="primary-toggle-button" data-toggle-target=".main-menu-modal" data-toggle-body-class="showing-main-menu-modal" aria-expanded="false" data-set-focus=".close-main-nav-toggle"><i class="fa fa-bars"></i></button>
@@ -519,14 +554,20 @@ function blossom_feminine_header(){
     </header><!-- #masthead -->
     <?php
 }
-
+// CUSTOM ADDED CODE START
+// Removes breadcrumbs from pages
 function blossom_feminine_breadcrumb() {
     return;
 }
+// CUSTOM ADDED CODE END
 
 function blossom_feminine_banner(){
-    
+    /* CHANGED CODE START
+    FROM:
+    $ed_slider = get_theme_mod( 'ed_slider', true );
+    TO: ( disabled the slider ) */
     $ed_slider = get_theme_mod( 'ed_slider', false );
+    // CHANGED CODE END
     $slider_layout  = get_theme_mod( 'slider_layout', 'two' );
 
     if( ( is_front_page() || is_home() ) && $ed_slider ){ 

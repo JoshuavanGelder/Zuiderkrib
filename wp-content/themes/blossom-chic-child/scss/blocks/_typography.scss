@@ -1,4 +1,14 @@
+// styling for wordpress frontend
+#page {
+    h1, h2, h3, h4, h5, h6 {
+        font-family: "Clean Up Your Mess";
+        font-weight: 700;
+    }
+}
+
+// styling for wordpress editor
 .editor-styles-wrapper {
+    // added styling for links
     a {
         color: #333;
 
@@ -6,5 +16,10 @@
             color: #f69581;
             text-decoration: underline;
         }
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: "Clean Up Your Mess";
+        font-weight: 700;
     }
 }

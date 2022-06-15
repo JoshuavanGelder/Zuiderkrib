@@ -1,0 +1,9 @@
+// Changes the onsale tag from wordpress
+.woocommerce #page .onsale {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.8em;
+    background-color: #f69581;
+}
+
